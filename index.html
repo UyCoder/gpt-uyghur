@@ -31,6 +31,19 @@
 
         }
 
+        #inputAPIKey {
+            background-color: #292929;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 30px;
+            resize: none;
+            direction: ltr !important;
+
+        }
+
         #output {
             background-color: #292929;
             color: #fff;
@@ -94,6 +107,7 @@
 <body>
 <h1 id="b">ChatGPT نىڭ ئۇيغۇرچە نۇسخىسى</h1>
 <textarea id="input" placeholder="سۆزىڭىزنى بۇ يەرگە يېزىڭ"></textarea>
+<textarea id="inputAPIKey" placeholder="سىزگە تەۋە OpenAI نىڭ API Key نى كىرگۈزۈڭ"></textarea>
 <button id="submit">سۈنئىي ئىدراكتىن سورا </button>
 <textarea id="output" placeholder="سۈنئىي ئىدراكنىڭ جاۋابى بۇ يەردە چىقىدۇ."></textarea>
 <textarea id="outputEn" placeholder="Generated English text will appear heare"></textarea>
@@ -123,15 +137,18 @@
 
 
 <script>
-    const apiKey = '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';
+
     const submitButton = document.getElementById('submit');
     const inputField = document.getElementById('input');
+    const apiKeys = document.getElementById('inputAPIKey');
     const outputField = document.getElementById('output');
     const outputFieldEn = document.getElementById('outputEn');
 
     submitButton.addEventListener('click', async () => {
         // get input text as inputText variable
         const inputText = inputField.value;
+
+        const apiKey = apiKeys.value;
 
         // 1. translate inputText to english
         const reponseTransUyToEn = await fetch('https://api.niutrans.com/NiuTransServer/translation?from=uy&to=en&apikey=a8a17df6e4a80b5fbe84f12096353df8&src_text='+inputText);
