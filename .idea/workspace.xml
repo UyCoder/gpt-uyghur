@@ -68,7 +68,9 @@
       <option name="presentableId" value="Default" />
       <updated>1679505444671</updated>
       <workItem from="1679505445962" duration="11500000" />
-      <workItem from="1679563591663" duration="2554000" />
+      <workItem from="1679563591663" duration="2568000" />
+      <workItem from="1679590347033" duration="1562000" />
+      <workItem from="1679674750523" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -91,7 +93,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679564889288</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add api key insertion">
+      <created>1679568113474</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1679568113474</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

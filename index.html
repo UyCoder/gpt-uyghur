@@ -137,7 +137,6 @@
 
 
 <script>
-
     const submitButton = document.getElementById('submit');
     const inputField = document.getElementById('input');
     const apiKeys = document.getElementById('inputAPIKey');
@@ -145,6 +144,7 @@
     const outputFieldEn = document.getElementById('outputEn');
 
     submitButton.addEventListener('click', async () => {
+        outputField.value = 'بىردەم ساقلاڭ... سۇئالىڭىز سۈنئىي ئىدراكقا ئەۋەتىلدى. جاۋاپ ھازىرلا كېلىدۇ.';
         // get input text as inputText variable
         const inputText = inputField.value;
 
@@ -170,7 +170,6 @@
 
         const responseData = await response.json();
         const generatedText = responseData.choices[0].message.content;
-
 
         outputFieldEn.value = generatedText;
 
