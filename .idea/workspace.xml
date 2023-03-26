@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add api key insertion">
-      <change afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/ALKATIPTOR.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/useGoogleTranslate/ALKATIPTOR.TTF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/useGoogleTranslate/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
@@ -87,7 +83,7 @@
       <workItem from="1679736195605" duration="1000" />
       <workItem from="1679736743251" duration="14000" />
       <workItem from="1679745643996" duration="48000" />
-      <workItem from="1679822303504" duration="3718000" />
+      <workItem from="1679822303504" duration="4355000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -124,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679688873215</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add api key insertion">
+      <created>1679826149483</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1679826149483</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
