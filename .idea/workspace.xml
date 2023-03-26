@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add google analitics code">
-      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" beforeDir="false" afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add google analitics code" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,7 +82,7 @@
       <workItem from="1679745643996" duration="48000" />
       <workItem from="1679822303504" duration="4718000" />
       <workItem from="1679827079209" duration="1772000" />
-      <workItem from="1679832538831" duration="485000" />
+      <workItem from="1679832538831" duration="498000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -171,7 +168,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679832869415</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add google analitics code">
+      <created>1679833041220</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1679833041220</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

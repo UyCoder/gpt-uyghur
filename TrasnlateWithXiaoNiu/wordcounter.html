@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>تەخمىنەن ئوقۇش ۋاقتى پەرەز قىلىش قۇرالى</title>
+    <style>
+	     @font-face {
+            font-family: 'alkatipTor';
+            src: url('ALKATIPTOR.TTF');
+        }
+
+        *  {
+            direction: rtl ;
+			font-family: 'alkatipTor' !important;
+        }
+		
+      body {
+	    font-family: 'alkatipTor' !important;
+        background-color: #282c34;
+        color: white;
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid white;
+        padding: 5px;
+        text-align: center;
+      }
+      th {
+        background-color: #343a40;
+      }
+      td:first-child {
+        background-color: #343a40;
+      }
+      textarea {
+        background-color: #1e2124;
+        border: none;
+        color: white;
+        font-size: 16px;
+        padding: 10px;
+        width: 100%;
+      }
+      button {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        padding: 10px 20px;
+      }
+      button:hover {
+        background-color: #0069d9;
+      }
+	  
+	          #b {
+            color: #009b74;
+            font-size: xx-large;
+            text-align: center;
+        }
+		
+		   /* Style for the navbar */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+		
+    </style>
+  </head>
+  <body>
+  <div class="navbar">
+    <a href="../TrasnlateWithXiaoNiu/IsilTerjiman.html">ئىسىل تەرجىمان</a>
+    <a href="../index.html"> ChatGPT ئۇيغۇرچە</a>
+    <a href="https://translate.google.com.tr/?sl=auto&tl=ug&text=I%20can%20translate%20uyghur%20language%20to%20english&op=translate" target="_blank"> Google تەرجىمان</a>
+	<a href="#"> تەخمىنەن ئوقۇش ۋاقتى</a>
+</div>
+  <h1 id="b"> </h1>
+  <h1 id="b">تەخمىنەن ئوقۇش ۋاقتى پەرەز قىلىش قۇرالى</h1>
+    <div>
+      <label for="inputText">تېكىستنى بۇ يەرگە يېزىڭ: </label>
+      <br>
+      <textarea id="inputText" rows="10" cols="50"></textarea>
+      <br>
+      <button onclick="countWords()">ھېسابلاش</button>
+    </div>
+    <table id="wordCountTable"></table>
+    <script>
+      function countWords() {
+        const text = document.getElementById("inputText").value;
+        const words = text.match(/\p{Script=Arabic}+|\S+/gu).length;
+        const characters = text.length;
+        const sentences = text.match(/[.?!](\s|$)/g)?.length || 0;
+        const paragraphs = text.split(/\n\s*\n/).length;
+        const silentReadingTime = Math.ceil(words / 200);
+        const aloudReadingTime = Math.ceil(words / 100);
+        const table = document.getElementById("wordCountTable");
+        table.innerHTML = `
+		  <tr>
+            <th>ھەرپ سانى</th>
+            <td>${characters}</td>
+          </tr>
+		  
+          <tr>
+            <th>سۆز سانى</th>
+            <td>${words}</td>
+          </tr>
+
+          <tr>
+            <th>جۈملە سانى</th>
+            <td>${sentences}</td>
+          </tr>
+          <tr>
+            <th>ئابزاس سانى</th>
+            <td>${paragraphs}</td>
+          </tr>
+          <tr>
+            <th>ئاۋازسىز ئوقۇش ۋاقتى</th>
+            <td>${silentReadingTime} مىنۇت${silentReadingTime === 1 ? '' : ' '}</td>
+          </tr>
+          <tr>
+            <th>ئاۋازلىق ئوقۇش ۋاقتى</th>
+            <td>${aloudReadingTime} مىنۇت${aloudReadingTime === 1 ? '' : ' '}</td>
+          </tr>
+        `;
+      }
+    </script>
+  </body>
+</html>
