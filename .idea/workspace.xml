@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="correct some text">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add google analitics code">
       <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" beforeDir="false" afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
@@ -86,7 +85,7 @@
       <workItem from="1679745643996" duration="48000" />
       <workItem from="1679822303504" duration="4718000" />
       <workItem from="1679827079209" duration="1772000" />
-      <workItem from="1679832538831" duration="311000" />
+      <workItem from="1679832538831" duration="485000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -165,7 +164,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679828845817</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add google analitics code">
+      <created>1679832869415</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1679832869415</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,6 +184,7 @@
     <MESSAGE value="video link correction" />
     <MESSAGE value="configure readme file" />
     <MESSAGE value="correct some text" />
-    <option name="LAST_COMMIT_MESSAGE" value="correct some text" />
+    <MESSAGE value="add google analitics code" />
+    <option name="LAST_COMMIT_MESSAGE" value="add google analitics code" />
   </component>
 </project>
