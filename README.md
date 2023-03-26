@@ -17,11 +17,6 @@ This project is a web application designed to help Uyghur language authors commu
 
 ## 📚 Lessons Learned
 During the development of this project, I learned:
-
-Sure, here's the updated lesson learned section:
-
-📚 Lessons Learned
-During the development of this project, I learned:
 - How to work with APIs to integrate third-party services into web applications
 - How to use JavaScript to handle user input and make API requests
 - How to dynamically update web page content based on user interactions
