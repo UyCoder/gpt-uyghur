@@ -102,44 +102,10 @@
             alignment: center;
 
         }
-
-        /* Style for the navbar */
-        .navbar {
-            overflow: hidden;
-            background-color: #333;
-            position: fixed;
-            top: 0;
-            width: 100%;
-
-            display: flex;
-            justify-content: center;
-        }
-
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
     </style>
+
 </head>
 <body>
-
-<div class="navbar">
-    <a href="TrasnlateWithXiaoNiu/IsilTerjiman.html">ئىسىل تەرجىمان</a>
-    <a href="#"> ChatGPT ئۇيغۇرچە</a>
-    <a href="https://translate.google.com.tr/?sl=auto&tl=ug&text=I%20can%20translate%20uyghur%20language%20to%20english&op=translate"> Google تەرجىمان</a>
-</div>
-<h1 id="b"> .</h1>
-
 <h1 id="b">ChatGPT نىڭ ئۇيغۇرچە نۇسخىسى</h1>
 <textarea id="inputAPIKey" placeholder="سىزگە تەۋە OpenAI نىڭ API Key نى كىرگۈزۈڭ"></textarea>
 <textarea id="input" placeholder="سورىماقچى بولغان سۆزىڭىزنى بۇ يەرگە يېزىڭ"></textarea>
@@ -186,9 +152,9 @@
         const apiKey = apiKeys.value;
 
         // 1. translate inputText to english
-        const reponseTransUyToEn = await fetch('https://api.niutrans.com/NiuTransServer/translation?from=uy&to=en&apikey=a8a17df6e4a80b5fbe84f12096353df8&src_text='+inputText);
+        const reponseTransUyToEn = await fetch('https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=ug&tl=en&dt=t&q='+inputText);
         const reponseTransUyToEnData = await reponseTransUyToEn.json();
-        const reponseTransUyToEnText = reponseTransUyToEnData.tgt_text;
+        const reponseTransUyToEnText = reponseTransUyToEnData;
 
         // get reponse from open ai
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -209,9 +175,10 @@
         outputFieldEn.value = generatedText;
 
         // 3. translate the englsih generatedText to UyghurResponse
-        const reponseTransEntoUy = await fetch('https://api.niutrans.com/NiuTransServer/translation?from=en&to=uy&apikey=a8a17df6e4a80b5fbe84f12096353df8&src_text='+generatedText);
+        const reponseTransEntoUy = await fetch('https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=ug&dt=t&q='+generatedText);
         const reponseTransEntoUyData = await reponseTransEntoUy.json();
-        const reponseTransEntoUyText = reponseTransEntoUyData.tgt_text;
+        const reponseTransEntoUyText = reponseTransEntoUyData;
+
 
         // 4. outputField.value = UyghurResponse;
         outputField.value = reponseTransEntoUyText;

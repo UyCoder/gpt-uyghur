@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ئۇيغۇرچە پاراڭ</title>
+    <title>ئۇيغۇرچە تەرجىمان</title>
     <style>
         @font-face {
             font-family: 'alkatipTor';
@@ -132,23 +132,31 @@
     </style>
 </head>
 <body>
-
 <div class="navbar">
-    <a href="TrasnlateWithXiaoNiu/IsilTerjiman.html">ئىسىل تەرجىمان</a>
-    <a href="#"> ChatGPT ئۇيغۇرچە</a>
+    <a href="../TrasnlateWithXiaoNiu/IsilTerjiman.html">ئىسىل تەرجىمان</a>
+    <a href="../index.html"> ChatGPT ئۇيغۇرچە</a>
     <a href="https://translate.google.com.tr/?sl=auto&tl=ug&text=I%20can%20translate%20uyghur%20language%20to%20english&op=translate"> Google تەرجىمان</a>
 </div>
 <h1 id="b"> .</h1>
+<h1 id="b">گۇگېل تەرجىماندىنمۇ ئېسىل تەرجىمان </h1>
+<p>ئەسكى تېكىستنىڭ تىلىنى تاللاڭ:</p>
+<select id="language">
+    <option value="uy">ئۇيغۇرچە</option>
+    <option value="en">ئېنگلىزچە</option>
+    <option value="zh">خىتايچە</option>
+</select>
 
-<h1 id="b">ChatGPT نىڭ ئۇيغۇرچە نۇسخىسى</h1>
-<textarea id="inputAPIKey" placeholder="سىزگە تەۋە OpenAI نىڭ API Key نى كىرگۈزۈڭ"></textarea>
-<textarea id="input" placeholder="سورىماقچى بولغان سۆزىڭىزنى بۇ يەرگە يېزىڭ"></textarea>
-<button id="submit">سۈنئىي ئىدراكتىن سورا </button>
-<textarea id="output" placeholder="سۈنئىي ئىدراكنىڭ جاۋابى بۇ يەردە چىقىدۇ."></textarea>
-<textarea id="outputEn" placeholder="Generated English text will appear heare"></textarea>
+<textarea id="input" placeholder="ئەسلى تېكىستى بۇ يەرگە يېزىڭ."></textarea>
+<select id="Targetlanguage">
+    <option value="en">ئېنگىلىزچە</option>
+    <option value="uy">ئۇيغۇرچە</option>
+    <option value="zh">خىتايچە</option>
+</select>
+<button id="submit">تەرجىمە قىل</button>
+<textarea id="output" placeholder="تەرجىمە نەتىجىسى بۇ يەردە چىقىدۇ."></textarea>
 <br>
 <br>
-<ab id="a">بۇ كىچىك توربەت مېنىڭ شەخسىي قىزىقىشىم بىلەنلا يېزىپ چىقىلدى. ئەڭ ئاۋۋال سىزنىڭ يازغان ئۇچۇرىڭىزنى ئېنگىلىزچىگە تەرجىمە قىلىپ ChatGPT گە يوللايدۇ. قايتقان جاۋاپنى يەنە ئۇيغۇرچىغا تەرجىمە قىلىپ ئاندىن سىزگە چىقىرىپ بېرىدۇ. سۇئال سوراشتىن بۇرۇن سىز چوقۇم OpenAI ھېسابىڭىزدىن يېڭىدىن API Key چىقىرىپ كۆچۈرۈپ ئەكىلىشىڭىز كېرەك. بولمىسا سىز ChatGPT نى چاقىرالمايسىز.</ab>
+<ab id="a">بۇ كىچىك تەرجىمە قورالى مېنىڭ شەخسىي قىزىقىشىم بىلەنلا يېزىپ چىقىلدى. بۇ قۇرالنىڭ ئۇيغۇرچە تەرجىمە ئۈنۈمى گۇگېلنىڭكىدىن خېلىلا سۈپەتلىك. ئەمما بۇ مۇلازىمەت ھەرقاچان تاقىلىپ قېلىشى مۇمكىن.</ab>
 
 <br>
 <br>
@@ -170,52 +178,38 @@
          alt="stackoverflow" height="25">
 </a>
 
-
 <script>
     const submitButton = document.getElementById('submit');
     const inputField = document.getElementById('input');
-    const apiKeys = document.getElementById('inputAPIKey');
+    const language = document.getElementById('language');
     const outputField = document.getElementById('output');
-    const outputFieldEn = document.getElementById('outputEn');
+    const targetlanguage = document.getElementById('Targetlanguage');
 
     submitButton.addEventListener('click', async () => {
-        outputField.value = 'بىردەم ساقلاڭ... سۇئالىڭىز سۈنئىي ئىدراكقا ئەۋەتىلدى. جاۋاپ ھازىرلا كېلىدۇ.';
-        // get input text as inputText variable
+        outputField.value = 'بىردەم ساقلاڭ... تەرجىمە تەلىپى مۇلازىمېتىرغا ئەۋەتىلدى. جاۋاپ ھازىرلا كېلىدۇ.';
         const inputText = inputField.value;
 
-        const apiKey = apiKeys.value;
+        const lang = language.value;
+        const targetlang = targetlanguage.value;
 
-        // 1. translate inputText to english
-        const reponseTransUyToEn = await fetch('https://api.niutrans.com/NiuTransServer/translation?from=uy&to=en&apikey=a8a17df6e4a80b5fbe84f12096353df8&src_text='+inputText);
-        const reponseTransUyToEnData = await reponseTransUyToEn.json();
-        const reponseTransUyToEnText = reponseTransUyToEnData.tgt_text;
+        const reponseTrans = await fetch('https://api.niutrans.com/NiuTransServer/translation?from='+lang+'&to='+targetlang+'&apikey=a8a17df6e4a80b5fbe84f12096353df8&src_text='+inputText);
+        const reponseTransData = await reponseTrans.json();
+        const reponseTransText = reponseTransData.tgt_text;
 
-        // get reponse from open ai
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-                model: 'gpt-3.5-turbo',
-                messages:[{"role": "user", "content": reponseTransUyToEnText}]
-            })
-        });
+        outputField.value = reponseTransText;
 
-        const responseData = await response.json();
-        const generatedText = responseData.choices[0].message.content;
+        // Change the direction of the input and output text areas based on the selected language
+        if (lang === 'uy') {
+            inputField.style.direction = 'rtl';
+        } else {
+            inputField.style.direction = 'ltr';
+        }
 
-        outputFieldEn.value = generatedText;
-
-        // 3. translate the englsih generatedText to UyghurResponse
-        const reponseTransEntoUy = await fetch('https://api.niutrans.com/NiuTransServer/translation?from=en&to=uy&apikey=a8a17df6e4a80b5fbe84f12096353df8&src_text='+generatedText);
-        const reponseTransEntoUyData = await reponseTransEntoUy.json();
-        const reponseTransEntoUyText = reponseTransEntoUyData.tgt_text;
-
-        // 4. outputField.value = UyghurResponse;
-        outputField.value = reponseTransEntoUyText;
-
+        if (targetlang === 'uy') {
+            outputField.style.direction = 'rtl';
+        } else {
+            outputField.style.direction = 'ltr';
+        }
     });
 </script>
 </body>

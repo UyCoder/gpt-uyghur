@@ -5,6 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add api key insertion">
+      <change afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/ALKATIPTOR.TTF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/useGoogleTranslate/ALKATIPTOR.TTF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/useGoogleTranslate/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
@@ -33,19 +37,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Javad/IdeaProjects/gpt-uyghur/TrasnlateWithXiaoNiu",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\TrasnlateWithXiaoNiu" />
+      <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\useGoogleTranslate" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
@@ -71,6 +82,12 @@
       <workItem from="1679563591663" duration="2568000" />
       <workItem from="1679590347033" duration="1562000" />
       <workItem from="1679674750523" duration="2000" />
+      <workItem from="1679688797089" duration="4601000" />
+      <workItem from="1679693442368" duration="2000" />
+      <workItem from="1679736195605" duration="1000" />
+      <workItem from="1679736743251" duration="14000" />
+      <workItem from="1679745643996" duration="48000" />
+      <workItem from="1679822303504" duration="3718000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -100,7 +117,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679568113474</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add api key insertion">
+      <created>1679688873215</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1679688873215</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
