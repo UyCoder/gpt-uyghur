@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add google analitics code" />
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="change some color">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" beforeDir="false" afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/wordcounter.html" beforeDir="false" afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/wordcounter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,6 +88,7 @@
       <workItem from="1679822303504" duration="4718000" />
       <workItem from="1679827079209" duration="1772000" />
       <workItem from="1679832538831" duration="498000" />
+      <workItem from="1679864803999" duration="618000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -175,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679833041220</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="change some color">
+      <created>1679864826142</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1679864826142</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -189,6 +202,7 @@
     <MESSAGE value="configure readme file" />
     <MESSAGE value="correct some text" />
     <MESSAGE value="add google analitics code" />
-    <option name="LAST_COMMIT_MESSAGE" value="add google analitics code" />
+    <MESSAGE value="change some color" />
+    <option name="LAST_COMMIT_MESSAGE" value="change some color" />
   </component>
 </project>
