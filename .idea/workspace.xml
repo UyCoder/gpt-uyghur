@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="video link correction">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="configure readme file" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,7 +81,7 @@
       <workItem from="1679736743251" duration="14000" />
       <workItem from="1679745643996" duration="48000" />
       <workItem from="1679822303504" duration="4718000" />
-      <workItem from="1679827079209" duration="1317000" />
+      <workItem from="1679827079209" duration="1627000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -142,7 +139,21 @@
       <option name="project" value="LOCAL" />
       <updated>1679827056205</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="configure readme file">
+      <created>1679828435497</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1679828435497</updated>
+    </task>
+    <task id="LOCAL-00010" summary="configure readme file">
+      <created>1679828479609</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1679828479609</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,6 +164,7 @@
     <MESSAGE value="add api key insertion" />
     <MESSAGE value="add nav bar" />
     <MESSAGE value="video link correction" />
-    <option name="LAST_COMMIT_MESSAGE" value="video link correction" />
+    <MESSAGE value="configure readme file" />
+    <option name="LAST_COMMIT_MESSAGE" value="configure readme file" />
   </component>
 </project>
