@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="change some color">
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="did some configurations">
+      <change afterPath="$PROJECT_DIR$/Tools/ALKATIPTOR.TTF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" beforeDir="false" afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/wordcounter.html" beforeDir="false" afterPath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/wordcounter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/ALKATIPTOR.TTF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/IsilTerjiman.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TrasnlateWithXiaoNiu/wordcounter.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,24 +37,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Javad/IdeaProjects/gpt-uyghur/TrasnlateWithXiaoNiu&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Javad/IdeaProjects/gpt-uyghur/Tools",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\Tools" />
       <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\TrasnlateWithXiaoNiu" />
       <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\useGoogleTranslate" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\Tools" />
     </key>
   </component>
   <component name="RunManager">
@@ -88,7 +94,8 @@
       <workItem from="1679822303504" duration="4718000" />
       <workItem from="1679827079209" duration="1772000" />
       <workItem from="1679832538831" duration="498000" />
-      <workItem from="1679864803999" duration="618000" />
+      <workItem from="1679864803999" duration="824000" />
+      <workItem from="1679955453353" duration="1181000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -188,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679864826142</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="did some configurations">
+      <created>1679865623953</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1679865623953</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -203,6 +217,7 @@
     <MESSAGE value="correct some text" />
     <MESSAGE value="add google analitics code" />
     <MESSAGE value="change some color" />
-    <option name="LAST_COMMIT_MESSAGE" value="change some color" />
+    <MESSAGE value="did some configurations" />
+    <option name="LAST_COMMIT_MESSAGE" value="did some configurations" />
   </component>
 </project>
