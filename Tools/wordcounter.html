@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>تېكىست ھېسابلىغۇچ</title>
+    <style>
+	     @font-face {
+            font-family: 'alkatipTor';
+            src: url('ALKATIPTOR.TTF');
+        }
+
+        *  {
+            direction: rtl ;
+			font-family: 'alkatipTor' !important;
+        }
+		
+      body {
+	    font-family: 'alkatipTor' !important;
+        background-color: #282c34;
+        color: white;
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid white;
+        padding: 5px;
+        text-align: center;
+      }
+      th {
+        background-color: #343a40;
+      }
+      td:first-child {
+        background-color: #343a40;
+      }
+      textarea {
+        background-color: #1e2124;
+        border: none;
+        color: white;
+        font-size: 16px;
+        padding: 10px;
+        width: 100%;
+      }
+      button {
+        background-color: #009b74;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        padding: 10px 20px;
+      }
+      button:hover {
+        background-color: #444;
+      }
+	  
+	          #b {
+            color: #009b74;
+            font-size: xx-large;
+            text-align: center;
+        }
+
+         #a {
+           color: #b6b5b5;
+           font-size: small;
+           padding: 20px;
+           font-style: italic;
+
+         }
+
+         #contact {
+           color: #b6b5b5;
+           font-size: small;
+           padding: 20px;
+           font-style: italic;
+           alignment: center;
+
+         }
+		
+		   /* Style for the navbar */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+		
+    </style>
+  </head>
+  <body>
+  <div class="navbar">
+    <a href="IsilTerjiman.html">ئىسىل تەرجىمان</a>
+    <a href="../index.html">ئۇيغۇرچە ChatGPT</a>
+    <a href="#"> تېكىست ھېسابلىغۇچ</a>
+    <a href="wordreplacer.html"> ئىملا تۈزەتكۈچ</a>
+    <a href="https://translate.google.com.tr/?sl=auto&tl=ug&text=I%20can%20translate%20uyghur%20language%20to%20english&op=translate" target="_blank"> Google تەرجىمان</a>
+  </div>
+  <br>
+  <h1 id="b"> </h1>
+  <h1 id="b">تېسكىتقا ئالاقىدار بەزى ئۇچۇرلارنى ھېسابلاش قۇرالى</h1>
+    <div>
+      <label for="inputText">تېكىستنى بۇ يەرگە يېزىڭ: </label>
+      <br>
+      <textarea id="inputText" rows="10" cols="50"></textarea>
+      <br>
+      <button onclick="countWords()">ھېسابلاش</button>
+    </div>
+    <table id="wordCountTable"></table>
+    <script>
+     function countWords() {
+  const text = document.getElementById("inputText").value;
+  const words = text.match(/\p{Script=Arabic}+|\S+/gu);
+  const characters = text.length;
+  const sentences = text.match(/[.?!](\s|$)/g)?.length || 0;
+  const paragraphs = text.split(/\n\s*\n/).length;
+  const silentReadingTime = Math.ceil(words.length / 200);
+  const aloudReadingTime = Math.ceil(words.length / 100);
+
+  // Count the frequency of each word
+  const freqMap = new Map();
+  for (const word of words) {
+    const count = freqMap.get(word) || 0;
+    freqMap.set(word, count + 1);
+  }
+
+  // Sort the words by frequency
+  const sortedWords = [...freqMap.entries()].sort((a, b) => b[1] - a[1]);
+
+  // Create the table
+  const table = document.getElementById("wordCountTable");
+  table.innerHTML = `
+    <tr>
+      <th>ھەرپ سانى</th>
+      <td>${characters}</td>
+    </tr>
+    <tr>
+      <th>سۆز سانى</th>
+      <td>${words.length}</td>
+    </tr>
+    <tr>
+      <th>جۈملە سانى</th>
+      <td>${sentences}</td>
+    </tr>
+    <tr>
+      <th>ئابزاس سانى</th>
+      <td>${paragraphs}</td>
+    </tr>
+    <tr>
+      <th>ئاۋازسىز ئوقۇش ۋاقتى</th>
+      <td>  ${silentReadingTime} مىنۇت</td>
+    </tr>
+    <tr>
+      <th>ئاۋازلىق ئوقۇش ۋاقتى</th>
+      <td> ${aloudReadingTime} مىنۇت</td>
+    </tr>
+    <tr>
+      <th>ئەڭ كۆپ تەكرارلانغان 10 سۆز</th>
+      <td colspan="2">
+        <ul>
+          ${sortedWords.slice(0, 10).map(([word, count]) => `<li>${word}: ${count}</li>`).join("")}
+        </ul>
+      </td>
+    </tr>
+  `;
+}
+
+    </script>
+	
+	<br>
+<br>
+<ab id="a">بۇ كىچىك قۇرالنى مەن ئۇيغۇرچە كىتاپ يازىدىغانلار، تەرجىمانلار ۋە تەھرىر خىزمىتى قىلغانلارنىڭ بەزى خىزمىتىنى ئاسانلاشتۇرۇش ئۈچۈن يېزىپ چىقتىم. </ab>
+
+<br>
+<br>
+<ba id="contact">مېنى بۇ يەردىن ئىزدەڭ</ba>
+  <a href="https://uycoder.github.io/paydilar/">
+    <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png"
+         height="25">
+  </a>
+<a href="https://www.linkedin.com/in/ahmed-bughra/">
+    <img src="https://camo.githubusercontent.com/f4f0ef7493c38feb75ede98d04b23bf1d019e30f9239f5f7113a3a84cb0d791d/68747470733a2f2f696d672e69636f6e73382e636f6d2f666c75656e63792f34382f3030303030302f6c696e6b6564696e2e706e67"
+         alt="linkedin" height="25">
+</a>
+<a href="https://github.com/Uycoder">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg"
+         alt="github" height="25">
+</a>
+<a href="https://www.hackerrank.com/ahmedbughra">
+    <img src="https://camo.githubusercontent.com/c73818cbaf0a29259ee0d1109bb374bdde61e4ceac2e31b8b4dbeda924fbe3db/68747470733a2f2f696d672e69636f6e73382e636f6d2f65787465726e616c2d74616c2d72657669766f2d636f6c6f722d74616c2d72657669766f2f39362f3030303030302f65787465726e616c2d6861636b657272616e6b2d69732d612d746563686e6f6c6f67792d636f6d70616e792d746861742d666f63757365732d6f6e2d636f6d70657469746976652d70726f6772616d6d696e672d6c6f676f2d636f6c6f722d74616c2d72657669766f2e706e67"
+         alt="hackerrank" height="25">
+</a>
+<a href="https://stackoverflow.com/users/16111723/ahmad-ali">
+    <img src="https://camo.githubusercontent.com/a1f470fd014da98bf60308cd9d887b15f53f9b56a031408d1c7c0d507fa94a16/68747470733a2f2f696d672e69636f6e73382e636f6d2f65787465726e616c2d74616c2d72657669766f2d736861646f772d74616c2d72657669766f2f39362f3030303030302f65787465726e616c2d737461636b2d6f766572666c6f772d69732d612d7175657374696f6e2d616e642d616e737765722d736974652d666f722d70726f66657373696f6e616c2d6c6f676f2d736861646f772d74616c2d72657669766f2e706e67"
+         alt="stackoverflow" height="25">
+</a>
+
+  </body>
+</html>
