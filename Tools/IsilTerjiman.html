@@ -143,7 +143,7 @@
 
 </head>
 <body>
-<div class="navbar">
+<div class="navbar" >
     <a href="#">ئىسىل تەرجىمان</a>
     <a href="../index.html">ئۇيغۇرچە ChatGPT</a>
     <a href="wordcounter.html"> تېكىست ھېسابلىغۇچ</a>
@@ -153,15 +153,30 @@
 </div>
 <h1 id="b"> .</h1>
 <h1 id="b">گۇگېل تەرجىماندىنمۇ ئېسىل تەرجىمان </h1>
+<p style="font-size: small;  color: white ; text-align: center " id="random-sentence"></p>
+<script>
+    fetch('https://raw.githubusercontent.com/UyCoder/paydilar/master/hikmetler/hikmetler.txt')
+        .then(response => response.text())
+        .then(text => {
+            const sentences = text.split('. ');
+            const randomIndex = Math.floor(Math.random() * sentences.length);
+            const randomSentence = sentences[randomIndex];
+            const prefixedSentence = "« " + randomSentence;
+            const suffixedSentence = prefixedSentence + " »";
+            document.getElementById('random-sentence').textContent = suffixedSentence;
+        });
+</script>
+
+<br>
 <p>ئەسلى تېكىستنىڭ تىلىنى تاللاڭ:</p>
-<select id="language">
+<select style=" font-family: 'alkatipTor'" id="language">
     <option value="uy">ئۇيغۇرچە</option>
     <option value="en">ئېنگلىزچە</option>
     <option value="zh">خىتايچە</option>
 </select>
 
-<textarea id="input" placeholder="ئەسلى تېكىستى بۇ يەرگە يېزىڭ."></textarea>
-<select id="Targetlanguage">
+<textarea id="input" placeholder="ئەسلى تېكىستنى بۇ يەرگە يېزىڭ."></textarea>
+<select style=" font-family: 'alkatipTor'" id="Targetlanguage">
     <option value="en">ئېنگىلىزچە</option>
     <option value="uy">ئۇيغۇرچە</option>
     <option value="zh">خىتايچە</option>

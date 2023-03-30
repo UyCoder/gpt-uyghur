@@ -15,16 +15,16 @@
 		
       body {
         background-color: #282c34;
-        color: #B4C4AE;
+        color: #b6b5b5;
       }
       
-      textarea, select, input[type=submit] {
-        background-color: #1e2124;
-        border: none;
-        color: #B4C4AE;
-        font-size: 16px;
-        padding: 10px;
-      }
+      /*textarea, select, input[type=submit] {*/
+      /*  background-color: #1e2124;*/
+      /*  border: none;*/
+      /*  color: #B4C4AE;*/
+      /*  font-size: 16px;*/
+      /*  padding: 10px;*/
+      /*}*/
       
       textarea:focus, select:focus, input[type=submit]:focus {
         outline: none;
@@ -34,7 +34,16 @@
             font-size: xx-large;
             text-align: center;
         }
-      
+
+        textarea {
+          background-color: #1e2124;
+          border: none;
+          color: white;
+          font-size: 16px;
+          padding: 10px;
+          width: 100%;
+        }
+
       input[type=submit] {
         background-color: #009b74;
         cursor: pointer;
@@ -85,7 +94,21 @@
   </div>
 <h1 id="b"> .</h1>
 <h1 id="b">ئۇيغۇرچە بەزى ئىملانى تۈزەتكۈچ </h1>
-    <br>
+  <p style="font-size: small;  color: white ; text-align: center " id="random-sentence"></p>
+  <script>
+      fetch('https://raw.githubusercontent.com/UyCoder/paydilar/master/hikmetler/hikmetler.txt')
+          .then(response => response.text())
+          .then(text => {
+              const sentences = text.split('. ');
+              const randomIndex = Math.floor(Math.random() * sentences.length);
+              const randomSentence = sentences[randomIndex];
+              const prefixedSentence = "« " + randomSentence;
+              const suffixedSentence = prefixedSentence + " »";
+              document.getElementById('random-sentence').textContent = suffixedSentence;
+          });
+  </script>
+
+  <br>
     <textarea id="input-text" rows="10" cols="50">تەھرىرلىمەكچى بولغان تېكىستنى كىرگۈزۈڭ</textarea>
     <br>
     <label for="operation-select">قايسى خىلدىكى تۈزىتىش ئېلىپ بارماقچى بولغانلىقىڭىزنى بۇ يەردىن تاللاڭ</label>
@@ -97,7 +120,7 @@
       <option value="replace-brackets">يالاڭ تىرناق < ۋە > لەرنى ئۇيغۇرچە « ۋە » لەرگە ئالماشتۇرۇش</option>
     </select>
     <br>
-    <input type="submit" value="تۈزىتىش" onclick="applyOperation()">
+    <input style="color: white ; padding: 10px ; font-weight: normal" type="submit" value="تۈزىتىش" onclick="applyOperation()">
     
     <br>
     <textarea id="output-text" rows="10" cols="50">تۈزىتىلگەن تېكىست بۇ يەردە كۆرۈنىدۇ.</textarea>
@@ -123,11 +146,11 @@
 </script>
   <br>
   <br>
-  <ab id="a">بۇ كىچىك قۇرالنى مەن ئۇيغۇرچە كىتاپ يازىدىغانلار، تەرجىمانلار ۋە تەھرىر خىزمىتى قىلغانلارنىڭ بەزى خىزمىتىنى ئاسانلاشتۇرۇش ئۈچۈن يېزىپ چىقتىم. </ab>
+  <ab style="font-style: italic; font-size: small" id="a" >بۇ كىچىك قۇرالنى مەن ئۇيغۇرچە كىتاپ يازىدىغانلار، تەرجىمانلار ۋە تەھرىر خىزمىتى قىلغانلارنىڭ بەزى خىزمىتىنى ئاسانلاشتۇرۇش ئۈچۈن يېزىپ چىقتىم. </ab>
 
   <br>
   <br>
-  <ba id="contact">مېنى بۇ يەردىن ئىزدەڭ</ba>
+  <ba style="font-style: italic; font-size: small" id="contact">مېنى بۇ يەردىن ئىزدەڭ</ba>
   <a href="https://uycoder.github.io/paydilar/">
       <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png"
            height="25">
