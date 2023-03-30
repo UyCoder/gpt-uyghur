@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add hikmetler, fix some css">
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add favicon">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/IsilTerjiman.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/IsilTerjiman.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/wordcounter.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/wordcounter.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/wordreplacer.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/wordreplacer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +94,8 @@
       <workItem from="1680177302939" duration="2024000" />
       <workItem from="1680185316957" duration="681000" />
       <workItem from="1680188542707" duration="127000" />
-      <workItem from="1680190373885" duration="93000" />
+      <workItem from="1680190373885" duration="215000" />
+      <workItem from="1680194908257" duration="55000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -226,7 +223,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680179259419</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="add favicon">
+      <created>1680190481915</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1680190481915</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,6 +248,7 @@
     <MESSAGE value="did some configurations" />
     <MESSAGE value="add new feature. text editor." />
     <MESSAGE value="add hikmetler, fix some css" />
-    <option name="LAST_COMMIT_MESSAGE" value="add hikmetler, fix some css" />
+    <MESSAGE value="add favicon" />
+    <option name="LAST_COMMIT_MESSAGE" value="add favicon" />
   </component>
 </project>
