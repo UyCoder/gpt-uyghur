@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add favicon">
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add googe analitics js code">
+      <change afterPath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/IsilTerjiman.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/IsilTerjiman.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/wordcounter.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/wordcounter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tools/wordreplacer.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/wordreplacer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +101,9 @@
       <workItem from="1680188542707" duration="127000" />
       <workItem from="1680190373885" duration="215000" />
       <workItem from="1680194908257" duration="55000" />
+      <workItem from="1680204641494" duration="176000" />
+      <workItem from="1680204976975" duration="3000" />
+      <workItem from="1680346252889" duration="2577000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -230,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680190481915</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add googe analitics js code">
+      <created>1680204796803</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1680204796804</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,6 +264,7 @@
     <MESSAGE value="add new feature. text editor." />
     <MESSAGE value="add hikmetler, fix some css" />
     <MESSAGE value="add favicon" />
-    <option name="LAST_COMMIT_MESSAGE" value="add favicon" />
+    <MESSAGE value="add googe analitics js code" />
+    <option name="LAST_COMMIT_MESSAGE" value="add googe analitics js code" />
   </component>
 </project>
