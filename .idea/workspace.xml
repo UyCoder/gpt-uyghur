@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="يېڭى ئىقتىدار قوشۇلدى">
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="rate of speed 1.5">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,6 +101,7 @@
       <workItem from="1680204976975" duration="3000" />
       <workItem from="1680346252889" duration="2577000" />
       <workItem from="1680349148697" duration="576000" />
+      <workItem from="1680773368213" duration="150000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -269,6 +271,7 @@
     <MESSAGE value="add favicon" />
     <MESSAGE value="add googe analitics js code" />
     <MESSAGE value="يېڭى ئىقتىدار قوشۇلدى" />
-    <option name="LAST_COMMIT_MESSAGE" value="يېڭى ئىقتىدار قوشۇلدى" />
+    <MESSAGE value="تېكست ئوقۇش سۈرئىتىنى 1.5 گە تەڭشىدىم" />
+    <option name="LAST_COMMIT_MESSAGE" value="تېكست ئوقۇش سۈرئىتىنى 1.5 گە تەڭشىدىم" />
   </component>
 </project>
