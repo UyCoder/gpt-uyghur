@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="fix some bug">
+      <change afterPath="$PROJECT_DIR$/Tools/HikmetlerHezinesi.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +122,7 @@
       <workItem from="1683625688812" duration="221000" />
       <workItem from="1684955631496" duration="80000" />
       <workItem from="1686330759547" duration="654000" />
-      <workItem from="1707320216201" duration="312000" />
+      <workItem from="1707320216201" duration="2806000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -290,7 +292,21 @@
       <option name="project" value="LOCAL" />
       <updated>1680774875494</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="fix some bug">
+      <created>1707320536410</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1707320536410</updated>
+    </task>
+    <task id="LOCAL-00026" summary="fix some bug">
+      <created>1707320873360</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1707320873360</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
