@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="ئاۋاز تېزلىكى ئىقتىدارى">
-      <change beforePath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" afterDir="false" />
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="fix some bug">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,20 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Javad/IdeaProjects/gpt-uyghur/Tools&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/Javad/IdeaProjects/gpt-uyghur/Tools",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\Tools" />
@@ -107,6 +109,18 @@
       <workItem from="1680346252889" duration="2577000" />
       <workItem from="1680349148697" duration="576000" />
       <workItem from="1680773368213" duration="380000" />
+      <workItem from="1680869568818" duration="3000" />
+      <workItem from="1680986415074" duration="874000" />
+      <workItem from="1681294461829" duration="3000" />
+      <workItem from="1681549232405" duration="601000" />
+      <workItem from="1681553714451" duration="20000" />
+      <workItem from="1681655272840" duration="599000" />
+      <workItem from="1682100429917" duration="5000" />
+      <workItem from="1682850265684" duration="14000" />
+      <workItem from="1683625688812" duration="221000" />
+      <workItem from="1684955631496" duration="80000" />
+      <workItem from="1686330759547" duration="654000" />
+      <workItem from="1707320216201" duration="312000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -269,7 +283,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680773740210</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="fix some bug">
+      <created>1680774875494</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1680774875494</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -303,6 +324,7 @@
     <MESSAGE value="يېڭى ئىقتىدار قوشۇلدى" />
     <MESSAGE value="تېكست ئوقۇش سۈرئىتىنى 1.5 گە تەڭشىدىم" />
     <MESSAGE value="ئاۋاز تېزلىكى ئىقتىدارى" />
-    <option name="LAST_COMMIT_MESSAGE" value="ئاۋاز تېزلىكى ئىقتىدارى" />
+    <MESSAGE value="fix some bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix some bug" />
   </component>
 </project>
