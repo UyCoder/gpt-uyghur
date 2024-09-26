@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="fix some bug">
-      <change afterPath="$PROJECT_DIR$/Tools/HikmetlerHezinesi.html" afterDir="false" />
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add HikmetlerHezinesi.html">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,22 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Javad/IdeaProjects/gpt-uyghur/Tools",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Javad/IdeaProjects/gpt-uyghur/Tools&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\Tools" />
@@ -122,7 +120,15 @@
       <workItem from="1683625688812" duration="221000" />
       <workItem from="1684955631496" duration="80000" />
       <workItem from="1686330759547" duration="654000" />
-      <workItem from="1707320216201" duration="2806000" />
+      <workItem from="1707320216201" duration="2888000" />
+      <workItem from="1707509801767" duration="923000" />
+      <workItem from="1708110195736" duration="13000" />
+      <workItem from="1713089130295" duration="21000" />
+      <workItem from="1713619725094" duration="350000" />
+      <workItem from="1720209425690" duration="956000" />
+      <workItem from="1720510114449" duration="71000" />
+      <workItem from="1727349722703" duration="66000" />
+      <workItem from="1727352835632" duration="17000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -306,7 +312,14 @@
       <option name="project" value="LOCAL" />
       <updated>1707320873360</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="add HikmetlerHezinesi.html">
+      <created>1707323104451</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1707323104451</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -341,6 +354,7 @@
     <MESSAGE value="تېكست ئوقۇش سۈرئىتىنى 1.5 گە تەڭشىدىم" />
     <MESSAGE value="ئاۋاز تېزلىكى ئىقتىدارى" />
     <MESSAGE value="fix some bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix some bug" />
+    <MESSAGE value="add HikmetlerHezinesi.html" />
+    <option name="LAST_COMMIT_MESSAGE" value="add HikmetlerHezinesi.html" />
   </component>
 </project>

@@ -1,0 +1,65 @@
+/* General styling for body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main container for the bookmarks */
+DL {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+/* Bookmark folder titles */
+H3 {
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #008cba;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Subfolder title */
+DL DL H3 {
+    background-color: #005f73;
+    font-size: 1.3em;
+    margin-left: 20px;
+}
+
+/* Individual bookmark links */
+A {
+    text-decoration: none;
+    color: #008cba;
+    font-size: 1.1em;
+    margin-left: 20px;
+    display: inline-block;
+    padding: 8px 0;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+/* Hover effect for links */
+A:hover {
+    color: white;
+    background-color: #008cba;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+/* Subfolder links */
+DL DL A {
+    margin-left: 40px;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 600px) {
+    A {
+        display: block;
+        font-size: 1em;
+    }
+}
