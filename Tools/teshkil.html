@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ug">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ئەرەبچە تېكىستلەرگە تەشكىل قويۇش قورالى</title>
+    <style>
+        @font-face {
+            font-family: 'alkatipTor';
+            src: url('ALKATIPTOR.TTF');
+        }
+
+        * {
+            direction: rtl;
+        }
+
+        body {
+            background-color: #282c34;
+            color: #fff;
+            font-family: 'alkatipTor', sans-serif !important;
+            margin-top: 50px;
+        }
+
+        #input {
+            background-color: #1e2124;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 100px;
+            resize: none;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #inputAPIKey {
+            background-color: #1e2124;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 30px;
+            resize: none;
+            direction: ltr !important;
+        }
+
+        #output {
+            background-color: #1e2124;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 200px;
+            resize: none;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #outputEn {
+            background-color: #1e2124;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 200px;
+            resize: none;
+            direction: ltr !important;
+        }
+
+        #submit {
+            background-color: #009b74;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #submit:hover {
+            background-color: #444;
+        }
+
+        #a {
+            color: #b6b5b5;
+            font-size: small;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        #b {
+            color: #009b74;
+            font-size: xx-large;
+            text-align: center;
+        }
+
+        #contact {
+            color: #b6b5b5;
+            font-size: small;
+            padding: 20px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #009b74;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            background-color: #1e2124;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .slider-label {
+            color: #fff;
+            font-size: 1em;
+        }
+
+        #speedRange {
+            width: 100px;
+        }
+
+        button {
+            background-color: #009b74;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar" >
+        <a href="IsilTerjiman.html"> تەرجىمان</a>
+        <a href="HikmetlerHezinesi.html" >ھىكمەت</a>
+        <a href="TextToSpeachUy.html"> ئاڭلاش</a>
+        <a href="../index.html">ChatGPT</a>
+        <a href="wordcounter.html"> تېكىست </a>
+        <a href="wordreplacer.html"> ئىملا </a>
+        <a href="teshkil.html">تەشكىل</a>
+        <a href="https://www.yulghun.com/tools/"> يۇلغۇن </a>
+        <a href="https://translate.google.com.tr/?sl=auto&tl=ug&text=I%20can%20translate%20uyghur%20language%20to%20english&op=translate" target="_blank"> Google </a>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <h1>ئەرەبچە تېكىستلەرگە تەشكىل قويۇش قورالى</h1>
+        <label for="inputText">ئەرەبچە تېكستنى كىرگۈزۈڭ:</label>
+        <textarea id="inputText" rows="4" placeholder="تېكستنى بۇ يەرگە كىرگۈزۈڭ..."></textarea>
+        <button id="submit" onclick="vocalizeText()">تەشكىل قويۇش</button>
+        <h3>تەشكىل قويۇلغان تېكىست:</h3>
+        <textarea id="outputText" rows="4"></textarea>
+        
+        <!-- Controls for speed and voice selection -->
+        <div class="controls">
+            <label for="speedRange" class="slider-label">ئاۋاز تېزلىكى:</label>
+            <input type="range" id="speedRange" min="0.5" max="2" step="0.1" value="1">
+            
+            <label for="voiceSelect" class="slider-label">ئاۋاز تىپى:</label>
+            <select id="voiceSelect">
+                <option value="male">ئەر</option>
+                <option value="female">ئايال</option>
+            </select>
+            
+            <button onclick="readText()">ئاڭلىتىش</button>
+        </div>
+    </div>
+
+
+    <script>
+        // JavaScript functionality
+        function vocalizeText() {
+            const inputText = document.getElementById("inputText").value;
+            fetch(`http://tahadz.com/cgi-bin/mishkal.cgi/ajaxGet?text=${encodeURIComponent(inputText)}&action=Tashkeel2&order=0&lastmark=1`)
+                .then(response => response.json())
+                .then(data => {
+                    let vocalizedText = data.result.map(item => item.chosen).join(" ");
+                    document.getElementById("outputText").value = vocalizedText;
+                })
+                .catch(error => {
+                    console.error("ھەرپ كويۇشقا تېخىمۇ بىر خاتالىق كۆرۈلدى:", error);
+                    document.getElementById("outputText").value = "زەر-زىۋەر قويۇشتا خاتالىق چىقتى.";
+                });
+        }
+
+        function readText() {
+            const vocalizedText = document.getElementById("outputText").value;
+            const speed = parseFloat(document.getElementById("speedRange").value);
+            const gender = document.getElementById("voiceSelect").value;
+
+            const utterance = new SpeechSynthesisUtterance(vocalizedText);
+            utterance.lang = "ar";
+            utterance.rate = speed;
+
+            const voices = window.speechSynthesis.getVoices();
+            utterance.voice = voices.find(voice => 
+                voice.lang === "ar-SA" && 
+                ((gender === "male" && voice.name.includes("Male")) || 
+                (gender === "female" && voice.name.includes("Female")))
+            ) || voices.find(voice => voice.lang === "ar-SA");
+
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+
+        window.speechSynthesis.onvoiceschanged = function() {
+            const voices = window.speechSynthesis.getVoices();
+        };
+    </script>
+
+
+    <br><br>
+    <br><br>
+    <br>
+    <footer>
+        <ab id="a" style="font-style: italic; font-size: small; color: #b6b5b5">بۇ كىچىك قورال مېنىڭ شەخسىي
+            قىزىقىشىم بىلەنلا يېزىپ چىقىلدى. ئەرەب تېكىستكە تەشكىل قويۇپ چىقىرىپ بېىرىدۇ. يەنى زەر-زىۋەرلىرىنى قويۇپ بېىرىدۇ. ئەمما يەنىلا بىر تەكشۈرۈش كېرەك. بەزى خاتالىقلاردىن خالى ئەمەس.
+        </ab>
+
+        <br>
+        <br>
+        <ba id="contact">مېنى بۇ يەردىن ئىزدەڭ</ba>
+        <a href="https://uycoder.github.io/paydilar/">
+            <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png"
+                 height="25">
+        </a>
+        <a href="https://www.linkedin.com/in/ahmed-bughra/">
+            <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/LinkedIn.svg"
+                 alt="linkedin" height="25">
+        </a>
+        <a href="https://github.com/Uycoder">
+            <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/github.svg"
+                 alt="github" height="25">
+        </a>
+        <a href="https://www.hackerrank.com/ahmedbughra">
+            <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/hackerrank.svg"
+                 alt="hackerrank" height="25">
+        </a>
+        <a href="https://stackoverflow.com/users/16111723/ahmad-ali">
+            <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/Stack_Overflow.svg"
+                 alt="stackoverflow" height="25">
+        </a>
+
+    </footer>
+
+</body>
+</html>
