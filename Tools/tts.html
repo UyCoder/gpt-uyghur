@@ -45,6 +45,14 @@
     const speakBtn = document.getElementById('speakBtn');
     const inputText = document.getElementById('inputText');
 
+    // Initialize the voices variable
+    let voices = [];
+
+    // Load voices after they are available
+    speechSynthesis.onvoiceschanged = function() {
+        voices = speechSynthesis.getVoices();
+    };
+
     speakBtn.addEventListener('click', () => {
         const text = inputText.value;
         if (!text) {
@@ -58,7 +66,6 @@
             utterance.lang = 'tr-TR'; // Turkish language code
 
             // Use Turkish voice
-            let voices = speechSynthesis.getVoices();
             let turkishVoice = voices.find(voice => voice.lang === 'tr-TR');
             if (turkishVoice) {
                 utterance.voice = turkishVoice;
