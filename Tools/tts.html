@@ -162,12 +162,20 @@
         );
 
         languageSelect.innerHTML = '';
-        supportedLanguages.forEach(lang => {
+        if (supportedLanguages.length > 0) {
+            supportedLanguages.forEach(lang => {
+                const option = document.createElement('option');
+                option.value = lang.code;
+                option.textContent = lang.name;
+                languageSelect.appendChild(option);
+            });
+        } else {
             const option = document.createElement('option');
-            option.value = lang.code;
-            option.textContent = lang.name;
+            option.value = '';
+            option.textContent = 'No supported languages available';
+            option.disabled = true;
             languageSelect.appendChild(option);
-        });
+        }
     }
 
     function findBestVoice(language) {
@@ -194,7 +202,7 @@
 
         const voices = window.speechSynthesis.getVoices();
         if (!voices.some(voice => voice.lang === language)) {
-            showMessage(`The selected language (${language}) is not supported on this device.`, true);
+            showMessage(`The selected language (${language}) is not supported on this device. Please check your device settings or try a different language.`, true);
             return;
         }
 
@@ -218,7 +226,10 @@
     }
 
     if ('speechSynthesis' in window) {
-        speechSynthesis.onvoiceschanged = populateLanguageOptions;
+        speechSynthesis.onvoiceschanged = () => {
+            setTimeout(populateLanguageOptions, 200); // Allow delay for voice loading
+        };
+        populateLanguageOptions();
     } else {
         showMessage('Text-to-Speech is not supported in this browser.', true);
     }
