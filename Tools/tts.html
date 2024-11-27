@@ -226,12 +226,21 @@
     }
 
     if ('speechSynthesis' in window) {
-        speechSynthesis.onvoiceschanged = () => {
-            setTimeout(populateLanguageOptions, 200); // Allow delay for voice loading
-        };
-        populateLanguageOptions();
-    } else {
-        showMessage('Text-to-Speech is not supported in this browser.', true);
+        let voicesLoaded = false;
+
+        function tryPopulateVoices() {
+            if (!voicesLoaded) {
+                populateLanguageOptions();
+                voicesLoaded = true;
+            }
+        }
+
+        speechSynthesis.onvoiceschanged = tryPopulateVoices;
+
+        // Yedek çözüm: Eğer onvoiceschanged tetiklenmezse, 500ms sonra zorla çağır.
+        setTimeout(() => {
+            tryPopulateVoices();
+        }, 500);
     }
 </script>
 </body>
