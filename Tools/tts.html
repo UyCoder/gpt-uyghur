@@ -2,246 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Multi-Language TTS App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Speech (Turkish)</title>
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            touch-action: manipulation;
-        }
         body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            background-color: #f4f4f4;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 100%;
-            height: 150px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 15px;
-            resize: none;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        .control-group {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            gap: 10px;
-        }
-        select, input[type="range"] {
-            flex-grow: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-        }
-        .button-group {
-            display: flex;
             justify-content: center;
-            gap: 15px;
+            align-items: center;
+            height: 100vh;
         }
+
+        input, button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px;
+        }
+
         button {
-            background-color: #4CAF50;
+            background-color: #009b74;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
         }
-        button:active {
-            background-color: #45a049;
-        }
-        button i {
-            margin-right: 8px;
-        }
-        #result {
-            margin-top: 15px;
-            text-align: center;
-            color: #666;
-            min-height: 30px;
-        }
-        .error {
-            color: #d9534f;
-        }
-        .success {
-            color: #4CAF50;
-        }
-        .speed-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8em;
-            color: #666;
-        }
-        #voiceDebug {
-            font-size: 0.7em;
-            color: #888;
-            margin-top: 10px;
-            text-align: center;
+
+        button:hover {
+            background-color: #007e5a;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>🔊 Text-to-Speech</h1>
 
-    <div class="control-group">
-        <select id="languageSelect" aria-label="Select Language">
-            <!-- Language options will be dynamically populated -->
-        </select>
-    </div>
+<h1>Text-to-Speech (Türkçe)</h1>
 
-    <textarea id="inputText" placeholder="Enter text to speak" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+<textarea id="inputText" rows="4" cols="50" placeholder="Türkçe bir şey yazın..."></textarea><br>
 
-    <div class="control-group">
-        <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
-    </div>
-    <div class="speed-label">
-        <span>Slow</span>
-        <span>Speed</span>
-        <span>Fast</span>
-    </div>
-
-    <div class="button-group">
-        <button onclick="speakText()">
-            <i class="fas fa-volume-up"></i>Speak
-        </button>
-    </div>
-
-    <div id="result"></div>
-    <div id="voiceDebug"></div>
-</div>
+<button id="speakBtn">Konuş</button>
 
 <script>
-    function populateLanguageOptions() {
-        const languageSelect = document.getElementById('languageSelect');
-        const availableLanguages = [
-            { code: 'tr-TR', name: 'Turkish' },
-            { code: 'en-US', name: 'English (US)' },
-            { code: 'en-GB', name: 'English (UK)' },
-            { code: 'de-DE', name: 'German' },
-            { code: 'fr-FR', name: 'French' },
-            { code: 'es-ES', name: 'Spanish' },
-            { code: 'it-IT', name: 'Italian' },
-            { code: 'ja-JP', name: 'Japanese' },
-            { code: 'ru-RU', name: 'Russian' },
-            { code: 'ar-SA', name: 'Arabic' }
-        ];
+    const speakBtn = document.getElementById('speakBtn');
+    const inputText = document.getElementById('inputText');
 
-        const voices = window.speechSynthesis.getVoices();
-        const supportedLanguages = availableLanguages.filter(lang =>
-            voices.some(voice => voice.lang === lang.code)
-        );
-
-        languageSelect.innerHTML = '';
-        if (supportedLanguages.length > 0) {
-            supportedLanguages.forEach(lang => {
-                const option = document.createElement('option');
-                option.value = lang.code;
-                option.textContent = lang.name;
-                languageSelect.appendChild(option);
-            });
-        } else {
-            const option = document.createElement('option');
-            option.value = '';
-            option.textContent = 'No supported languages available';
-            option.disabled = true;
-            languageSelect.appendChild(option);
-        }
-    }
-
-    function findBestVoice(language) {
-        const voices = window.speechSynthesis.getVoices();
-        const matchingVoices = voices.filter(voice => voice.lang === language);
-        return matchingVoices[0] || null;
-    }
-
-    function showMessage(message, isError = false) {
-        const resultDiv = document.getElementById('result');
-        resultDiv.textContent = message;
-        resultDiv.className = isError ? 'error' : 'success';
-    }
-
-    function speakText() {
-        const text = document.getElementById('inputText').value.trim();
-        const language = document.getElementById('languageSelect').value;
-        const speed = parseFloat(document.getElementById('speedControl').value);
-
+    speakBtn.addEventListener('click', () => {
+        const text = inputText.value;
         if (!text) {
-            showMessage('Please enter text to speak.', true);
+            alert('Lütfen bir metin girin!');
             return;
         }
 
-        const voices = window.speechSynthesis.getVoices();
-        if (!voices.some(voice => voice.lang === language)) {
-            showMessage(`The selected language (${language}) is not supported on this device. Please check your device settings or try a different language.`, true);
-            return;
-        }
+        // Check if the SpeechSynthesis API is available
+        if ('speechSynthesis' in window) {
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'tr-TR'; // Turkish language code
 
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = language;
-        utterance.rate = speed;
-        utterance.voice = findBestVoice(language);
-
-        utterance.onstart = () => {
-            showMessage('Speaking text...');
-        };
-
-        utterance.onerror = (event) => {
-            console.error('Speech error:', event);
-            showMessage('Unable to speak text.', true);
-        };
-
-        setTimeout(() => {
-            window.speechSynthesis.speak(utterance);
-        }, 100);
-    }
-
-    if ('speechSynthesis' in window) {
-        let voicesLoaded = false;
-
-        function tryPopulateVoices() {
-            if (!voicesLoaded) {
-                populateLanguageOptions();
-                voicesLoaded = true;
+            // Use Turkish voice
+            let voices = speechSynthesis.getVoices();
+            let turkishVoice = voices.find(voice => voice.lang === 'tr-TR');
+            if (turkishVoice) {
+                utterance.voice = turkishVoice;
+            } else {
+                alert('Türkçe sesi bulamadım!');
             }
+
+            // Speak the text
+            speechSynthesis.speak(utterance);
+        } else {
+            alert('Tarayıcınız sesli okuma desteği sunmamaktadır.');
         }
-
-        speechSynthesis.onvoiceschanged = tryPopulateVoices;
-
-        // Yedek çözüm: Eğer onvoiceschanged tetiklenmezse, 500ms sonra zorla çağır.
-        setTimeout(() => {
-            tryPopulateVoices();
-        }, 500);
-    }
+    });
 </script>
+
 </body>
 </html>
