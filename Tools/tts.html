@@ -115,16 +115,7 @@
 
     <div class="control-group">
         <select id="languageSelect" aria-label="Select Language">
-            <option value="tr-TR">Turkish</option>
-            <option value="en-US">English (US)</option>
-            <option value="en-GB">English (UK)</option>
-            <option value="de-DE">German</option>
-            <option value="fr-FR">French</option>
-            <option value="es-ES">Spanish</option>
-            <option value="it-IT">Italian</option>
-            <option value="ja-JP">Japanese</option>
-            <option value="ru-RU">Russian</option>
-            <option value="ar-SA">Arabic</option>
+            <!-- Language options will be dynamically populated -->
         </select>
     </div>
 
@@ -150,6 +141,35 @@
 </div>
 
 <script>
+    function populateLanguageOptions() {
+        const languageSelect = document.getElementById('languageSelect');
+        const availableLanguages = [
+            { code: 'tr-TR', name: 'Turkish' },
+            { code: 'en-US', name: 'English (US)' },
+            { code: 'en-GB', name: 'English (UK)' },
+            { code: 'de-DE', name: 'German' },
+            { code: 'fr-FR', name: 'French' },
+            { code: 'es-ES', name: 'Spanish' },
+            { code: 'it-IT', name: 'Italian' },
+            { code: 'ja-JP', name: 'Japanese' },
+            { code: 'ru-RU', name: 'Russian' },
+            { code: 'ar-SA', name: 'Arabic' }
+        ];
+
+        const voices = window.speechSynthesis.getVoices();
+        const supportedLanguages = availableLanguages.filter(lang =>
+            voices.some(voice => voice.lang === lang.code)
+        );
+
+        languageSelect.innerHTML = '';
+        supportedLanguages.forEach(lang => {
+            const option = document.createElement('option');
+            option.value = lang.code;
+            option.textContent = lang.name;
+            languageSelect.appendChild(option);
+        });
+    }
+
     function findBestVoice(language) {
         const voices = window.speechSynthesis.getVoices();
         const matchingVoices = voices.filter(voice => voice.lang === language);
@@ -162,11 +182,6 @@
         resultDiv.className = isError ? 'error' : 'success';
     }
 
-    function validateLanguageSupport(language) {
-        const voices = window.speechSynthesis.getVoices();
-        return voices.some(voice => voice.lang === language);
-    }
-
     function speakText() {
         const text = document.getElementById('inputText').value.trim();
         const language = document.getElementById('languageSelect').value;
@@ -177,7 +192,8 @@
             return;
         }
 
-        if (!validateLanguageSupport(language)) {
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices.some(voice => voice.lang === language)) {
             showMessage(`The selected language (${language}) is not supported on this device.`, true);
             return;
         }
@@ -202,10 +218,9 @@
     }
 
     if ('speechSynthesis' in window) {
-        speechSynthesis.onvoiceschanged = () => {
-            const voices = speechSynthesis.getVoices();
-            console.log('Voices loaded:', voices.map(v => `${v.lang}: ${v.name}`));
-        };
+        speechSynthesis.onvoiceschanged = populateLanguageOptions;
+    } else {
+        showMessage('Text-to-Speech is not supported in this browser.', true);
     }
 </script>
 </body>
