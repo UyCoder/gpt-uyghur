@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Multi-Language TTS App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            touch-action: manipulation;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            resize: none;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .control-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        select, input[type="range"] {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:active {
+            background-color: #45a049;
+        }
+        button i {
+            margin-right: 8px;
+        }
+        #result {
+            margin-top: 15px;
+            text-align: center;
+            color: #666;
+            min-height: 30px;
+        }
+        .error {
+            color: #d9534f;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .speed-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔊 Text-to-Speech</h1>
+        
+        <div class="control-group">
+            <select id="languageSelect" aria-label="Select Language">
+                <option value="tr-TR">Turkish</option>
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="de-DE">German</option>
+                <option value="fr-FR">French</option>
+                <option value="es-ES">Spanish</option>
+                <option value="it-IT">Italian</option>
+                <option value="ja-JP">Japanese</option>
+                <option value="ru-RU">Russian</option>
+                <option value="ar-SA">Arabic</option>
+            </select>
+        </div>
+
+        <textarea id="inputText" placeholder="Enter text to speak" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+        
+        <div class="control-group">
+            <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
+        </div>
+        <div class="speed-label">
+            <span>Slow</span>
+            <span>Speed</span>
+            <span>Fast</span>
+        </div>
+
+        <div class="button-group">
+            <button onclick="speakText()">
+                <i class="fas fa-volume-up"></i>Speak
+            </button>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Detect iOS devices
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Improved error handling and logging
+        function showMessage(message, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = message;
+            resultDiv.className = isError ? 'error' : 'success';
+        }
+
+        function speakText() {
+            const text = document.getElementById('inputText').value.trim();
+            const language = document.getElementById('languageSelect').value;
+            const speed = parseFloat(document.getElementById('speedControl').value);
+
+            if (!text) {
+                showMessage('Please enter text to speak.', true);
+                return;
+            }
+
+            // Special handling for iOS
+            if (isIOS) {
+                // Attempt to use speech synthesis with additional checks
+                if ('speechSynthesis' in window) {
+                    // Ensure any previous speech is stopped
+                    window.speechSynthesis.cancel();
+
+                    // Create utterance
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = language;
+                    utterance.rate = speed;
+                    utterance.pitch = 1;
+
+                    // iOS requires interaction before speech
+                    utterance.onstart = () => {
+                        showMessage('Speaking text...');
+                    };
+
+                    utterance.onerror = (event) => {
+                        console.error('Speech error:', event);
+                        showMessage('Unable to speak text.', true);
+                    };
+
+                    // Attempt to get specific language voice
+                    const voices = window.speechSynthesis.getVoices();
+                    const specificVoice = voices.find(voice => 
+                        voice.lang === language
+                    );
+
+                    if (specificVoice) {
+                        utterance.voice = specificVoice;
+                    }
+
+                    // Speak with a slight delay to ensure iOS compatibility
+                    setTimeout(() => {
+                        window.speechSynthesis.speak(utterance);
+                    }, 100);
+                } else {
+                    showMessage('Text-to-Speech not supported.', true);
+                }
+            } else {
+                // Standard browser behavior
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = language;
+                    utterance.rate = speed;
+                    utterance.pitch = 1;
+
+                    window.speechSynthesis.speak(utterance);
+                    showMessage('Speaking text...');
+                } else {
+                    showMessage('Text-to-Speech not supported.', true);
+                }
+            }
+        }
+
+        // Preload voices for better iOS compatibility
+        if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = () => {
+                const voices = speechSynthesis.getVoices();
+                console.log('Available voices:', voices.map(v => v.lang));
+            };
+        }
+
+        // Prevent zoom on input focus for iOS
+        document.getElementById('inputText').addEventListener('focus', function() {
+            this.setAttribute('data-original-font-size', window.getComputedStyle(this).fontSize);
+            this.style.fontSize = '16px';
+        });
+
+        document.getElementById('inputText').addEventListener('blur', function() {
+            const originalFontSize = this.getAttribute('data-original-font-size');
+            if (originalFontSize) {
+                this.style.fontSize = originalFontSize;
+            }
+        });
+    </script>
+</body>
+</html>
