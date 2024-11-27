@@ -150,61 +150,21 @@
 </div>
 
 <script>
-    const languageVoiceMap = {
-        'tr-TR': ['tr-TR', 'tr', 'Turkish'],
-        'en-US': ['en-US', 'en', 'English'],
-        'en-GB': ['en-GB', 'en', 'English (UK)'],
-        'de-DE': ['de-DE', 'de', 'German'],
-        'fr-FR': ['fr-FR', 'fr', 'French'],
-        'es-ES': ['es-ES', 'es', 'Spanish'],
-        'it-IT': ['it-IT', 'it', 'Italian'],
-        'ja-JP': ['ja-JP', 'ja', 'Japanese'],
-        'ru-RU': ['ru-RU', 'ru', 'Russian'],
-        'ar-SA': ['ar-SA', 'ar', 'Arabic']
-    };
-
-    // Function to find the best matching voice
     function findBestVoice(language) {
-        if (!('speechSynthesis' in window)) {
-            console.error('Speech synthesis not supported');
-            return null;
-        }
-
         const voices = window.speechSynthesis.getVoices();
-        const languageOptions = languageVoiceMap[language];
-
-        // Detailed voice debugging
-        const debugEl = document.getElementById('voiceDebug');
-        debugEl.innerHTML = 'Available Voices:<br>' +
-            voices.map(v => `${v.lang}: ${v.name}`).join('<br>');
-
-        // Try to find the most specific match
-        for (let langOption of languageOptions) {
-            const matchingVoices = voices.filter(voice =>
-                voice.lang.toLowerCase().startsWith(langOption.toLowerCase())
-            );
-
-            // Prioritize voices that have the exact language code
-            const exactMatch = matchingVoices.find(voice =>
-                voice.lang.toLowerCase() === langOption.toLowerCase()
-            );
-
-            if (exactMatch) return exactMatch;
-            if (matchingVoices.length > 0) return matchingVoices[0];
-        }
-
-        // Fallback to any voice if no specific language voice found
-        return voices.length > 0 ? voices[0] : null;
+        const matchingVoices = voices.filter(voice => voice.lang === language);
+        return matchingVoices[0] || null;
     }
 
-    // Detect iOS devices
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    // Improved error handling and logging
     function showMessage(message, isError = false) {
         const resultDiv = document.getElementById('result');
         resultDiv.textContent = message;
         resultDiv.className = isError ? 'error' : 'success';
+    }
+
+    function validateLanguageSupport(language) {
+        const voices = window.speechSynthesis.getVoices();
+        return voices.some(voice => voice.lang === language);
     }
 
     function speakText() {
@@ -217,67 +177,36 @@
             return;
         }
 
-        // Preload voices on iOS
-        if (isIOS) {
-            window.speechSynthesis.getVoices();
+        if (!validateLanguageSupport(language)) {
+            showMessage(`The selected language (${language}) is not supported on this device.`, true);
+            return;
         }
 
-        // Special handling for iOS and other browsers
-        if ('speechSynthesis' in window) {
-            // Ensure any previous speech is stopped
-            window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = language;
+        utterance.rate = speed;
+        utterance.voice = findBestVoice(language);
 
-            // Create utterance
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = language;
-            utterance.rate = speed;
-            utterance.pitch = 1;
+        utterance.onstart = () => {
+            showMessage('Speaking text...');
+        };
 
-            // Find and set the best voice
-            const bestVoice = findBestVoice(language);
-            if (bestVoice) {
-                utterance.voice = bestVoice;
-            }
+        utterance.onerror = (event) => {
+            console.error('Speech error:', event);
+            showMessage('Unable to speak text.', true);
+        };
 
-            // Handlers
-            utterance.onstart = () => {
-                showMessage('Speaking text...');
-            };
-
-            utterance.onerror = (event) => {
-                console.error('Speech error:', event);
-                showMessage('Unable to speak text.', true);
-            };
-
-            // Add small delay for iOS compatibility
-            setTimeout(() => {
-                window.speechSynthesis.speak(utterance);
-            }, 100);
-        } else {
-            showMessage('Text-to-Speech not supported.', true);
-        }
+        setTimeout(() => {
+            window.speechSynthesis.speak(utterance);
+        }, 100);
     }
 
-    // Preload voices for better compatibility
     if ('speechSynthesis' in window) {
         speechSynthesis.onvoiceschanged = () => {
             const voices = speechSynthesis.getVoices();
-            console.log('Available voices:', voices.map(v => `${v.lang}: ${v.name}`));
+            console.log('Voices loaded:', voices.map(v => `${v.lang}: ${v.name}`));
         };
     }
-
-    // Prevent zoom on input focus for iOS
-    document.getElementById('inputText').addEventListener('focus', function() {
-        this.setAttribute('data-original-font-size', window.getComputedStyle(this).fontSize);
-        this.style.fontSize = '16px';
-    });
-
-    document.getElementById('inputText').addEventListener('blur', function() {
-        const originalFontSize = this.getAttribute('data-original-font-size');
-        if (originalFontSize) {
-            this.style.fontSize = originalFontSize;
-        }
-    });
 </script>
 </body>
 </html>
