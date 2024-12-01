@@ -66,8 +66,7 @@
             utterance.lang = 'tr-TR'; // Turkish language code
 
             // Use Turkish voice
-            // let turkishVoice = voices.find(voice => voice.lang === 'tr-TR');
-            let turkishVoice = voices.find(voice => voice.lang.includes('tr'));
+            let turkishVoice = voices.find(voice => voice.lang === 'tr-TR');
 
             if (turkishVoice) {
                 utterance.voice = turkishVoice;
