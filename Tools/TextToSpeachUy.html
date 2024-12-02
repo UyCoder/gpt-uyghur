@@ -143,9 +143,13 @@
     تاللاڭ:</label>
 <select style=" background-color: white ; color: black ;font-family: 'alkatipTor' ; height: 40px; width: auto"
         id="language">
-    <option value="ug-UG2">ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG1">1ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG2">2ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG3">3ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG4">4ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG5">5ئۇيغۇرچە (ئەر)</option>
     <option value="ug-UG">ئۇيغۇرچە - (ئايال)</option>
-    <option value="en-US">ئېنگىلىزچە</option>
+    <option value="en-US">ئارىلاشما تىللار</option>
     <option value="ar-SA">ئەرەبچە</option>
     <option value="tr-TR">تۈركچە</option>
     <option value="zh-CN">خىتايچە</option>
@@ -234,7 +238,25 @@
                 console.log(convertedText);
             }
 
+            if (lang === 'ug-UG1') {
+                convertedText = convertUyghurToULY(text);
+                console.log(convertedText);
+            }
+
             if (lang === 'ug-UG2') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+            if (lang === 'ug-UG3') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+            if (lang === 'ug-UG4') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+
+            if (lang === 'ug-UG5') {
                 convertedText = convertUyghurToULYTurk(text);
                 console.log(convertedText);
             }
@@ -242,11 +264,24 @@
             currentUtterance = new SpeechSynthesisUtterance(convertedText);
             currentUtterance.lang = lang;
             currentUtterance.rate = parseFloat(rateSpeed.value);
-                      // currentUtterance.rate = 1.25 ;
+            // currentUtterance.rate = 1.25 ;
             if (lang === 'ug-UG') {
-                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'uz-UZ');
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'uz-UZ' && voice.name.includes('Madina'));
+
+            } else if (lang === 'ug-UG1') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'uz-UZ' && voice.name.includes('Sardor'));
             } else if (lang === 'ug-UG2') {
-                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'tr-TR');
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'tr-TR' && voice.name.includes('Ahmet'));
+            } else if (lang === 'ug-UG3') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('AndrewMultilingual'));
+            } else if (lang === 'ug-UG4') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'fr-FR' && voice.name.includes('RemyMultilingual'));
+            } else if (lang === 'ug-UG5') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('BrianMultilingual'));
+            } else if (lang === 'en-US') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('BrianMultilingual'));
+            } else if (lang === 'ar-SA') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'ar-SA' && voice.name.includes('Hamed'));
             } else {
                 currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === lang && voice.gender === 'male');
             }
@@ -307,7 +342,7 @@
 
     function convertUyghurToULYTurk(text) {
         const UY_TO_ULY_MAPT = {
-            'ا': 'aa',
+            'ا': 'a',
             'ە': 'e',
             'ب': 'b',
             'پ': 'p',
@@ -355,5 +390,31 @@
 
     speakBtn.addEventListener('click', speakText);
 </script>
+
+<script>
+    window.onload = function() {
+        function listVoices() {
+            const voices = speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                console.warn("No voices available or voices not loaded yet.");
+            } else {
+                console.log("Available voices:");
+                voices.forEach((voice, index) => {
+                    console.log(`${index + 1}: ${voice.name} (${voice.lang})`);
+                });
+            }
+        }
+
+        // Wait for the voices to be loaded before listing them
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = listVoices;
+        } else {
+            listVoices();
+        }
+    };
+</script>
+
+
+
 </body>
 </html>
