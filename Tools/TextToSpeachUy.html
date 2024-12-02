@@ -143,11 +143,13 @@
     تاللاڭ:</label>
 <select style=" background-color: white ; color: black ;font-family: 'alkatipTor' ; height: 40px; width: auto"
         id="language">
+    <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
     <option value="ug-UG1">1ئۇيغۇرچە (ئەر)</option>
     <option value="ug-UG2">2ئۇيغۇرچە (ئەر)</option>
     <option value="ug-UG3">3ئۇيغۇرچە (ئەر)</option>
     <option value="ug-UG4">4ئۇيغۇرچە (ئەر)</option>
     <option value="ug-UG5">5ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG6">6ئۇيغۇرچە (ئەر)</option>
     <option value="ug-UG">ئۇيغۇرچە - (ئايال)</option>
     <option value="en-US">ئارىلاشما تىللار</option>
     <option value="ar-SA">ئەرەبچە</option>
@@ -238,6 +240,11 @@
                 console.log(convertedText);
             }
 
+            if (lang === 'ug-UG0') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+
             if (lang === 'ug-UG1') {
                 convertedText = convertUyghurToULY(text);
                 console.log(convertedText);
@@ -261,13 +268,19 @@
                 console.log(convertedText);
             }
 
+            if (lang === 'ug-UG6') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+
             currentUtterance = new SpeechSynthesisUtterance(convertedText);
             currentUtterance.lang = lang;
             currentUtterance.rate = parseFloat(rateSpeed.value);
             // currentUtterance.rate = 1.25 ;
             if (lang === 'ug-UG') {
                 currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'uz-UZ' && voice.name.includes('Madina'));
-
+            } else if (lang === 'ug-UG0') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'tr-TR');
             } else if (lang === 'ug-UG1') {
                 currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'uz-UZ' && voice.name.includes('Sardor'));
             } else if (lang === 'ug-UG2') {
@@ -278,6 +291,8 @@
                 currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'fr-FR' && voice.name.includes('RemyMultilingual'));
             } else if (lang === 'ug-UG5') {
                 currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('BrianMultilingual'));
+            } else if (lang === 'ug-UG6') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'de-DE' && voice.name.includes('FlorianMultilingual'));
             } else if (lang === 'en-US') {
                 currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('BrianMultilingual'));
             } else if (lang === 'ar-SA') {
