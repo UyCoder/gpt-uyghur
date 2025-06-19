@@ -4,10 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="fix tts.html">
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add 6 voice TextToSpeachUy.html">
+      <change afterPath="$PROJECT_DIR$/Tools/ForTelegramChannel.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/MathQuizz.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/Quizz1.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/Quizz2.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/Quizz3.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/SummarizeNews.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/TranslateNewsBulk.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/UyghurMedicine.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/UyghurNews-FromCHineseRss.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/UyghurNews.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tools/arabicNews.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/tts.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/tts.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,6 +148,16 @@
       <workItem from="1733007639539" duration="396000" />
       <workItem from="1733046212160" duration="156000" />
       <workItem from="1733046457146" duration="601000" />
+      <workItem from="1733047142170" duration="33000" />
+      <workItem from="1733047201009" duration="44000" />
+      <workItem from="1733047634859" duration="14000" />
+      <workItem from="1733047668633" duration="22000" />
+      <workItem from="1733171063355" duration="1540000" />
+      <workItem from="1733179496542" duration="126000" />
+      <workItem from="1733482788971" duration="595000" />
+      <workItem from="1734043665965" duration="80000" />
+      <workItem from="1734369532936" duration="676000" />
+      <workItem from="1750329505284" duration="1604000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -405,7 +425,35 @@
       <option name="project" value="LOCAL" />
       <updated>1732746774766</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="fix tts.html">
+      <created>1733047161439</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1733047161439</updated>
+    </task>
+    <task id="LOCAL-00040" summary="fix TextToSpeachUy.html">
+      <created>1733171178155</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1733171178155</updated>
+    </task>
+    <task id="LOCAL-00041" summary="add move voice TextToSpeachUy.html">
+      <created>1733177139724</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1733177139724</updated>
+    </task>
+    <task id="LOCAL-00042" summary="add 6 voice TextToSpeachUy.html">
+      <created>1733179615903</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1733179615904</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -444,6 +492,9 @@
     <MESSAGE value="fix" />
     <MESSAGE value="add tts.html" />
     <MESSAGE value="fix tts.html" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix tts.html" />
+    <MESSAGE value="fix TextToSpeachUy.html" />
+    <MESSAGE value="add move voice TextToSpeachUy.html" />
+    <MESSAGE value="add 6 voice TextToSpeachUy.html" />
+    <option name="LAST_COMMIT_MESSAGE" value="add 6 voice TextToSpeachUy.html" />
   </component>
 </project>

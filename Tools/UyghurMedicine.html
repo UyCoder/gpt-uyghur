@@ -1,0 +1,215 @@
+<html><head><base href="https://uyghur-healing.com" />
+<title>Uyghur Traditional Healing - Ancient Wisdom for Modern Wellness</title>
+<style>
+  body {
+    font-family: 'Noto Sans', Arial, sans-serif;
+    color: #333;
+    background-color: #f7f3e8;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  .header {
+    background: linear-gradient(135deg, #8b4513, #d2691e);
+    color: #fff;
+    text-align: center;
+    padding: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">☪️</text></svg>') no-repeat center center / 150px 150px,
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌿</text></svg>') no-repeat 10% 20% / 100px 100px,
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🔮</text></svg>') no-repeat 90% 20% / 100px 100px;
+    opacity: 0.1;
+  }
+  .logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .tagline {
+    font-size: 1.2rem;
+    font-style: italic;
+  }
+  nav {
+    background-color: #5c3317;
+    padding: 1rem 0;
+  }
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+  nav ul li {
+    margin: 0 1rem;
+  }
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  nav ul li a:hover {
+    color: #ffd700;
+  }
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .section {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  h2 {
+    color: #8b4513;
+    border-bottom: 2px solid #d2691e;
+    padding-bottom: 0.5rem;
+  }
+  .herb-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  .herb-item {
+    text-align: center;
+    background-color: #f0e6d2;
+    border-radius: 5px;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+  }
+  .herb-item:hover {
+    transform: translateY(-5px);
+  }
+  .herb-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+  .cta-button {
+    display: inline-block;
+    background-color: #d2691e;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  .cta-button:hover {
+    background-color: #8b4513;
+  }
+  footer {
+    background-color: #5c3317;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+  }
+  @keyframes floatAnimation {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+  .floating {
+    animation: floatAnimation 3s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <h1 class="logo">Uyghur Traditional Healing</h1>
+    <p class="tagline">Ancient Wisdom for Modern Wellness</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#treatments">Treatments</a></li>
+      <li><a href="#herbs">Medicinal Herbs</a></li>
+      <li><a href="#consultation">Consultation</a></li>
+    </ul>
+  </nav>
+
+  <main class="main">
+    <section id="about" class="section">
+      <h2>About Uyghur Medicine</h2>
+      <p>Uyghur traditional medicine is an ancient healing system that has been practiced for over 2,500 years in the Xinjiang region of China. Rooted in the wisdom of Uyghur culture, this holistic approach to health combines herbal remedies, dietary practices, and spiritual healing to achieve balance and vitality.</p>
+      <p>Our practice is dedicated to preserving and sharing this invaluable knowledge, offering a bridge between time-honored traditions and modern wellness needs.</p>
+    </section>
+
+    <section id="treatments" class="section">
+      <h2>Our Treatments</h2>
+      <ul>
+        <li>Herbal Medicine Formulations</li>
+        <li>Cupping Therapy (Qughlaq)</li>
+        <li>Bloodletting (Qan Elish)</li>
+        <li>Massage Therapy (Tamaq)</li>
+        <li>Moxibustion (Kö'idürüsh)</li>
+        <li>Hydrotherapy (Su Bilen Dawalash)</li>
+      </ul>
+      <a href="#consultation" class="cta-button">Book a Treatment</a>
+    </section>
+
+    <section id="herbs" class="section">
+      <h2>Medicinal Herbs</h2>
+      <div class="herb-list">
+        <div class="herb-item floating">
+          <div class="herb-icon">🌿</div>
+          <p>Licorice Root</p>
+        </div>
+        <div class="herb-item floating">
+          <div class="herb-icon">🍃</div>
+          <p>Uyghur Fritillary</p>
+        </div>
+        <div class="herb-item floating">
+          <div class="herb-icon">🌼</div>
+          <p>Saffron Crocus</p>
+        </div>
+        <div class="herb-item floating">
+          <div class="herb-icon">🌱</div>
+          <p>Cistanche</p>
+        </div>
+        <div class="herb-item floating">
+          <div class="herb-icon">🍄</div>
+          <p>Cordyceps</p>
+        </div>
+        <div class="herb-item floating">
+          <div class="herb-icon">🌺</div>
+          <p>Rhodiola</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="consultation" class="section">
+      <h2>Book a Consultation</h2>
+      <p>Experience the transformative power of Uyghur traditional medicine. Our expert practitioners are ready to guide you on your journey to holistic health and well-being.</p>
+      <form action="/book-consultation" method="GET">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Health Concerns" required></textarea>
+        <button type="submit" class="cta-button">Request Consultation</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Uyghur Traditional Healing. All rights reserved.</p>
+    <p>Disclaimer: This information is for educational purposes only and is not intended to replace professional medical advice.</p>
+  </footer>
+</body>
+</html>

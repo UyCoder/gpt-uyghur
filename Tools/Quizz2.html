@@ -1,0 +1,237 @@
+<html><head><base href="https://websim.ai" />
+<title>بالىلار ئۈچۈن سىناق دېتالى</title>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: 'ALKATIP';
+    src: url('https://websim.ai/fonts/ALKATIP.ttf') format('truetype');
+  }
+  body {
+    font-family: 'ALKATIP';
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .quiz-container {
+  font-family: 'ALKATIP';
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+  }
+  h1 {
+    color: #4a4a4a;
+  }
+  .question {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  button {
+  font-family: 'ALKATIP';
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .result {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .correct {
+    color: green;
+    font-weight: bold;
+  }
+  .incorrect {
+    color: red;
+  }
+  .stats {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+  #addQuizForm {
+    font-family: 'ALKATIP';
+    text-align: right;
+    margin-bottom: 20px;
+  }
+  #addQuizForm input, #addQuizForm textarea {
+  text-align: right;
+    font-family: 'ALKATIP';
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  #addQuizForm button {
+    background-color: #008CBA;
+  }
+  #startQuizBtn {
+    background-color: #f44336;
+    margin-top: 20px;
+  }
+  #quiz {
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div class="quiz-container">
+  <h1>بالىلار ئۈچۈن سىناق دېتالى</h1>
+  <div id="addQuizForm">
+    <h2>يېڭى سوئال قوشۇش</h2>
+    <textarea id="newQuestion" placeholder="سوئالنى كىرگۈزۈڭ" rows="3"></textarea>
+    <input type="text" id="option1" placeholder="تاللانما 1">
+    <input type="text" id="option2" placeholder="تاللانما 2">
+    <input type="text" id="option3" placeholder="تاللانما 3">
+    <input type="text" id="option4" placeholder="تاللانما 4">
+    <input type="number" id="correctAnswer" placeholder="توغرا جاۋابنىڭ نومۇرى (1-4)" min="1" max="4">
+    <button onclick="addNewQuestion()">سوئال قوشۇش</button>
+  </div>
+  <button id="startQuizBtn" onclick="startQuiz()">سىناقنى باشلاش</button>
+  <div id="quiz">
+    <p class="question" id="question"></p>
+    <div class="options" id="options"></div>
+    <p class="result" id="result"></p>
+    <div class="stats">
+      <p>ۋاقىت: <span id="time">0</span> سېكۇنت</p>
+      <p>توغرا جاۋاب نىسبىتى: <span id="rate">0%</span></p>
+    </div>
+  </div>
+</div>
+
+<script>
+let questions = [];
+let currentQuestion = 0;
+let correctAnswers = 0;
+let startTime;
+
+function addNewQuestion() {
+  const newQuestion = document.getElementById('newQuestion').value;
+  const options = [
+    document.getElementById('option1').value,
+    document.getElementById('option2').value,
+    document.getElementById('option3').value,
+    document.getElementById('option4').value
+  ];
+  const answer = parseInt(document.getElementById('correctAnswer').value) - 1;
+
+  if (newQuestion && options.every(option => option) && answer >= 0 && answer < 4) {
+    questions.push({
+      question: newQuestion,
+      options: options,
+      answer: answer
+    });
+    alert('يېڭى سوئال مۇۋەپپەقىيەتلىك قوشۇلدى!');
+    clearForm();
+  } else {
+    alert('ھەممە مەزمۇننى توغرا تولدۇرۇڭ!');
+  }
+}
+
+function clearForm() {
+  document.getElementById('newQuestion').value = '';
+  document.getElementById('option1').value = '';
+  document.getElementById('option2').value = '';
+  document.getElementById('option3').value = '';
+  document.getElementById('option4').value = '';
+  document.getElementById('correctAnswer').value = '';
+}
+
+function startQuiz() {
+  if (questions.length === 0) {
+    alert('سىناقنى باشلاشتىن بۇرۇن، ئاز دېگەندە بىر سوئال قوشۇڭ!');
+    return;
+  }
+  document.getElementById('addQuizForm').style.display = 'none';
+  document.getElementById('startQuizBtn').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  currentQuestion = 0;
+  correctAnswers = 0;
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById('question').textContent = q.question;
+  const options = document.getElementById('options');
+  options.innerHTML = '';
+  q.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.textContent = option;
+    button.onclick = () => checkAnswer(index);
+    options.appendChild(button);
+  });
+  document.getElementById('result').textContent = '';
+  startTime = new Date();
+}
+
+function checkAnswer(userAnswer) {
+  const q = questions[currentQuestion];
+  if (userAnswer === q.answer) {
+    document.getElementById('result').innerHTML = '<span class="correct">ناھايىتى ياخشى! سىز توغرا جاۋاب بەردىڭىز!</span>';
+    correctAnswers++;
+  } else {
+    document.getElementById('result').innerHTML = '<span class="incorrect">كېيىنكى قېتىم توغرا جاۋاب بېرىڭ!</span>';
+  }
+  updateStats();
+  setTimeout(() => {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      loadQuestion();
+    } else {
+      endQuiz();
+    }
+  }, 2000);
+}
+
+function updateStats() {
+  const timeSpent = Math.round((new Date() - startTime) / 1000);
+  document.getElementById('time').textContent = timeSpent;
+  const rate = Math.round((correctAnswers / (currentQuestion + 1)) * 100);
+  document.getElementById('rate').textContent = rate + '%';
+}
+
+function endQuiz() {
+  document.getElementById('quiz').innerHTML = '<h2>سىناق تامام!</h2>' +
+    '<p>سىزنىڭ ئاخىرقى نەتىجىڭىز: ' + correctAnswers + ' / ' + questions.length + '</p>' +
+    '<button onclick="resetQuiz()">قايتا باشلاش</button>';
+}
+
+function resetQuiz() {
+  document.getElementById('addQuizForm').style.display = 'block';
+  document.getElementById('startQuizBtn').style.display = 'inline-block';
+  document.getElementById('quiz').style.display = 'none';
+  questions = [];
+  currentQuestion = 0;
+  correctAnswers = 0;
+  clearForm();
+}
+</script>
+</body>
+</html>

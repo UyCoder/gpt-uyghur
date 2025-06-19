@@ -1,0 +1,241 @@
+<html><head><base href="https://websim.ai" />
+<title>بالىلار ئۈچۈن ماتېماتىكا سىناق دېتالى</title>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: 'ALKATIP';
+    src: url('https://websim.ai/fonts/ALKATIP.ttf') format('truetype');
+  }
+  body {
+    font-family: 'ALKATIP',  sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .quiz-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+  }
+  h1, h2 {
+    color: #4a4a4a;
+  }
+  .question {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  button {
+  font-family: 'ALKATIP';
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .result {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .correct {
+    color: green;
+    font-weight: bold;
+  }
+  .incorrect {
+    color: red;
+  }
+  .stats {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+  #levelSelect {
+    margin-bottom: 20px;
+  }
+  #quiz, #report {
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div class="quiz-container">
+  <h1>بالىلار ئۈچۈن ماتېماتىكا سىناق دېتالى</h1>
+  <div id="levelSelect">
+    <h2>قايسى ماتىماتېكا ئەمىلىنى مەشىق قىلىسىز؟</h2>
+    <button onclick="startQuiz(1)">قوشۇش (+)</button>
+    <button onclick="startQuiz(2)">ئېلىش (-)</button>
+    <button onclick="startQuiz(3)">كۆپەيتىش (×)</button>
+    <button onclick="startQuiz(4)">بۆلۈش (÷)</button>
+  </div>
+  <div id="quiz">
+    <p class="question" id="question"></p>
+    <div class="options" id="options"></div>
+    <p class="result" id="result"></p>
+    <div class="stats">
+      <p>ۋاقىت: <span id="time">0</span> سېكۇنت</p>
+      <p>نەتىجىڭىز: <span id="rate">0</span></p>
+    </div>
+    <button onclick="finishQuiz()">سىناقنى تاماملاش</button>
+  </div>
+  <div id="report"></div>
+</div>
+
+<script>
+let currentLevel = 0;
+let correctAnswers = 0;
+let totalQuestions = 0;
+let startTime;
+let currentAnswer;
+let quizHistory = [];
+
+function startQuiz(level) {
+  currentLevel = level;
+  document.getElementById('levelSelect').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  correctAnswers = 0;
+  totalQuestions = 0;
+  quizHistory = [];
+  startTime = new Date();
+  loadQuestion();
+}
+
+function loadQuestion() {
+  let num1, num2, operator;
+  switch(currentLevel) {
+    case 1:
+      num1 = Math.floor(Math.random() * 50) + 1;
+      num2 = Math.floor(Math.random() * 50) + 1;
+      operator = '+';
+      currentAnswer = num1 + num2;
+      break;
+    case 2:
+      num1 = Math.floor(Math.random() * 50) + 51;
+      num2 = Math.floor(Math.random() * 50) + 1;
+      operator = '-';
+      currentAnswer = num1 - num2;
+      break;
+    case 3:
+      num1 = Math.floor(Math.random() * 10) + 1;
+      num2 = Math.floor(Math.random() * 10) + 1;
+      operator = '×';
+      currentAnswer = num1 * num2;
+      break;
+    case 4:
+      num2 = Math.floor(Math.random() * 9) + 1;
+      currentAnswer = Math.floor(Math.random() * 10) + 1;
+      num1 = num2 * currentAnswer;
+      operator = '÷';
+      break;
+  }
+  const question = `${num1} ${operator} ${num2} = ?`;
+  document.getElementById('question').textContent = question;
+  
+  const options = document.getElementById('options');
+  options.innerHTML = '';
+  const answers = generateAnswers(currentAnswer);
+  answers.forEach(answer => {
+    const button = document.createElement('button');
+    button.textContent = answer;
+    button.onclick = () => checkAnswer(answer);
+    options.appendChild(button);
+  });
+  
+  document.getElementById('result').textContent = '';
+}
+
+function generateAnswers(correctAnswer) {
+  let answers = [correctAnswer];
+  while (answers.length < 4) {
+    let wrongAnswer = correctAnswer + Math.floor(Math.random() * 10) - 5;
+    if (wrongAnswer !== correctAnswer && !answers.includes(wrongAnswer) && wrongAnswer > 0) {
+      answers.push(wrongAnswer);
+    }
+  }
+  return answers.sort(() => Math.random() - 0.5);
+}
+
+function checkAnswer(userAnswer) {
+  const question = document.getElementById('question').textContent;
+  if (userAnswer === currentAnswer) {
+    document.getElementById('result').innerHTML = '<span class="correct">اللە سىزنى تېخىمۇ ئەقىللىق قىلسۇن!</span>';
+    correctAnswers++;
+    quizHistory.push({ question, userAnswer, correct: true });
+  } else {
+    document.getElementById('result').innerHTML = '<span class="incorrect">ھېچقىسى يوق، تېخىمۇ تىرىشىڭ!</span>';
+    quizHistory.push({ question, userAnswer, correct: false, correctAnswer: currentAnswer });
+  }
+  totalQuestions++;
+  updateStats();
+  setTimeout(loadQuestion, 2000);
+}
+
+function updateStats() {
+  const timeSpent = Math.round((new Date() - startTime) / 1000);
+  document.getElementById('time').textContent = timeSpent;
+  const rate = Math.round((correctAnswers / totalQuestions) * 100);
+  document.getElementById('rate').textContent = rate + ' ';
+}
+
+function finishQuiz() {
+  const timeSpent = Math.round((new Date() - startTime) / 1000);
+  const rate = Math.round((correctAnswers / totalQuestions) * 100);
+  
+  let reportHTML = `
+    <h2>سىناق دوكلاتى</h2>
+    <p>سىناق ۋاقتى: ${timeSpent} سېكۇنت</p>
+    <p>جەمئىي سوئال سانى: ${totalQuestions}</p>
+    <p>توغرا جاۋاب سانى: ${correctAnswers}</p>
+    <p>توغرا جاۋاب نىسبىتى: ${rate}%</p>
+    <h3>سوئاللار تەپسىلاتى:</h3>
+    <ul>
+  `;
+  
+  quizHistory.forEach((item, index) => {
+    reportHTML += `
+      <li>
+        ${index + 1}. ${item.question}<br>
+        سىزنىڭ جاۋابىڭىز: ${item.userAnswer}<br>
+        ${item.correct ? 
+          '<span class="correct">توغرا</span>' : 
+          `<span class="incorrect">خاتا. توغرا جاۋاب: ${item.correctAnswer}</span>`}
+      </li>
+    `;
+  });
+  
+  reportHTML += `
+    </ul>
+    <button onclick="location.reload()">قايتا باشلاش</button>
+  `;
+  
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('report').style.display = 'block';
+  document.getElementById('report').innerHTML = reportHTML;
+}
+
+</script>
+</body>
+</html>

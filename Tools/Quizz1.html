@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ug">
+<head>
+    <base href="https://websim.ai/uyghur-islam-quiz/" />
+    <title>ئىسلامىي بىلىملەردىن تاللاش سۇئالى</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'UKIJ Ekran', 'UKIJ Tuz', Arial, sans-serif;
+            background-color: #e8f3ff;
+            color: #333;
+            direction: rtl;
+            text-align: right;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a5f7a;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        button {
+		    font-family: 'UKIJ Ekran';
+            background-color: #2980b9;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #3498db;
+        }
+        .question {
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        .options {
+            margin-top: 15px;
+        }
+        .option {
+            display: block;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f0f4f8;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #e0e8f0;
+        }
+        #timer, #result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #2c3e50;
+        }
+        #quizForm, #result, #addQuestionForm {
+            display: none;
+        }
+        #addQuestionForm {
+            margin-top: 30px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .details {
+            background-color: #f0f4f8;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>ئىسلامىي بىلىملەردىن تاللاش سۇئالى</h1>
+    
+    <button id="startQuiz">باشلاش</button>
+    <button id="addQuizButton">يېڭى سوئال قوشۇش</button>
+    
+    <div id="quizForm">
+        <div id="question"></div>
+        <button id="nextQuestion">كېيىنكى سوئال</button>
+        <button id="submitQuiz" style="display: none;">تاماملاش</button>
+    </div>
+    
+    <div id="timer"></div>
+    
+    <div id="result"></div>
+    
+    <div id="addQuestionForm">
+        <h2>يېڭى سوئال قوشۇش</h2>
+        <form id="newQuestionForm">
+            <input type="text" id="newQuestion" placeholder="سوئال" required>
+            <textarea id="newOptions" placeholder="جاۋاب تاللانمىلىرى (ھەر قۇردا بىردىن)" rows="4" required></textarea>
+            <input type="number" id="newCorrectOption" placeholder="توغرا جاۋابنىڭ تەرتىپ نومۇرى" required>
+            <button type="submit">سوئال قوشۇش</button>
+        </form>
+    </div>
+</div>
+
+<script>
+ // Add the rest of the questions here with their details
+ 
+let quizQuestions = [
+    {
+        question: "قۇرئان كەرىمدە قانچە سۈرە بار؟",
+        options: ["55", "120", "114", "110"],
+        correctAnswer: 2,
+        details: "قۇرئان كەرىمدە جەمئىي 114 سۈرە بار. ھەر بىر سۈرە ئۆزىنىڭ ئالاھىدە ئىسمى ۋە مەزمۇنى بىلەن پەرقلىنىدۇ."
+    },
+    {
+        question: "ئىسلامنىڭ بەش پەرزىنىڭ بىرىنچىسى قايسى؟",
+        options: ["روزا", "ھەج", "زاكات", "كەلىمە شاھادەت"],
+        correctAnswer: 3,
+        details: "كەلىمە شاھادەت ئىسلامنىڭ بىرىنچى پەرزى بولۇپ، ئاللاھتىن باشقا ئىلاھ يوقلۇقىغا ۋە مۇھەممەد ئەلەيھىسسالامنىڭ ئاللاھنىڭ ئەلچىسى ئىكەنلىكىگە گۇۋاھلىق بېرىشتۇر."
+    },
+    {
+        question: " مۇھەممەد ئەلەيھىسسالامنىڭ تۇغۇلغان يىلى نېمە دەپ ئاتىلىدۇ؟",
+        options: [" فىل يىلى", " ھەزن يىلى", " ھۇدىبىيە يىلى", " فتح يىلى"],
+        correctAnswer: 0,
+        details: " مۇھەممەد ئەلەيھىسسالامنىڭ تۇغۇلغان يىلى 'ئامۇل فىل' دەپ ئاتىلىدۇ. بۇ يىلدا ئەبۋىل بەشىندە مېككەگە يازىق قىلىشقا كەلگەن ئوتلار ئىشلىتىلگەن."
+    },
+    {
+        question: "مەدىنە شەھىرىگە ھىجرەت قىلىش قايسى ئايدا باشلاندى؟",
+        options: ["مۇھەررەم", "سەپەر", "رەبىئۇل ئەۋۋەل", "رەجەب"],
+        correctAnswer: 2,
+        details: " مۇھەممەد ئەلەيھىسسالام  مەدىنە شەھىرىگە ھىجرەت قىلىشنى رەبىئۇل ئەۋۋەل ئايىنىڭ ئاخىرىدا باشلىغان."
+    },
+    {
+        question: "زەمزەم بۇلىقى قايسى شەھەردە؟",
+        options: ["مەدىنە", "مەككە", "يەرۈسەلىم", "قاھىرە"],
+        correctAnswer: 1,
+        details: "زەمزەم بۇلىقى مەككە شەھىرىگە جايلاشقان."
+    },
+    {
+        question: "پەيغەمبەرلەرنىڭ ئالدىنقىسى ۋە ئەڭ ئاخىرىقى قايسى؟",
+        options: ["مۇسا ۋە مۇھەممەد", "ئىسا ۋە مۇھەممەد", "نۇھ ۋە مۇھەممەد", "ئادەم ۋە مۇھەممەد"],
+        correctAnswer: 3,
+        details: "پەيغەمبەرلەرنىڭ ئالدىنقىسى ئادەم ئەلەيھىسسالام، ئەڭ ئاخىرىقى مۇھەممەد ئەلەيھىسسالام."
+    },
+    {
+        question: "قەدىمكى مەسجىد قايسى؟",
+        options: ["مەسجىدى ئەقسا", "مەسجىدى ھىرام", "مەسجىدى نەبىۋى", "مەسجىدى قۇبا"],
+        correctAnswer: 0,
+        details: "قەدىمكى مەسجىدلەرنىڭ بىرسى بولغان مەسجىدى ئەقسا، يېرۈسالىمغا جايلاشقان. بۇ مەسجىد ئىسلام، يەھۇدى ۋە خىرىستىيان دىنى ئۈچۈنمۇ مۇقەددەس بولغان."
+    },
+    {
+        question: "مۇھەممەد ئەلەيھىسسالامنىڭ ئەڭ چوڭ مۇجىزىسى قايسى؟",
+        options: ["قۇرئان كەرىم", "مىراۋەج", "زاكات", "ناماز"],
+        correctAnswer: 0,
+        details: " مۇھەممەد ئەلەيھىسسالامنىڭ ئەڭ چوڭ مۇجىزىسى قۇرئان كەرىمدۇر."
+    },
+    {
+        question: "ئىسلام تارىخىدا تۇنجى ئىسلام دۆلىتى قۇرۇلغان شەھەر قايسى؟",
+        options: ["مەككە", "مەدىنە", "قاھىرە", "بغداد"],
+        correctAnswer: 1,
+        details: "مەدىنە شەھىرى ئىسلام تارىخدا تۇنجى ئىسلام دۆلىتى قۇرۇلغان شەھەردۇر. بۇ شەھەر مۇسۇلمانلارغا ئائىت ئىككىنچى مۇقەددەس شەھەر بولۇپ،  مۇھەممەد ئەلەيھىسسالامنىڭ مەسجىدى مۇشۇ يەردە جايلاشقان."
+    },
+    {
+        question: "ھەجنى قانداق ۋاقتىدا ئەدا قىلىش كېرەك؟",
+        options: ["ئاياللار خىدى نىھايتىلگەن", "زىلھەج ئايىنىڭ بېشىدا", "رامازان ئايىنىڭ ئاخىرى", "مۇھەررەم ئايىنىڭ باشى"],
+        correctAnswer: 1,
+        details: "ھەجنى زىلھەج ئايىنىڭ بىرى ۋە ئالتەشى ئارىسىدا ئەدا قىلىش كېرەك. ."
+    },
+	 {
+        question: "قۇرئان كەرىم قايسى تىلدا؟",
+        options: ["ئۇيغۇرچە", "تۈركچە", "ئەرەب تىلى", "ئۇيغۇرچە"],
+        correctAnswer: 2,
+        details: "قۇرئان كەرىم ئەرەب تىلىدۇر. قۇرئان بۇ تىلدا نازىل بولغان."
+    },
+    {
+        question: "ساماۋىي كىتابلار قايسى؟",
+        options: ["تەۋرات، ئىنجىل، زەبۇر، قۇرئان", "تەۋرات، بائۇۋەر، قۇرئان", "تەۋرات، ھادىيە، قۇرئان", "تەۋرات، ئىنجىل، قۇرئان"],
+        correctAnswer: 0,
+        details: "ساماۋىي كىتابلار: تەۋرات، ئىنجىل، زەبۇر ۋە قۇرئاندۇر."
+    },
+    {
+        question: "مەدىنىدىكى مۇھاجىرلەرنىڭ ئەنسارلار بىلەن قانداق مۇناسىۋىتى بار؟",
+        options: ["ئىسلامىي قېرىنداشلىق", "قۇتقۇزۇش", "قوشنا", "قەرز ئالماشتۇرۇش"],
+        correctAnswer: 0,
+        details: "مەدىنىدىكى مۇھاجىرلەر ئەنسارلار بىلەن قۇرغان مۇناسىۋىتى ئىسلامىي قېرىنداشلىق. ئەنسارلار مۇھاجىرلەرنى قۇبۇل قىلىپ، ئۇلارغا ياردەم بەرگەن."
+    },
+    {
+        question: "ئىسلامنىڭ ئەڭ مۇھىم مەركىزى قايسى شەھەردە جايلاشقان؟",
+        options: ["قاھىرە", "مەددىنە", "مەككە", "بغداد"],
+        correctAnswer: 2,
+        details: "ئىسلامنىڭ ئەڭ مۇھىم مەركىزى مەككە شەھىرىدە جايلاشقان. بۇ يەردە كائىبەمۇ بار."
+    },
+    {
+        question: "ھەجنىڭ مۇھىم بولغان بىرىنچى كۈنى قايسى؟",
+        options: ["ئارافات كۈنى", "زىلھەجنىڭ تۇنجى كۈنى", "مىنا كۈنى", "مەۋلۇد كۈنى"],
+        correctAnswer: 1,
+        details: "ھەجنىڭ بىرىنچى مۇھىم كۈنى زىلھەجنىڭ تۇنجى كۈنى. بۇ كۈندە ھەجگە ئارانى كىرگۈزۈش مەشغۇلاتى باشلىنىدۇ."
+    },
+	 {
+        question: "مۇھەممەد ئەلەيھىسسالامنىڭ تۇنجى ئايالى كىم؟",
+        options: ["ھەپسە", "ئايشە", "خەدىجە", "ئۇممى ھەبىبە"],
+        correctAnswer: 2,
+        details: "مۇھەممەد ئەلەيھىسسالامنىڭ تۇنجى ئايالى ھەزرىتى خەدىجە . ئۇ ئاللاھنىڭ پەيغەمبىرىگە تولۇق ئىشەنچ بەردى ۋە ئۇنىڭ ئۈچۈن مۇھىم كۈچ بولدى."
+    },
+    {
+        question: "قۇرئان كەرىمدە ئەڭ ئۇزۇن سۈرە قايسى؟",
+        options: ["بەقەرە", "ئال-ئىمران", "نىسا", "ئەررەھمان"],
+        correctAnswer: 0,
+        details: "قۇرئان كەرىمدە ئەڭ ئۇزۇن سۈرە 'بەقەرە' سۈرەسىدۇر. بۇ سۈرە 286 ئايەتنى ئۆز ئىچىگە ئالىدۇ."
+    },
+    {
+        question: "روزا قايسى ئايىدا تۇتۇلۇدۇ؟",
+        options: ["رەبىئۇل ئەۋۋەل", "شەئبان", "رامازان", "زىلھەج"],
+        correctAnswer: 2,
+        details: "روزا رامازان ئايىدا تۇتۇلۇدۇ. بۇ ئىسلامنىڭ پەرز ئىبادەتلىرىنىڭ بىرىدۇر."
+    },
+    {
+        question: " مۇھەممەد ئەلەيھىسسالام قايسى شەھەردە قەبرەگە قويۇلغان؟",
+        options: ["مەككە", "مەدىنە", "بغداد", "دمەشق"],
+        correctAnswer: 1,
+        details: "ھەجرەت مۇھەممەد ئەلەيھىسسالام مەدىنە شەھىرىدە قەبرەگە قويۇلغان. "
+    }
+];
+
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let startTime;
+let timerInterval;
+let score = 0;
+
+document.getElementById('startQuiz').addEventListener('click', startQuiz);
+document.getElementById('nextQuestion').addEventListener('click', showNextQuestion);
+document.getElementById('submitQuiz').addEventListener('click', submitQuiz);
+document.getElementById('newQuestionForm').addEventListener('submit', addNewQuestion);
+document.getElementById('addQuizButton').addEventListener('click', showAddQuestionForm);
+
+function startQuiz() {
+    currentQuestions = getRandomQuestions(quizQuestions, 10);
+    currentQuestionIndex = 0;
+    score = 0;
+    document.getElementById('startQuiz').style.display = 'none';
+    document.getElementById('addQuizButton').style.display = 'none';
+    document.getElementById('quizForm').style.display = 'block';
+    document.getElementById('result').style.display = 'none';
+    
+    showQuestion();
+    startTimer();
+}
+
+function getRandomQuestions(questions, count) {
+    let shuffled = [...questions].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
+
+function showQuestion() {
+    let q = currentQuestions[currentQuestionIndex];
+    let questionHTML = `
+        <div class="question">
+            <p>${currentQuestionIndex + 1}. ${q.question}</p>
+            <div class="options">
+                ${q.options.map((option, i) => `
+                    <label class="option">
+                        <input type="radio" name="q${currentQuestionIndex}" value="${i}">
+                        ${option}
+                    </label>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    document.getElementById('question').innerHTML = questionHTML;
+    
+    if (currentQuestionIndex === currentQuestions.length - 1) {
+        document.getElementById('nextQuestion').style.display = 'none';
+        document.getElementById('submitQuiz').style.display = 'inline-block';
+    } else {
+        document.getElementById('nextQuestion').style.display = 'inline-block';
+        document.getElementById('submitQuiz').style.display = 'none';
+    }
+}
+
+function showNextQuestion() {
+    let selectedAnswer = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
+    if (selectedAnswer && parseInt(selectedAnswer.value) === currentQuestions[currentQuestionIndex].correctAnswer) {
+        score++;
+    }
+    currentQuestionIndex++;
+    if (currentQuestionIndex < currentQuestions.length) {
+        showQuestion();
+    }
+}
+
+function startTimer() {
+    startTime = new Date();
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    let now = new Date();
+    let timeDiff = now - startTime;
+    let seconds = Math.floor(timeDiff / 1000);
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    document.getElementById('timer').textContent = `ۋاقىت: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function submitQuiz() {
+    showNextQuestion(); // Check the last question
+    clearInterval(timerInterval);
+    
+    let resultHTML = `
+        <h2>نەتىجە</h2>
+        <p>سىز ${currentQuestions.length} سوئالنىڭ ئىچىدىن ${score} سوئالغا توغرا جاۋاب بەردىڭىز.</p>
+        <p>ئىشلەتكەن ۋاقتىڭىز: ${document.getElementById('timer').textContent.split(': ')[1]}</p>
+        <h3>تەپسىلاتلار:</h3>
+    `;
+    
+    currentQuestions.forEach((q, index) => {
+        resultHTML += `
+            <div class="details">
+                <p><strong>${index + 1}. ${q.question}</strong></p>
+                <p>توغرا جاۋاب: ${q.options[q.correctAnswer]}</p>
+                <p>${q.details}</p>
+            </div>
+        `;
+    });
+    
+    document.getElementById('quizForm').style.display = 'none';
+    document.getElementById('result').innerHTML = resultHTML;
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('startQuiz').style.display = 'block';
+    document.getElementById('addQuizButton').style.display = 'block';
+    document.getElementById('startQuiz').textContent = 'قايتا باشلاش';
+}
+
+function addNewQuestion(e) {
+    e.preventDefault();
+    let newQuestion = document.getElementById('newQuestion').value;
+    let newOptions = document.getElementById('newOptions').value.split('\n');
+    let newCorrectOption = parseInt(document.getElementById('newCorrectOption').value) - 1;
+    
+    if (newOptions.length !== 4 || newCorrectOption < 0 || newCorrectOption > 3) {
+        alert('تاللانما ۋە توغرا جاۋابنى توغرا كىرگۈزۈڭ');
+        return;
+    }
+    
+    quizQuestions.push({
+        question: newQuestion,
+        options: newOptions,
+        correctAnswer: newCorrectOption,
+        details: "بۇ يېڭى قوشۇلغان سوئال. تەپسىلاتلار تېخى قوشۇلمىدى."
+    });
+    
+    alert('يېڭى سوئال قوشۇلدى');
+    document.getElementById('newQuestionForm').reset();
+    document.getElementById('addQuestionForm').style.display = 'none';
+    document.getElementById('startQuiz').style.display = 'block';
+    document.getElementById('addQuizButton').style.display = 'block';
+}
+
+function showAddQuestionForm() {
+    document.getElementById('addQuestionForm').style.display = 'block';
+    document.getElementById('startQuiz').style.display = 'none';
+    document.getElementById('addQuizButton').style.display = 'none';
+}
+</script>
+</body>
+</html>

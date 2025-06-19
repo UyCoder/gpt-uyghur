@@ -1,0 +1,250 @@
+<html><head><base href="https://websim.ai/uyghur-islam-quiz/" />
+<title>ئىسلام بىلىملىرى سىناق</title>
+<meta charset="UTF-8">
+<style>
+  body {
+    font-family: 'UKIJ Ekran', 'UKIJ Tuz', Arial, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    direction: rtl;
+    text-align: right;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+  }
+  button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  button:hover {
+    background-color: #2980b9;
+  }
+  .question {
+    margin-bottom: 20px;
+  }
+  .options {
+    margin-top: 10px;
+  }
+  .option {
+    display: block;
+    margin-bottom: 10px;
+  }
+  #timer, #result {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  #quizForm, #result {
+    display: none;
+  }
+  #addQuestionForm {
+    margin-top: 30px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+  }
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>ئىسلام بىلىملىرى سىناق</h1>
+  
+  <button id="startQuiz">باشلاش</button>
+  
+  <div id="quizForm">
+    <div id="questions"></div>
+    <button id="submitQuiz">تاماملاش</button>
+  </div>
+  
+  <div id="timer"></div>
+  
+  <div id="result"></div>
+  
+  <div id="addQuestionForm">
+    <h2>يېڭى سوئال قوشۇش</h2>
+    <form id="newQuestionForm">
+      <input type="text" id="newQuestion" placeholder="سوئال" required>
+      <textarea id="newOptions" placeholder="جاۋاب تاللانمىلىرى (ھەر قۇردا بىردىن)" rows="4" required></textarea>
+      <input type="number" id="newCorrectOption" placeholder="توغرا جاۋابنىڭ تەرتىپ نومۇرى" required>
+      <button type="submit">سوئال قوشۇش</button>
+    </form>
+  </div>
+</div>
+
+<script>
+let quizQuestions = [
+  {
+    question: "قۇرئان كەرىمدە قانچە سۈرە بار؟",
+    options: ["114", "120", "100", "110"],
+    correctAnswer: 0
+  },
+  {
+    question: "ئىسلامنىڭ بەش پەرزىنىڭ بىرىنچىسى قايسى؟",
+    options: ["روزا", "ھەج", "زاكات", "كەلىمە شاھادەت"],
+    correctAnswer: 3
+  },
+  {
+    question: "پەيغەمبىرىمىز مۇھەممەد ئەلەيھىسسالامنىڭ تۇغۇلغان يىلى قايسى؟",
+    options: ["570", "571", "610", "622"],
+    correctAnswer: 1
+  },
+  {
+    question: "قۇرئان كەرىمدىكى ئەڭ ئۇزۇن سۈرە قايسى؟",
+    options: ["بەقەرە", "نىسا", "ئال ئىمران", "مائىدە"],
+    correctAnswer: 0
+  },
+  {
+    question: "رامىزان ئېيىدا ئوقۇلىدىغان نامازنىڭ ئىسمى نېمە؟",
+    options: ["تەھەججۇد", "تەراۋىھ", "تەھىيەتۇل مەسجىد", "ئىستىخارە"],
+    correctAnswer: 1
+  },
+  {
+    question: "ئىسلامدىكى مۇقەددەس كىتابلارنىڭ سانى قانچە؟",
+    options: ["2", "3", "4", "5"],
+    correctAnswer: 2
+  },
+  {
+    question: "قۇرئان كەرىمدە ئەڭ كۆپ تىلغا ئېلىنغان پەيغەمبەر كىم؟",
+    options: ["ئىبراھىم", "مۇسا", "ئىسا", "نۇھ"],
+    correctAnswer: 1
+  },
+  {
+    question: "ئىسلام كالېندارى قايسى ۋەقەدىن باشلىنىدۇ؟",
+    options: ["پەيغەمبەرنىڭ تۇغۇلۇشى", "قۇرئاننىڭ چۈشۈشى", "ھىجرەت", "بەدىر ئۇرۇشى"],
+    correctAnswer: 2
+  },
+  {
+    question: "زاكات بېرىشنىڭ نىسابى قانچە؟",
+    options: ["مال-مۈلۈكنىڭ 2.5%ى", "مال-مۈلۈكنىڭ 5%ى", "مال-مۈلۈكنىڭ 10%ى", "مال-مۈلۈكنىڭ 20%ى"],
+    correctAnswer: 0
+  },
+  {
+    question: "قۇرئان كەرىمدە قانچە پارە بار؟",
+    options: ["20", "25", "30", "40"],
+    correctAnswer: 2
+  }
+];
+
+let currentQuestions = [];
+let startTime;
+let timerInterval;
+
+document.getElementById('startQuiz').addEventListener('click', startQuiz);
+document.getElementById('submitQuiz').addEventListener('click', submitQuiz);
+document.getElementById('newQuestionForm').addEventListener('submit', addNewQuestion);
+
+function startQuiz() {
+  currentQuestions = getRandomQuestions(quizQuestions, 10);
+  document.getElementById('startQuiz').style.display = 'none';
+  document.getElementById('quizForm').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  
+  displayQuestions();
+  startTimer();
+}
+
+function getRandomQuestions(questions, count) {
+  let shuffled = [...questions].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+function displayQuestions() {
+  let questionsHTML = '';
+  currentQuestions.forEach((q, index) => {
+    questionsHTML += `
+      <div class="question">
+        <p>${index + 1}. ${q.question}</p>
+        <div class="options">
+          ${q.options.map((option, i) => `
+            <label class="option">
+              <input type="radio" name="q${index}" value="${i}">
+              ${option}
+            </label>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('questions').innerHTML = questionsHTML;
+}
+
+function startTimer() {
+  startTime = new Date();
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  let now = new Date();
+  let timeDiff = now - startTime;
+  let seconds = Math.floor(timeDiff / 1000);
+  let minutes = Math.floor(seconds / 60);
+  seconds = seconds % 60;
+  document.getElementById('timer').textContent = `ۋاقىت: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function submitQuiz() {
+  clearInterval(timerInterval);
+  let score = 0;
+  currentQuestions.forEach((q, index) => {
+    let selectedAnswer = document.querySelector(`input[name="q${index}"]:checked`);
+    if (selectedAnswer && parseInt(selectedAnswer.value) === q.correctAnswer) {
+      score++;
+    }
+  });
+  
+  let resultHTML = `
+    <h2>نەتىجە</h2>
+    <p>سىز ${currentQuestions.length} سوئالنىڭ ئىچىدىن ${score} سوئالغا توغرا جاۋاب بەردىڭىز.</p>
+    <p>ئىشلەتكەن ۋاقتىڭىز: ${document.getElementById('timer').textContent.split(': ')[1]}</p>
+  `;
+  
+  document.getElementById('quizForm').style.display = 'none';
+  document.getElementById('result').innerHTML = resultHTML;
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('startQuiz').style.display = 'block';
+  document.getElementById('startQuiz').textContent = 'قايتا باشلاش';
+}
+
+function addNewQuestion(e) {
+  e.preventDefault();
+  let newQuestion = document.getElementById('newQuestion').value;
+  let newOptions = document.getElementById('newOptions').value.split('\n');
+  let newCorrectOption = parseInt(document.getElementById('newCorrectOption').value) - 1;
+  
+  if (newOptions.length !== 4 || newCorrectOption < 0 || newCorrectOption > 3) {
+    alert('تاللانما ۋە توغرا جاۋابنى توغرا كىرگۈزۈڭ');
+    return;
+  }
+  
+  quizQuestions.push({
+    question: newQuestion,
+    options: newOptions,
+    correctAnswer: newCorrectOption
+  });
+  
+  alert('يېڭى سوئال قوشۇلدى');
+  document.getElementById('newQuestionForm').reset();
+}
+</script>
+</body></html>
