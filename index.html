@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Gemini بىلەن پاراڭ</title>
     <style>
-        @font-face {
-            font-family: 'alkatipTor';
-            src: url('https://github.com/UyCoder/Uyghur-Fonts/raw/master/ALKATIP_Tor.ttf'); /* Fontنى تور يۈزىدىن چاقىرىش */
+      @font-face {
+            font-family: 'ALKATIP' ;
+            src: url('https://websim.ai/fonts/ALKATIP.ttf') format('truetype');
         }
 
         * {
@@ -16,7 +16,7 @@
         body {
             background-color: #1f1f1f;
             color: #fff;
-            font-family: 'alkatipTor', sans-serif !important;
+            font-family: 'ALKATIP', sans-serif !important;
             padding-bottom: 150px; /* Footer ئۈچۈن بوشلۇق */
         }
 
@@ -27,6 +27,7 @@
         }
 
         #geminiApiKey {
+            font-family: 'ALKATIP', sans-serif !important;
             background-color: #292929;
             color: #fff;
             border: 1px solid #444;
@@ -47,7 +48,7 @@
             box-sizing: border-box;
             height: 120px;
             resize: vertical;
-            font-family: 'alkatipTor', sans-serif !important;
+            font-family: 'ALKATIP', sans-serif !important;
             margin-bottom: 10px;
         }
 
@@ -59,10 +60,11 @@
             width: 100%;
             box-sizing: border-box;
             min-height: 200px;
-            font-family: 'alkatipTor', sans-serif !important;
+            font-family: 'ALKATIP', sans-serif !important;
             white-space: pre-wrap; /* جاۋابتىكى قۇرلارنى ساقلايدۇ */
             line-height: 1.8;
             margin-top: 10px;
+            text-align: justify;
         }
 
         #answerOutput b, #answerOutput strong {
@@ -70,12 +72,12 @@
         }
 
         #submitBtn, #readAnswerBtn, #saveHistoryBtn {
-            background-color: #2e2e2e;
+            background-color: #00d1a7;
             color: #fff;
             border: 1px solid #555;
             padding: 12px 20px;
             cursor: pointer;
-            font-family: 'alkatipTor', sans-serif !important;
+            font-family: 'ALKATIP', sans-serif !important;
             font-size: 16px;
             transition: background-color 0.3s;
         }
@@ -113,7 +115,7 @@
         }
 
         .tts-controls label, .tts-controls select {
-            font-family: 'alkatipTor', sans-serif !important;
+            font-family: 'ALKATIP', sans-serif !important;
         }
 
         .tts-controls select {
@@ -145,6 +147,7 @@
 
         #historyTable td {
             background-color: #2c2c2c;
+            text-align: justify;
             white-space: pre-wrap; /* جاۋابلارنى فورماتى بىلەن ساقلاش */
         }
 
@@ -227,6 +230,7 @@
 
 
 <div class="container">
+    <h id="b">.  </h>
     <h1 id="b">Gemini 2.0 نىڭ ئۇيغۇرچە نۇسخىسى</h1>
     <label>AIzaSyCkpkBDY_HmxOQIwEmILG6M-9t2ek6kObU</label>
     <input type="password" id="geminiApiKey" placeholder="سىزگە تەۋە Gemini نىڭ API Key نى كىرگۈزۈڭ">
@@ -240,8 +244,8 @@
         <label for="language">ئاۋاز تاللاڭ:</label>
         <select id="language">
             <option value="ug-UG0">ئۇيغۇرچە (تۈركچە ئاھاڭ)</option>
-            <option value="ug-UG">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئايال)</option>
             <option value="ug-UG1">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئەر)</option>
+            <option value="ug-UG">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئايال)</option>
             <option value="ug-UG2">ئۇيغۇرچە (تۈركچە ئاھاڭ - ئەھمەت)</option>
             <option value="tr-TR">تۈركچە</option>
             <option value="en-US">ئىنگلىزچە</option>
@@ -250,14 +254,13 @@
         </select>
         <label for="rate">سۈرئەت:</label>
         <select id="rate">
-            <option value="0.5">0.5x</option>
-            <option value="0.75">0.75x</option>
             <option value="1.0">1x</option>
             <option value="1.25">1.25x</option>
             <option value="1.5">1.5x</option>
             <option value="1.75">1.75x</option>
             <option value="2.0">2.0x</option>
-            <option value="2.5">2.5x</option>
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
         </select>
     </div>
 

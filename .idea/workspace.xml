@@ -5,17 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="add 6 voice TextToSpeachUy.html">
-      <change afterPath="$PROJECT_DIR$/Tools/ForTelegramChannel.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/MathQuizz.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Quizz1.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Quizz2.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/Quizz3.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/SummarizeNews.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/TranslateNewsBulk.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/UyghurMedicine.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/UyghurNews-FromCHineseRss.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/UyghurNews.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tools/arabicNews.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
@@ -157,7 +146,7 @@
       <workItem from="1733482788971" duration="595000" />
       <workItem from="1734043665965" duration="80000" />
       <workItem from="1734369532936" duration="676000" />
-      <workItem from="1750329505284" duration="1604000" />
+      <workItem from="1750329505284" duration="2721000" />
     </task>
     <task id="LOCAL-00001" summary="puttı">
       <created>1679521578878</created>
@@ -453,7 +442,14 @@
       <option name="project" value="LOCAL" />
       <updated>1733179615904</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="add 6 voice TextToSpeachUy.html">
+      <created>1750332496676</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1750332496676</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
