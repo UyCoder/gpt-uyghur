@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خەۋەرلەرنى توپ تەرجىمە قىلىش</title>
+    <title>خەۋەر خۇلاسىلەش ئەپى</title>
     <style>
         /* Google Font for better Uyghur script rendering */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap');
@@ -177,7 +177,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* In case the screen is small */
         }
         .tts-controls button, .tts-controls select {
             padding: 5px 10px;
@@ -195,7 +195,7 @@
             background-color: #138496;
         }
         .tts-controls button.stop-btn {
-            background-color: #dc3545;
+            background-color: #dc3545; /* قىزىل رەڭ */
             color: white;
         }
         .tts-controls button.stop-btn:hover {
@@ -205,37 +205,38 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
+
         .tts-controls label {
             font-size: 0.9rem;
             margin-bottom: 0;
             font-weight: normal;
         }
-
+		
 		/* ========================================= */
         /*      Professional Footer Styles           */
         /* ========================================= */
         .site-footer-container {
-            color: #5a6268;
+            color: #5a6268;            /* A softer text color */
             padding: 45px 20px;
             text-align: center;
-            border-top: 1px solid #e7e7e7;
-            direction: rtl;
+            border-top: 1px solid #e7e7e7; /* A subtle top border */
+            direction: rtl; /* For right-to-left Uyghur text */
         }
-		
+	
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>خەۋەرلەرنى توپ تەرجىمە قىلىش</h1>
- 
+        <h1>خەۋەرلەرنى ئاپتوماتىك خۇلاسىلەش ۋە تەھلىل قىلىش</h1>
+
         <div class="input-group">
             <label for="apiKey">Gemini API ئاچقۇچى:</label>
             <input type="password" id="apiKey" placeholder="بۇ يەرگە ئۆزىڭىزنىڭ Gemini API ئاچقۇچىنى كىرگۈزۈڭ">
 			<label>AIzaSyCkpkBDY_HmxOQIwEmILG6M-9t2ek6kObU</label>
 			<label>AIzaSyCJVkxlcjZ0bhH_RuSeQfJ2mUhpo5eSBt4</label>			
 			<label>AIzaSyD5R8LACkmHhs5oGin7Bgw4x5TrRSLX9so</label>			
-			<label>AIzaSyAx4RBhcktpftd5m-SYf0RYlDipkW4jsh0</label>	
+			<label>AIzaSyAx4RBhcktpftd5m-SYf0RYlDipkW4jsh0</label>			
         </div>
 
         <div class="input-group">
@@ -243,7 +244,7 @@
             <textarea id="textInput" placeholder="خەۋەر مەزمۇنى ياكى ئۇلانمىلارنى ئۆز ئىچىگە ئالغان تېكىستنى بۇ يەرگە چاپلاڭ..."></textarea>
         </div>
 
-        <button id="summarizeBtn">تەرجىمە قىل</button>
+        <button id="summarizeBtn">خۇلاسىلە</button>
 
         <div id="status"></div>
         <div class="loader" id="loader"></div>
@@ -252,7 +253,7 @@
             <thead>
                 <tr>
                     <th>ئۇلانما (URL)</th>
-                    <th>تەرجىمە ۋە تەھلىل</th>
+                    <th>خۇلاسە ۋە تەھلىل</th>
                 </tr>
             </thead>
             <tbody id="resultsBody">
@@ -262,6 +263,7 @@
         <button id="downloadBtn" style="display:none;">نەتىجىنى چۈشۈرۈش (.txt)</button>
     </div>
 	
+<!-- ... Footer ... -->
 <footer class="site-footer-container">
     <div class="footer-content">
         <a href="#" title="Bilik Research Center Home">
@@ -298,8 +300,8 @@
     const resultsTable = document.getElementById('resultsTable');
     const resultsBody = document.getElementById('resultsBody');
     const downloadBtn = document.getElementById('downloadBtn');
-    
-    let currentUtterance = null; // ئاۋازلىق ئوقۇش ئۈچۈن قوشۇلدى
+
+    let currentUtterance = null;
 
     summarizeBtn.addEventListener('click', handleSummarize);
     downloadBtn.addEventListener('click', downloadResultsAsText);
@@ -317,8 +319,7 @@
             showStatus("خاتالىق: مەزمۇن كىرگۈزۈش رامكىسى قۇرۇق قالدى!", true);
             return;
         }
-        
-        // ئاۋازلىق ئوقۇش بولۇۋاتقان بولسا توختىتىش
+
         if ('speechSynthesis' in window && speechSynthesis.speaking) {
             speechSynthesis.cancel();
         }
@@ -349,7 +350,7 @@
                      continue;
                 }
                 
-                showStatus(`(${urls.length}/${i + 1}) ${url} دىكى مەزمۇننى Gemini گە ئەۋەتىپ تەرجىمە قىلىۋاتىدۇ...`);
+                showStatus(`(${urls.length}/${i + 1}) ${url} دىكى مەزمۇننى Gemini گە ئەۋەتىپ خۇلاسە ئېلىۋاتىدۇ...`);
                 const summary = await getSummaryFromGemini(articleText, apiKey);
                 addResultRow(url, summary);
 
@@ -369,7 +370,7 @@
         const durationInSeconds = ((endTime - startTime) / 1000).toFixed(2);
         
         summarizeBtn.disabled = false;
-        summarizeBtn.innerText = "تەرجىمە قىل";
+        summarizeBtn.innerText = "خۇلاسىلە";
         loader.style.display = 'none';
         const finalMessage = `تامام! ${urls.length} ئۇلانما بىر تەرەپ قىلىندى. جەمئىي ۋاقىت: ${durationInSeconds} سېكۇنت.`;
         showStatus(finalMessage);
@@ -400,18 +401,16 @@
 
     async function getSummaryFromGemini(articleText, apiKey) {
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-        
-        const prompt = `تۆۋەندىكى ماقالە مەزمۇنىنى ئوقۇپ، تەلەپ بويىچە  ئۇيغۇر چە تەپسىلىي جاۋاب يېزىپ بېرىڭ:
-**ماقالىنىڭ تولۇق ئىسمى** ماقالىنىڭ ئىسمىنى تولۇق تەرجىمە قىلىپ بەر			
+        const prompt = `تۆۋەندىكى ماقالە مەزمۇنىنى ئوقۇپ، تەلەپ بويىچە  ئۇيغۇر چە تەپسىلىي جاۋاب يېزىپ بېرىڭ:     
+**ماقالىنىڭ تولۇق ئىسمى** ماقالىنىڭ ئىسمىنى تولۇق تەرجىمە قىلىپ بەر				
 0. **يازغۇچى ھەققىدە:** ماقالىنىڭ يازغۇچىنىڭ كىملىكى، قىسقىچە تەرجىمھالى، ماقالە يازغان ۋاقىت قاتارلىقلار سۆزلەنسۇن.
-1. **خۇلاسە:** ماقالىنىڭ قىسقىچە مەزمۇنىنى يېزىڭ. ئاساسىي مەزمۇندا چوقۇم مۇشۇ ماقالىدىكى ئەڭ مۇھىم پىكىر چۈشۈپ قالمىسۇن. شۇڭا ئۇزۇنراق يازساڭمۇ مەيلى.
-2. **تولۇق تەرجىمىسى:** ماقالىنى راۋان ئۇيغۇر تىلىدا تەرجىمە قىلىپ بەر. پەقەتلا مەزمۇن چالا قالمىسۇن.
-3. **سانلىق مەلۇماتلار:** ماقالىدىكى پۈتۈن مۇھىم سان-سىفىرلار ۋە ستاتىستىكىلارنى تىزىپ چىقىڭ.
-4. **شەرقىي تۈركىستانلىقلار ئۈچۈن پايدىسى:** بۇ خەۋەردىن بىز، يەنى شەرقىي تۈركىستانلىقلار مۇستەقىللىق يولىمىزدا قانداق پايدا ئالالايمىز؟ قانداق ئىستراتېگىيە ۋە تەدبىرلەرنى قوللىنىشىمىز كېرەك؟ ئەمەلىي مىساللار بىلەن تەپسىلىي ۋە ئەتراپلىق تەھلىل قىلىپ بېرىڭ.
-5. **تارىخىي سېلىشتۈرۈش** ماقالىدىكى ۋەقەلەر بىلەن ئۇيغۇر تارىخىدىكى ۋە دۇنيا سىياسىي تارىخىتىكى ئوخشاش ۋەقەلەرنى سېلىشتۇرۇش.
-6. **خەلقئارالىق مۇناسىۋەتلەر ۋە دەرس** دۆلەتلەر ئارىسىدىكى مۇناسىۋەت، خەلقئارالىق قارىشى ۋە بىز ئۈچۈن سىياسىي ئىبرەتلەر.
-7. **سىياسىي ۋە ئىستراتېگىي نۇقتاينەزەر** دۆلەتلەرنىڭ ئىستراتېگىي خاتالىقلىرى ياكى مۇۋەپپەقىيەتلىرىدىن بىزگە پايدىلىق بولغان نۇقتىلار.
-8. **كىتاپ تەۋسىيە قىلىش:** بۇ ماقالىنىڭ مەزمۇنى بىلەن مۇناسىۋەتلىك ئوقۇشقا تېگىشلىك مۇھىم كىتاپلاردىن بىرنەچچىنى تەۋسىيە قىلىڭ.
+1. **خۇلاسە:** ماقالىنىڭ قىسقىچە مەزمۇنىنى يېزىڭ. چوقۇم 5 ئابزاستىن كەم بولمىسۇن. ئاساسىي مەزمۇندا چوقۇم مۇشۇ ماقالىدىكى ئەڭ مۇھىم پىكىر چۈشۈپ قالمىسۇن. شۇڭا ئۇزۇنراق يازساڭمۇ مەيلى.
+2. **سانلىق مەلۇماتلار:** ماقالىدىكى پۈتۈن مۇھىم سان-سىفىرلار ۋە ستاتىستىكىلارنى تىزىپ چىقىڭ.
+3. **شەرقىي تۈركىستانلىقلار ئۈچۈن پايدىسى:** بۇ خەۋەردىن بىز، يەنى شەرقىي تۈركىستانلىقلار مۇستەقىللىق يولىمىزدا قانداق پايدا ئالالايمىز؟ قانداق ئىستراتېگىيە ۋە تەدبىرلەرنى قوللىنىشىمىز كېرەك؟ ئەمەلىي مىساللار بىلەن تەپسىلىي ۋە ئەتراپلىق تەھلىل قىلىپ بېرىڭ.
+4. **تارىخىي سېلىشتۈرۈش** ماقالىدىكى ۋەقەلەر بىلەن ئۇيغۇر تارىخىدىكى ۋە دۇنيا سىياسىي تارىخىتىكى ئوخشاش ۋەقەلەرنى سېلىشتۇرۇش.
+5. **خەلقئارالىق مۇناسىۋەتلەر ۋە دەرس** دۆلەتلەر ئارىسىدىكى مۇناسىۋەت، خەلقئارالىق قارىشى ۋە بىز ئۈچۈن سىياسىي ئىبرەتلەر.
+6. **سىياسىي ۋە ئىستراتېگىي نۇقتاينەزەر** دۆلەتلەرنىڭ ئىستراتېگىي خاتالىقلىرى ياكى مۇۋەپپەقىيەتلىرىدىن بىزگە پايدىلىق بولغان نۇقتىلار.
+7. **كىتاپ تەۋسىيە قىلىش:** بۇ ماقالىنىڭ مەزمۇنى بىلەن مۇناسىۋەتلىك ئوقۇشقا تېگىشلىك مۇھىم كىتاپلاردىن بىرنەچچىنى تەۋسىيە قىلىڭ.
 ماقالىدە چوقۇم جۇڭگو دىېمەي خىتاي دەپ ياز.
 شىنجاڭ ئەمەس شەرقىي تۈركىستان دەپ ياز.
 ---
@@ -483,8 +482,7 @@ ${articleText.substring(0, 30000)}
         summaryDiv.className = 'summary-content';
         summaryDiv.innerHTML = formatForDisplay(summary);
         cell2.appendChild(summaryDiv);
-        
-        // --- ئاۋازلىق ئوقۇش قىسمى قوشۇلدى ---
+
         const ttsContainer = document.createElement('div');
         ttsContainer.className = 'tts-controls';
 
@@ -500,7 +498,7 @@ ${articleText.substring(0, 30000)}
         const langLabel = document.createElement('label');
         langLabel.textContent = 'ئاۋاز تاللاڭ:';
         const langSelect = document.createElement('select');
-        langSelect.innerHTML = `<option value="ug-UG0">ئۇيغۇرچە (تۈركچە ئاھاڭ)</option><option value="ug-UG1">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئەر)</option><option value="ug-UG">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئايال)</option><option value="ug-UG2">ئۇيغۇرچە (تۈركچە ئاھاڭ - ئەھمەت)</option><option value="tr-TR">تۈركچە</option><option value="en-US">ئىنگلىزچە</option><option value="ar-SA">ئەرەبچە</option><option value="zh-CN">خىتايچە</option>`;
+        langSelect.innerHTML = `<option value="ug-UG0">ئۇيغۇرچە (تۈركچە ئاھاڭ)</option><option value="ug-UG1">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئەر)</option><option value="ug-UG">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئايال)</option><option value="ug-UG2">ئۇيغۇرچە (تۈركچە ئاھاڭ - ئەھمەت)</option>`;
 
         const rateLabel = document.createElement('label');
         rateLabel.textContent = 'سۈرئەت:';
@@ -511,13 +509,16 @@ ${articleText.substring(0, 30000)}
             speakAnswer(summaryDiv, langSelect, rateSelect, readBtn, stopBtn);
         });
         
+        // --- تۈزىتىلگەن قىسىم ---
         stopBtn.addEventListener('click', () => {
             if ('speechSynthesis' in window) {
                 speechSynthesis.cancel();
+                // كۇنۇپكىلارنىڭ ھالىتىنى بۇ يەردە بىۋاسىتە ئەسلىگە كەلتۈرۈش
                 readBtn.disabled = false;
                 stopBtn.disabled = true;
             }
         });
+        // --- تۈزىتىش ئاخىرلاشتى ---
 
         ttsContainer.appendChild(readBtn);
         ttsContainer.appendChild(stopBtn);
@@ -526,7 +527,6 @@ ${articleText.substring(0, 30000)}
         ttsContainer.appendChild(rateLabel);
         ttsContainer.appendChild(rateSelect);
         cell2.appendChild(ttsContainer);
-        // --- ئاۋازلىق ئوقۇش قىسمى ئاخىرلاشتى ---
     }
     
     function addErrorRow(url, errorMessage) {
@@ -560,7 +560,7 @@ ${articleText.substring(0, 30000)}
 
         const date = new Date();
         const timestamp = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}-${String(date.getSeconds()).padStart(2, '0')}`;
-        const filename = `تەرجىمە_نەتىجىلىرى_${timestamp}.txt`;
+        const filename = `خۇلاسە_نەتىجىلىرى_${timestamp}.txt`;
 
         const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
         const link = document.createElement('a');
@@ -570,8 +570,6 @@ ${articleText.substring(0, 30000)}
         link.click();
         document.body.removeChild(link);
     }
-    
-    // --- تۆۋەندىكىلەر ئاۋازلىق ئوقۇشقا ئائىت فۇنكسىيەلەر ---
 
     function speakAnswer(textElement, langSelect, rateSelect, readBtn, stopBtn) {
         const textToSpeak = textElement.innerText;
