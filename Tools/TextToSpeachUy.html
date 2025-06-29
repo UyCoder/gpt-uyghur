@@ -59,6 +59,20 @@
             background-color: #444;
         }
 
+        /* توختات كۇنۇپكىسى ئۈچۈن يېڭى ئىستىل*/
+        #stopBtn {
+            background-color: #d9534f; /* توختىتىشنى بىلدۈرىدىغان قىزىل رەڭ */
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #stopBtn:hover {
+            background-color: #c9302c;
+        }
+
         h1 {
             color: #009b74;
             font-size: xx-large;
@@ -109,7 +123,7 @@
     <a href="IsilTerjiman.html"> تەرجىمان</a>
     <a href="HikmetlerHezinesi.html" >ھىكمەت</a>
     <a href="TextToSpeachUy.html"> ئاڭلاش</a>
-    <a href="../index.html">ChatGPT</a>
+    <a href="../index.html">Gemini</a>
     <a href="wordcounter.html"> تېكىست </a>
     <a href="wordreplacer.html"> ئىملا </a>
     <a href="teshkil.html">تەشكىل</a>
@@ -170,6 +184,7 @@
 
 </select>
 <button id="speakBtn">ئاۋازلىق ئوقۇ</button>
+<button id="stopBtn">توختات</button>
 <br><a style="color: #009b74 ; font-size: small">ئەسكەرتىش: ئۇيغۇرچە ئوقۇتقاندا دەسلەپتە كۇنۇپكىنى ئىككى قېتىم
     بېسىڭ.</a>
 
@@ -216,6 +231,7 @@
     const inputText = document.getElementById('inputText');
     const language = document.getElementById('language');
     const speakBtn = document.getElementById('speakBtn');
+    const stopBtn = document.getElementById('stopBtn'); // يېڭى كۇنۇپكىنى ئېلىش
     let currentUtterance = null;
     const rateSpeed = document.getElementById('rate');
     console.log(rateSpeed);
@@ -303,6 +319,13 @@
             speechSynthesis.speak(currentUtterance);
         } else {
             alert('سىزنىڭ تور كۆرگۈچىڭىز ئاۋازلىق ئوقۇشنى قوللىمايدىكەن، كەچۈرۈڭ. باشقا توركۆرگۈچتە سىناپ بېقىڭ.');
+        }
+    }
+
+    // توختات كۇنۇپكىسى ئۈچۈن يېڭى فۇنكىسىيە
+    function stopText() {
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
         }
     }
 
@@ -404,6 +427,8 @@
 
 
     speakBtn.addEventListener('click', speakText);
+    stopBtn.addEventListener('click', stopText); // يېڭى كۇنۇپكىغا ھەرىكەت قوشۇش
+
 </script>
 
 <script>

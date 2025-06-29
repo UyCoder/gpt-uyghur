@@ -168,18 +168,59 @@
         .summary-content b {
             color: #0056b3;
         }
-		
+
+        /* --- ئاۋازلىق ئوقۇش كۇنۇپكىسىنىڭ CSS --- */
+        .tts-controls {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tts-controls button, .tts-controls select {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .tts-controls button.read-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .tts-controls button.read-btn:hover {
+            background-color: #138496;
+        }
+        .tts-controls button.stop-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .tts-controls button.stop-btn:hover {
+            background-color: #c82333;
+        }
+        .tts-controls button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .tts-controls label {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
 		/* ========================================= */
-    /*      Professional Footer Styles           */
-    /* ========================================= */
-    .site-footer-container {
-        color: #5a6268;            /* A softer text color */
-        padding: 45px 20px;
-        text-align: center;
-        border-top: 1px solid #e7e7e7; /* A subtle top border */
-        direction: rtl; /* For right-to-left Uyghur text */
-    }
-		
+        /*      Professional Footer Styles           */
+        /* ========================================= */
+        .site-footer-container {
+            color: #5a6268;
+            padding: 45px 20px;
+            text-align: center;
+            border-top: 1px solid #e7e7e7;
+            direction: rtl;
+        }
 		
     </style>
 </head>
@@ -192,6 +233,9 @@
             <label for="apiKey">Gemini API ئاچقۇچى:</label>
             <input type="password" id="apiKey" placeholder="بۇ يەرگە ئۆزىڭىزنىڭ Gemini API ئاچقۇچىنى كىرگۈزۈڭ">
 			<label>AIzaSyCkpkBDY_HmxOQIwEmILG6M-9t2ek6kObU</label>
+			<label>AIzaSyCJVkxlcjZ0bhH_RuSeQfJ2mUhpo5eSBt4</label>			
+			<label>AIzaSyD5R8LACkmHhs5oGin7Bgw4x5TrRSLX9so</label>			
+			<label>AIzaSyAx4RBhcktpftd5m-SYf0RYlDipkW4jsh0</label>	
         </div>
 
         <div class="input-group">
@@ -208,7 +252,7 @@
             <thead>
                 <tr>
                     <th>ئۇلانما (URL)</th>
-                    <th>خۇلاسە ۋە تەھلىل</th>
+                    <th>تەرجىمە ۋە تەھلىل</th>
                 </tr>
             </thead>
             <tbody id="resultsBody">
@@ -218,168 +262,146 @@
         <button id="downloadBtn" style="display:none;">نەتىجىنى چۈشۈرۈش (.txt)</button>
     </div>
 	
-	
-	
-<!-- Step 2: Add the HTML structure. Place this where you want the footer to appear. -->
 <footer class="site-footer-container">
     <div class="footer-content">
-        
-        <!-- Organization Logo and Link -->
-        <a href="#" title="Bilik Research Center Home"> <!-- TODO: Add the correct link here -->
+        <a href="#" title="Bilik Research Center Home">
             <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/Biliklogo.png" 
                  alt="Bilik Research Center Logo" 
                  class="footer-logo"
 				 height="100">
         </a>
-        
-        <!-- Description Text -->
         <p class="description">
             بۇ كىچىك قۇرال «بىلىك تەتقىقات مەركىزى» تەرىپىدىن يېزىلدى.
         </p>
-		
-		 <p class="description">
-      بىلىك تەتقىقات مەركىزى شەرقىي تۈركىستانلىقلارنىڭ ئۆز كىملىكىدە مەۋجۇدلۇقىنى ساقلىشى ۋە دۆلەتچىلىك ئىدىيىسىدە تەرەققىي قىلىشى ئۈچۈن تەتقىقات ئېلىپ بارىدۇ.
+		<p class="description">
+            بىلىك تەتقىقات مەركىزى شەرقىي تۈركىستانلىقلارنىڭ ئۆز كىملىكىدە مەۋجۇدلۇقىنى ساقلىشى ۋە دۆلەتچىلىك ئىدىيىسىدە تەرەققىي قىلىشى ئۈچۈن تەتقىقات ئېلىپ بارىدۇ.
         </p>
-
-        <!-- Social and Professional Links -->
         <div class="social-links-section">
             <h4 class="social-title">مېنى بۇ يەردىن ئىزدەڭ</h4>
             <div class="social-icon-group">
-                <a href="https://uycoder.github.io/paydilar/" target="_blank" rel="noopener noreferrer" title="Paydilar">
-                    <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png" alt="Paydilar Icon" height="25">
-                </a>
-                <a href="https://www.linkedin.com/in/ahmed-bughra/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-                    <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/LinkedIn.svg" alt="LinkedIn" height="25">
-                </a>
-                <a href="https://github.com/Uycoder" target="_blank" rel="noopener noreferrer" title="GitHub">
-                    <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/github.svg" alt="GitHub" height="25">
-                </a>
-                <a href="https://www.hackerrank.com/ahmedbughra" target="_blank" rel="noopener noreferrer" title="HackerRank">
-                    <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/hackerrank.svg" alt="HackerRank" height="25">
-                </a>
-                <a href="https://stackoverflow.com/users/16111723/ahmad-ali" target="_blank" rel="noopener noreferrer" title="Stack Overflow">
-                    <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/Stack_Overflow.svg" alt="Stack Overflow" height="25">
-                </a>
+                <a href="https://uycoder.github.io/paydilar/" target="_blank" rel="noopener noreferrer" title="Paydilar"><img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png" alt="Paydilar Icon" height="25"></a>
+                <a href="https://www.linkedin.com/in/ahmed-bughra/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/LinkedIn.svg" alt="LinkedIn" height="25"></a>
+                <a href="https://github.com/Uycoder" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/github.svg" alt="GitHub" height="25"></a>
+                <a href="https://www.hackerrank.com/ahmedbughra" target="_blank" rel="noopener noreferrer" title="HackerRank"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/hackerrank.svg" alt="HackerRank" height="25"></a>
+                <a href="https://stackoverflow.com/users/16111723/ahmad-ali" target="_blank" rel="noopener noreferrer" title="Stack Overflow"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/Stack_Overflow.svg" alt="Stack Overflow" height="25"></a>
             </div>
         </div>
-
     </div>
 </footer>
-<!-- END: Professional Self-Contained Footer -->	
-		
-	
-	
-	
-	
 
-    <script>
-        const apiKeyInput = document.getElementById('apiKey');
-        const textInput = document.getElementById('textInput');
-        const summarizeBtn = document.getElementById('summarizeBtn');
-        const statusDiv = document.getElementById('status');
-        const loader = document.getElementById('loader');
-        const resultsTable = document.getElementById('resultsTable');
-        const resultsBody = document.getElementById('resultsBody');
-        const downloadBtn = document.getElementById('downloadBtn');
+<script>
+    const apiKeyInput = document.getElementById('apiKey');
+    const textInput = document.getElementById('textInput');
+    const summarizeBtn = document.getElementById('summarizeBtn');
+    const statusDiv = document.getElementById('status');
+    const loader = document.getElementById('loader');
+    const resultsTable = document.getElementById('resultsTable');
+    const resultsBody = document.getElementById('resultsBody');
+    const downloadBtn = document.getElementById('downloadBtn');
+    
+    let currentUtterance = null; // ئاۋازلىق ئوقۇش ئۈچۈن قوشۇلدى
 
-        summarizeBtn.addEventListener('click', handleSummarize);
-        downloadBtn.addEventListener('click', downloadResultsAsText);
+    summarizeBtn.addEventListener('click', handleSummarize);
+    downloadBtn.addEventListener('click', downloadResultsAsText);
 
-        async function handleSummarize() {
-            const apiKey = apiKeyInput.value.trim();
-            const inputText = textInput.value.trim();
+    async function handleSummarize() {
+        const apiKey = apiKeyInput.value.trim();
+        const inputText = textInput.value.trim();
 
-            if (!apiKey) {
-                showStatus("خاتالىق: Gemini API ئاچقۇچىنى كىرگۈزۈڭ!", true);
-                return;
-            }
-
-            if (!inputText) {
-                showStatus("خاتالىق: مەزمۇن كىرگۈزۈش رامكىسى قۇرۇق قالدى!", true);
-                return;
-            }
-
-            const urls = extractUrls(inputText);
-            if (urls.length === 0) {
-                showStatus("ھېچقانداق ئىناۋەتلىك ئۇلانما (URL) تېپىلمىدى.", true);
-                return;
-            }
-            
-            const startTime = performance.now(); // Start the timer
-
-            // Reset UI for new request
-            summarizeBtn.disabled = true;
-            summarizeBtn.innerText = "بىر تەرەپ قىلىنىۋاتىدۇ...";
-            resultsBody.innerHTML = '';
-            resultsTable.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            loader.style.display = 'block';
-
-            for (let i = 0; i < urls.length; i++) {
-                const url = urls[i];
-                showStatus(`(${urls.length}/${i + 1}) ${url} دىكى مەزمۇننى ئوقۇۋاتىدۇ...`);
-
-                try {
-                    const articleText = await getArticleText(url);
-                    if (!articleText) {
-                         addErrorRow(url, "بۇ ئۇلانمىدىن مەزمۇن ئېلىش مەغلۇپ بولدى. بەلكىم ئۇلانما خاتا ياكى توربېكەت مەزمۇن ئېلىشقا يول قويمايدىغاندۇ.");
-                         continue;
-                    }
-                    
-                    showStatus(`(${urls.length}/${i + 1}) ${url} دىكى مەزمۇننى Gemini گە ئەۋەتىپ خۇلاسە ئېلىۋاتىدۇ...`);
-                    const summary = await getSummaryFromGemini(articleText, apiKey);
-                    addResultRow(url, summary);
-
-                } catch (error) {
-                    console.error("Error processing URL:", url, error);
-                    let errorMessage = "بىر خاتالىق كۆرۈلدى.";
-                    if (error.message.includes('API key not valid')) {
-                        errorMessage = "API ئاچقۇچى ئىناۋەتسىز. توغرا ئاچقۇچنى كىرگۈزۈڭ.";
-                    } else if (error.message.includes('fetch')) {
-                        errorMessage = "Gemini API غا ئۇلىنىشتا مەسىلە كۆرۈلدى. تور ئۇلىنىشىڭىزنى تەكشۈرۈڭ.";
-                    }
-                    addErrorRow(url, errorMessage);
-                }
-            }
-
-            // Finalize UI
-            const endTime = performance.now(); // Stop the timer
-            const durationInSeconds = ((endTime - startTime) / 1000).toFixed(2);
-            
-            summarizeBtn.disabled = false;
-            summarizeBtn.innerText = "تەرجىمە قىل";
-            loader.style.display = 'none';
-            const finalMessage = `تامام! ${urls.length} ئۇلانما بىر تەرەپ قىلىندى. جەمئىي ۋاقىت: ${durationInSeconds} سېكۇنت.`;
-            showStatus(finalMessage);
+        if (!apiKey) {
+            showStatus("خاتالىق: Gemini API ئاچقۇچىنى كىرگۈزۈڭ!", true);
+            return;
         }
 
-        function extractUrls(text) {
-            const urlRegex = /(https?:\/\/[^\s"'<>]+)/g;
-            const matches = text.match(urlRegex);
-            return matches ? [...new Set(matches)] : [];
+        if (!inputText) {
+            showStatus("خاتالىق: مەزمۇن كىرگۈزۈش رامكىسى قۇرۇق قالدى!", true);
+            return;
+        }
+        
+        // ئاۋازلىق ئوقۇش بولۇۋاتقان بولسا توختىتىش
+        if ('speechSynthesis' in window && speechSynthesis.speaking) {
+            speechSynthesis.cancel();
         }
 
-        async function getArticleText(url) {
-            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+        const urls = extractUrls(inputText);
+        if (urls.length === 0) {
+            showStatus("ھېچقانداق ئىناۋەتلىك ئۇلانما (URL) تېپىلمىدى.", true);
+            return;
+        }
+        
+        const startTime = performance.now();
+
+        summarizeBtn.disabled = true;
+        summarizeBtn.innerText = "بىر تەرەپ قىلىنىۋاتىدۇ...";
+        resultsBody.innerHTML = '';
+        resultsTable.style.display = 'none';
+        downloadBtn.style.display = 'none';
+        loader.style.display = 'block';
+
+        for (let i = 0; i < urls.length; i++) {
+            const url = urls[i];
+            showStatus(`(${urls.length}/${i + 1}) ${url} دىكى مەزمۇننى ئوقۇۋاتىدۇ...`);
+
             try {
-                const response = await fetch(proxyUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const articleText = await getArticleText(url);
+                if (!articleText) {
+                     addErrorRow(url, "بۇ ئۇلانمىدىن مەزمۇن ئېلىش مەغلۇپ بولدى. بەلكىم ئۇلانما خاتا ياكى توربېكەت مەزمۇن ئېلىشقا يول قويمايدىغاندۇ.");
+                     continue;
                 }
-                const html = await response.text();
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const readerView = doc.querySelector('article, [role="main"], .post, .entry-content');
-                return readerView ? readerView.innerText : doc.body.innerText;
+                
+                showStatus(`(${urls.length}/${i + 1}) ${url} دىكى مەزمۇننى Gemini گە ئەۋەتىپ تەرجىمە قىلىۋاتىدۇ...`);
+                const summary = await getSummaryFromGemini(articleText, apiKey);
+                addResultRow(url, summary);
+
             } catch (error) {
-                console.error(`Failed to fetch or parse content from ${url}:`, error);
-                return null;
+                console.error("Error processing URL:", url, error);
+                let errorMessage = "بىر خاتالىق كۆرۈلدى.";
+                if (error.message.includes('API key not valid')) {
+                    errorMessage = "API ئاچقۇچى ئىناۋەتسىز. توغرا ئاچقۇچنى كىرگۈزۈڭ.";
+                } else if (error.message.includes('fetch')) {
+                    errorMessage = "Gemini API غا ئۇلىنىشتا مەسىلە كۆرۈلدى. تور ئۇلىنىشىڭىزنى تەكشۈرۈڭ.";
+                }
+                addErrorRow(url, errorMessage);
             }
         }
 
-        async function getSummaryFromGemini(articleText, apiKey) {
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
-            const prompt = `تۆۋەندىكى ماقالە مەزمۇنىنى ئوقۇپ، تەلەپ بويىچە  ئۇيغۇر چە تەپسىلىي جاۋاب يېزىپ بېرىڭ:
+        const endTime = performance.now();
+        const durationInSeconds = ((endTime - startTime) / 1000).toFixed(2);
+        
+        summarizeBtn.disabled = false;
+        summarizeBtn.innerText = "تەرجىمە قىل";
+        loader.style.display = 'none';
+        const finalMessage = `تامام! ${urls.length} ئۇلانما بىر تەرەپ قىلىندى. جەمئىي ۋاقىت: ${durationInSeconds} سېكۇنت.`;
+        showStatus(finalMessage);
+    }
+
+    function extractUrls(text) {
+        const urlRegex = /(https?:\/\/[^\s"'<>]+)/g;
+        const matches = text.match(urlRegex);
+        return matches ? [...new Set(matches)] : [];
+    }
+
+    async function getArticleText(url) {
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+        try {
+            const response = await fetch(proxyUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const readerView = doc.querySelector('article, [role="main"], .post, .entry-content');
+            return readerView ? readerView.innerText : doc.body.innerText;
+        } catch (error) {
+            console.error(`Failed to fetch or parse content from ${url}:`, error);
+            return null;
+        }
+    }
+
+    async function getSummaryFromGemini(articleText, apiKey) {
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        
+        const prompt = `تۆۋەندىكى ماقالە مەزمۇنىنى ئوقۇپ، تەلەپ بويىچە  ئۇيغۇر چە تەپسىلىي جاۋاب يېزىپ بېرىڭ:
 **ماقالىنىڭ تولۇق ئىسمى** ماقالىنىڭ ئىسمىنى تولۇق تەرجىمە قىلىپ بەر			
 0. **يازغۇچى ھەققىدە:** ماقالىنىڭ يازغۇچىنىڭ كىملىكى، قىسقىچە تەرجىمھالى، ماقالە يازغان ۋاقىت قاتارلىقلار سۆزلەنسۇن.
 1. **خۇلاسە:** ماقالىنىڭ قىسقىچە مەزمۇنىنى يېزىڭ. ئاساسىي مەزمۇندا چوقۇم مۇشۇ ماقالىدىكى ئەڭ مۇھىم پىكىر چۈشۈپ قالمىسۇن. شۇڭا ئۇزۇنراق يازساڭمۇ مەيلى.
@@ -398,122 +420,249 @@ ${articleText.substring(0, 30000)}
 ---
 `;
 
-            const requestBody = {
-                "contents": [{
-                    "parts": [{ "text": prompt }]
-                }]
+        const requestBody = { "contents": [{ "parts": [{ "text": prompt }] }] };
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+             const errorData = await response.json();
+             console.error("API Error:", errorData);
+             if (errorData.error && errorData.error.message.includes('API key not valid')) {
+                 throw new Error('API key not valid.');
+             }
+             throw new Error(`Gemini API error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        if (data.candidates && data.candidates.length > 0) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+             console.warn("No content in Gemini response:", data);
+             if (data.promptFeedback && data.promptFeedback.blockReason) {
+                 return `مەزمۇن ھاسىل قىلىش بىخەتەرلىك سەۋەبىدىن توسۇلدى. سەۋەبى: ${data.promptFeedback.blockReason}`;
+             }
+            return "Gemini API دىن ئىناۋەتلىك جاۋاب قايتۇرۇلمىدى.";
+        }
+    }
+
+    function showStatus(message, isError = false) {
+        statusDiv.style.display = 'block';
+        statusDiv.textContent = message;
+        statusDiv.style.color = isError ? '#D8000C' : '#4F8A10';
+        statusDiv.style.backgroundColor = isError ? '#FFD2D2' : '#DFF2BF';
+    }
+
+    function formatForDisplay(text) {
+        const sanitizedText = document.createElement('div');
+        sanitizedText.innerText = text;
+        let formattedHtml = sanitizedText.innerHTML;
+        formattedHtml = formattedHtml.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        return formattedHtml;
+    }
+    
+    function showResultControls() {
+        if (resultsTable.style.display === 'none') {
+            resultsTable.style.display = 'table';
+        }
+        if (downloadBtn.style.display === 'none') {
+            downloadBtn.style.display = 'block';
+        }
+    }
+
+    function addResultRow(url, summary) {
+        showResultControls();
+        const row = resultsBody.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+
+        cell1.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+        const summaryDiv = document.createElement('div');
+        summaryDiv.className = 'summary-content';
+        summaryDiv.innerHTML = formatForDisplay(summary);
+        cell2.appendChild(summaryDiv);
+        
+        // --- ئاۋازلىق ئوقۇش قىسمى قوشۇلدى ---
+        const ttsContainer = document.createElement('div');
+        ttsContainer.className = 'tts-controls';
+
+        const readBtn = document.createElement('button');
+        readBtn.textContent = 'جاۋابنى ئوقۇ';
+        readBtn.className = 'read-btn';
+
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = 'توختا';
+        stopBtn.className = 'stop-btn';
+        stopBtn.disabled = true;
+
+        const langLabel = document.createElement('label');
+        langLabel.textContent = 'ئاۋاز تاللاڭ:';
+        const langSelect = document.createElement('select');
+        langSelect.innerHTML = `<option value="ug-UG0">ئۇيغۇرچە (تۈركچە ئاھاڭ)</option><option value="ug-UG1">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئەر)</option><option value="ug-UG">ئۇيغۇرچە (ئۆزبېكچە ئاھاڭ - ئايال)</option><option value="ug-UG2">ئۇيغۇرچە (تۈركچە ئاھاڭ - ئەھمەت)</option><option value="tr-TR">تۈركچە</option><option value="en-US">ئىنگلىزچە</option><option value="ar-SA">ئەرەبچە</option><option value="zh-CN">خىتايچە</option>`;
+
+        const rateLabel = document.createElement('label');
+        rateLabel.textContent = 'سۈرئەت:';
+        const rateSelect = document.createElement('select');
+        rateSelect.innerHTML = `<option value="1.0">1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="1.75">1.75x</option><option value="2.0">2.0x</option><option value="0.5">0.5x</option><option value="0.75">0.75x</option>`;
+
+        readBtn.addEventListener('click', () => {
+            speakAnswer(summaryDiv, langSelect, rateSelect, readBtn, stopBtn);
+        });
+        
+        stopBtn.addEventListener('click', () => {
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                readBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        });
+
+        ttsContainer.appendChild(readBtn);
+        ttsContainer.appendChild(stopBtn);
+        ttsContainer.appendChild(langLabel);
+        ttsContainer.appendChild(langSelect);
+        ttsContainer.appendChild(rateLabel);
+        ttsContainer.appendChild(rateSelect);
+        cell2.appendChild(ttsContainer);
+        // --- ئاۋازلىق ئوقۇش قىسمى ئاخىرلاشتى ---
+    }
+    
+    function addErrorRow(url, errorMessage) {
+        showResultControls();
+        const row = resultsBody.insertRow();
+        row.style.backgroundColor = "#FFD2D2";
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        
+        cell1.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+        cell2.innerHTML = `<b>خاتالىق:</b> ${errorMessage}`;
+    }
+
+    function downloadResultsAsText() {
+        let textContent = "";
+        
+        for (const row of resultsBody.rows) {
+            const url = row.cells[0].innerText;
+            const summary = row.cells[1].querySelector('.summary-content').innerText;
+            
+            textContent += "==================================================\n";
+            textContent += `ئۇلانما: ${url}\n`;
+            textContent += "==================================================\n\n";
+            textContent += `${summary}\n\n\n`;
+        }
+
+        if (textContent === "") {
+            alert("چۈشۈرگۈدەك نەتىجە يوق!");
+            return;
+        }
+
+        const date = new Date();
+        const timestamp = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}-${String(date.getSeconds()).padStart(2, '0')}`;
+        const filename = `تەرجىمە_نەتىجىلىرى_${timestamp}.txt`;
+
+        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    
+    // --- تۆۋەندىكىلەر ئاۋازلىق ئوقۇشقا ئائىت فۇنكسىيەلەر ---
+
+    function speakAnswer(textElement, langSelect, rateSelect, readBtn, stopBtn) {
+        const textToSpeak = textElement.innerText;
+        if (!textToSpeak) {
+            alert('ئوقۇيدىغان مەزمۇن يوق!');
+            return;
+        }
+
+        if ('speechSynthesis' in window) {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+
+            const lang = langSelect.value;
+            const rateValue = parseFloat(rateSelect.value);
+            let convertedText = textToSpeak;
+            let voiceLang = lang;
+            let voiceName = null;
+
+            if (lang.startsWith('ug-UG')) {
+                if (lang === 'ug-UG0' || lang === 'ug-UG2') {
+                    convertedText = convertUyghurToULYTurk(textToSpeak);
+                    voiceLang = 'tr-TR';
+                    if (lang === 'ug-UG2') voiceName = 'Ahmet';
+                } else {
+                    convertedText = convertUyghurToULY(textToSpeak);
+                    voiceLang = 'uz-UZ';
+                    if (lang === 'ug-UG') voiceName = 'Madina';
+                    else if (lang === 'ug-UG1') voiceName = 'Sardor';
+                }
+            }
+
+            currentUtterance = new SpeechSynthesisUtterance(convertedText);
+            currentUtterance.rate = rateValue;
+            currentUtterance.lang = voiceLang;
+            
+            readBtn.disabled = true;
+            stopBtn.disabled = false;
+
+            currentUtterance.onend = () => {
+                readBtn.disabled = false;
+                stopBtn.disabled = true;
             };
 
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody)
-            });
-
-            if (!response.ok) {
-                 const errorData = await response.json();
-                 console.error("API Error:", errorData);
-                 if (errorData.error && errorData.error.message.includes('API key not valid')) {
-                     throw new Error('API key not valid.');
-                 }
-                 throw new Error(`Gemini API error: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-
-            if (data.candidates && data.candidates.length > 0) {
-                return data.candidates[0].content.parts[0].text;
+            let voices = speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                speechSynthesis.onvoiceschanged = () => {
+                    voices = speechSynthesis.getVoices();
+                    setVoiceAndSpeak(voices, voiceLang, voiceName);
+                };
             } else {
-                 console.warn("No content in Gemini response:", data);
-                 if (data.promptFeedback && data.promptFeedback.blockReason) {
-                     return `مەزمۇن ھاسىل قىلىش بىخەتەرلىك سەۋەبىدىن توسۇلدى. سەۋەبى: ${data.promptFeedback.blockReason}`;
-                 }
-                return "Gemini API دىن ئىناۋەتلىك جاۋاب قايتۇرۇلمىدى.";
-            }
-        }
-
-        function showStatus(message, isError = false) {
-            statusDiv.style.display = 'block';
-            statusDiv.textContent = message;
-            statusDiv.style.color = isError ? '#D8000C' : '#4F8A10';
-            statusDiv.style.backgroundColor = isError ? '#FFD2D2' : '#DFF2BF';
-        }
-
-        function formatForDisplay(text) {
-            const sanitizedText = document.createElement('div');
-            sanitizedText.innerText = text;
-            let formattedHtml = sanitizedText.innerHTML;
-            formattedHtml = formattedHtml.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-            return formattedHtml;
-        }
-        
-        function showResultControls() {
-            if (resultsTable.style.display === 'none') {
-                resultsTable.style.display = 'table';
-            }
-            if (downloadBtn.style.display === 'none') {
-                downloadBtn.style.display = 'block';
-            }
-        }
-
-        function addResultRow(url, summary) {
-            showResultControls();
-            const row = resultsBody.insertRow();
-            const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-
-            cell1.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
-            const summaryDiv = document.createElement('div');
-            summaryDiv.className = 'summary-content';
-            summaryDiv.innerHTML = formatForDisplay(summary);
-            cell2.appendChild(summaryDiv);
-        }
-        
-        function addErrorRow(url, errorMessage) {
-            showResultControls();
-            const row = resultsBody.insertRow();
-            row.style.backgroundColor = "#FFD2D2";
-            const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-            
-            cell1.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
-            cell2.innerHTML = `<b>خاتالىق:</b> ${errorMessage}`;
-        }
-
-        function downloadResultsAsText() {
-            let textContent = "";
-            
-            for (const row of resultsBody.rows) {
-                const url = row.cells[0].innerText;
-                const summary = row.cells[1].innerText;
-                
-                textContent += "==================================================\n";
-                textContent += `ئۇلانما: ${url}\n`;
-                textContent += "==================================================\n\n";
-                textContent += `${summary}\n\n\n`;
+                setVoiceAndSpeak(voices, voiceLang, voiceName);
             }
 
-            if (textContent === "") {
-                alert("چۈشۈرگۈدەك نەتىجە يوق!");
-                return;
-            }
-
-            // Create filename with timestamp
-            const date = new Date();
-            const timestamp = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}-${String(date.getSeconds()).padStart(2, '0')}`;
-            const filename = `خۇلاسە_نەتىجىلىرى_${timestamp}.txt`;
-
-            // Create a blob and trigger download
-            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        } else {
+            alert('سىزنىڭ تور كۆرگۈچىڭىز ئاۋازلىق ئوقۇشنى قوللىمايدىكەن. Microsoft Edge دا سىناپ بېقىڭ.');
         }
-    </script>
+    }
+
+    function setVoiceAndSpeak(voices, lang, name) {
+        let selectedVoice = voices.find(voice => voice.lang === lang && (name ? voice.name.includes(name) : true));
+        if (!selectedVoice) {
+            selectedVoice = voices.find(voice => voice.lang === lang);
+        }
+
+        if(currentUtterance) {
+            currentUtterance.voice = selectedVoice;
+            speechSynthesis.speak(currentUtterance);
+        }
+    }
+
+    function convertUyghurToULY(text) {
+        const UY_TO_ULY_MAP = { 'ا': 'a', 'ە': 'e', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ج': 'j', 'چ': 'ch', 'خ': 'x', 'د': 'd', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'گ': 'g', 'ڭ': 'ng', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ھ': 'h', 'و': 'o', 'ۇ': 'u', 'ۆ': 'o', 'ۈ': 'u', 'ي': 'y', 'ۋ': 'v', 'ې': 'e', 'ى': 'i', 'ئ': '', '؟': '?' };
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            result += UY_TO_ULY_MAP[char] !== undefined ? UY_TO_ULY_MAP[char] : char;
+        }
+        return result;
+    }
+
+    function convertUyghurToULYTurk(text) {
+        const UY_TO_ULY_MAPT = { 'ا': 'a', 'ە': 'e', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ج': 'c', 'چ': 'ç', 'خ': 'h', 'د': 'd', 'ر': 'r', 'ز': 'z', 'ژ': 'j', 'س': 's', 'ش': 'ş', 'غ': 'ğ', 'ف': 'f', 'ق': 'k', 'ك': 'k', 'گ': 'g', 'ڭ': 'n', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ھ': 'h', 'و': 'o', 'ۇ': 'u', 'ۆ': 'ö', 'ۈ': 'ü', 'ي': 'y', 'ۋ': 'v', 'ې': 'e', 'ى': 'i', 'ئ': '', '؟': '?' };
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            result += UY_TO_ULY_MAPT[char] !== undefined ? UY_TO_ULY_MAPT[char] : char;
+        }
+        return result;
+    }
+
+</script>
 </body>
 </html>
