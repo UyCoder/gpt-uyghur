@@ -5,6 +5,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* --- Styles for Modal --- */
+        #translator-selection-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            direction: rtl;
+        }
+
+        #translator-selection-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 500px;
+            font-family: 'UKIJ Ekran', 'Arial', sans-serif;
+            text-align: center;
+        }
+
+        #translator-selection-content h2 {
+            font-family: 'ALKATIP Tor', 'UKIJ Ekran';
+            color: #1e88e5;
+            margin-bottom: 20px;
+        }
+
+        .translator-option {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        #gemini-key-container {
+            margin-top: 15px;
+            display: none; /* Initially hidden */
+        }
+        
+        #gemini-api-key {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            direction: ltr;
+            text-align: left;
+        }
+
+        #start-app-btn {
+            background-color: #1e88e5;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2em;
+            font-family: 'ALKATIP Tor', 'UKIJ Ekran';
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        #start-app-btn:hover {
+            background-color: #0d47a1;
+        }
+
+        /* --- Original Styles --- */
         @font-face {
             font-family: 'UKIJ Ekran';
             src: url('https://raw.githubusercontent.com/UyCoder/paydilar/master/fonts/ALKATIP-TOR.woff') format('woff');;
@@ -28,6 +98,10 @@
             background-color: #f0f2f5;
             color: #333;
             direction: rtl;
+        }
+        
+        #main-app {
+            display: none; /* Hide main content initially */
         }
 
         header {
@@ -53,23 +127,40 @@
             max-width: 1400px;
             margin: 20px auto;
         }
+        
+        #news-container.news-container-ltr {
+            direction: ltr;
+        }
 
         .news-item {
             background: #fff;
             margin: 15px;
-            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             width: calc(33% - 40px);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             transition: all 0.3s ease;
+            overflow: hidden; 
+        }
+        
+        .news-item-content {
+             padding: 20px;
+             display: flex;
+             flex-direction: column;
+             justify-content: space-between;
+             flex-grow: 1;
         }
 
         .news-item:hover {
             transform: translateY(-10px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .news-item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
 
         .news-item h2 {
@@ -92,6 +183,8 @@
             margin: 0 0 15px;
             line-height: 1.6;
             font-size: 1.1em;
+            flex-grow: 1;
+            text-align: justify;
         }
 
         .pub-date {
@@ -102,15 +195,18 @@
             font-style: italic;
         }
 
-        .category-tabs {
-            display: flex;
-            justify-content: center;
+        .category-tabs-container {
             background-color: #fff;
             padding: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
+        }
+        
+        .category-tabs {
+            display: flex;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
@@ -132,173 +228,284 @@
             color: #fff;
             transform: scale(1.05);
         }
+        
+        #mobile-nav-container { display: none; text-align: center; padding: 10px; }
+        #mobile-category-select { width: 80%; padding: 10px; font-family: 'ALKATIP Tor', 'UKIJ Ekran', 'Arial', sans-serif; font-size: 1.1em; border-radius: 10px; border: 1px solid #ccc; }
+        
+        #tts-controls-container { background-color: #333; color: white; padding: 20px; margin-top: 20px; text-align: center; border-radius: 10px; box-shadow: 0 -4px 6px rgba(0,0,0,0.1); }
+        #tts-controls-container button { border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; font-family: 'ALKATIP Tor'; font-size: 1em; }
+        #speakAllBtn { background-color: #009b74; color: white; }
+        #saveBtn { background-color: #1e88e5; color: white; }
+        #stopBtn { background-color: #d9534f; color: white; }
+        #tts-controls-container select { background-color: white; color: black; font-family: 'ALKATIP Tor'; height: 40px; width: auto; padding: 5px; margin: 5px; border-radius: 5px; }
 
-        @media (max-width: 1200px) {
-            .news-item {
-                width: calc(50% - 40px);
-            }
+        /* --- Footer Styles --- */
+        .site-footer-container {
+            background-color: #f0f2f5;
+            color: #f0f2f5;
+            padding: 40px 20px;
+            margin-top: 30px;
+            text-align: center;
+            font-family: 'UKIJ Ekran', Arial, sans-serif;
+        }
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .footer-logo {
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 1em;
+            line-height: 1.7;
+            margin: 10px 0 20px;
+            color: #4b4b4b;
+        }
+        .social-links-section {
+            margin-top: 20px;
+        }
+        .social-title {
+            font-family: 'ALKATIP Tor', 'UKIJ Ekran';
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #4b4b4b;
+        }
+        .social-icon-group a {
+            margin: 0 10px;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .social-icon-group a:hover {
+            transform: scale(1.1);
         }
 
-        @media (max-width: 768px) {
-            .news-item {
-                width: calc(100% - 40px);
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            .category-tab {
-                padding: 10px 20px;
-                font-size: 1em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .category-tab {
-                padding: 8px 16px;
-                font-size: 0.9em;
-            }
-        }
+        @media (max-width: 1200px) { .news-item { width: calc(50% - 40px); } }
+        @media (max-width: 768px) { .news-item { width: calc(100% - 40px); } h1 { font-size: 2em; } .category-tabs { display: none; } #mobile-nav-container { display: block; } }
+        @media (max-width: 480px) { h1 { font-size: 1.8em; } }
     </style>
 </head>
 <body>
-<header>
-    <h1>ئەڭ يېڭى خەۋەرلەر</h1>
-</header>
-<div class="category-tabs">
-    <button class="category-tab active" data-category="world">TRT دۇنيا</button>
-    <button class="category-tab" data-category="sport">ئۇيغۇر ئاگېنتلىقى</button>
-    <button class="category-tab" data-category="science">UyghurNet</button>
-    <button class="category-tab" data-category="tech">نيۇيورك تايمىس</button>
-    <button class="category-tab" data-category="china">خىتتاي ھەققىدە</button>
-    <button class="category-tab" data-category="business" id="business-tab"> خىتاي زۇۋانىدىن خەۋەرلەر</button>
+
+<!-- Translator Selection Modal -->
+<div id="translator-selection-modal">
+    <div id="translator-selection-content">
+        <h2>تەرجىمە ئۇسۇلىنى تاللاڭ</h2>
+        <p>خەۋەرلەر ئەسلى ئېنگىلىزچە بولۇپ، سىز تاللىغان ئۇسۇل بويىچە كۆرسىتىلىدۇ.</p>
+        
+        <div class="translator-option">
+            <label> <input type="radio" name="translator" value="original"> ئەسلى تىلدا (ئېنگىلىزچە) كۆرسىتىش </label>
+        </div>
+        <div class="translator-option">
+            <label> <input type="radio" name="translator" value="google" checked> Google تەرجىمانى (تېز ۋە ھەقسىز) </label>
+        </div>
+        <div class="translator-option">
+            <label> <input type="radio" name="translator" value="niutrans"> NiuTrans تەرجىمانى (سۈپىتى ياخشىراق) </label>
+        </div>
+        <div class="translator-option">
+            <label> <input type="radio" name="translator" value="gemini"> Google Gemini (ئەڭ ياخشى سۈپەت، API ئاچقۇچى كېرەك) </label>
+			<label style="font-size: 15px; font-style: italic; color: grey" >تۆۋەندىكىلەردىن بىرىنى سىناپ باقسىڭىز بولىدۇ:</label>
+			<label style="font-size: 15px; color: grey">AIzaSyCkpkBDY_HmxOQIwEmILG6M-9t2ek6kObU</label>
+			<label style="font-size: 15px; color: grey">AIzaSyCJVkxlcjZ0bhH_RuSeQfJ2mUhpo5eSBt4</label>			
+			<label style="font-size: 15px; color: grey">AIzaSyD5R8LACkmHhs5oGin7Bgw4x5TrRSLX9so</label>			
+			<label style="font-size: 15px; color: grey">AIzaSyAx4RBhcktpftd5m-SYf0RYlDipkW4jsh0</label>	
+        </div>
+
+        <div id="gemini-key-container">
+            <label for="gemini-api-key">Gemini API ئاچقۇچىڭىزنى كىرگۈزۈڭ:</label>
+            <input type="password" id="gemini-api-key" placeholder="Enter your Gemini API Key">
+            <p style="font-size:0.8em; color:#777;">ئاچقۇچنى <a href="https://aistudio.google.com/app/apikey" target="_blank">بۇ يەردىن</a> ئالالايسىز.</p>
+        </div>
+        
+        <button id="start-app-btn">خەۋەرلەرنى كۆرۈش</button>
+    </div>
 </div>
-<p style='text-align:center; width: 100%; display: block;'>
-    خەۋەرلەر ئەسلى ئېنگىلىزچە بولۇپ، گۇگېل تەرجىمان بىلەنلا ئۇيغۇرچىغا تەرجىمە قىلىندى. شۇڭا بەزى ئىملا ۋە مەزمۇن خاتالىقى كۆرىلىشى مۇمكىن.
-</p>
 
-<div id="news-container"></div>
+<!-- Main Application Content -->
+<div id="main-app">
+    <header>
+        <h1>ئەڭ يېڭى خەۋەرلەر</h1>
+    </header>
+    <div class="category-tabs-container">
+        <div class="category-tabs">
+            <button class="category-tab active" data-category="sana">SANA</button>
+            <button class="category-tab" data-category="foreignAffairs">Foreign Affairs</button>
+            <button class="category-tab" data-category="foreignPolicy">Foreign Policy</button>
+            <button class="category-tab" data-category="financialTimes">Financial Times</button>
+            <button class="category-tab" data-category="bbcWorld">BBC دۇنيا</button>
+            <button class="category-tab" data-category="bbcPolitics">BBC سىياسەت</button>
+            <button class="category-tab" data-category="wsj">WSJ World News</button>
+            <button class="category-tab" data-category="cnn">CNN</button>
+            <button class="category-tab" data-category="politico">Politico</button>
+            <button class="category-tab" data-category="alMonitor">Al-Monitor</button>
+            <button class="category-tab" data-category="uyghurTimes">ئۇيغۇر ئاگېنتلىقى</button>
+            <button class="category-tab" data-category="uyghurNet">UyghurNet</button>
+            <button class="category-tab" data-category="scmp">خىتتاي ھەققىدە</button>
+            <button class="category-tab" data-category="cgtnChina">CGTN خىتاي</button>
+            <button class="category-tab" data-category="googleNews">Google News</button>
+            <button class="category-tab" data-category="business" id="business-tab">خىتاي زۇۋانىدىن</button>
+        </div>
+        <div id="mobile-nav-container">
+            <label for="mobile-category-select">خەۋەر مەنبەسىنى تاللاڭ:</label>
+            <select id="mobile-category-select">
+                <option value="sana">SANA</option>
+                <option value="foreignAffairs">Foreign Affairs</option>
+                <option value="foreignPolicy">Foreign Policy</option>
+                <option value="bbcWorld">BBC دۇنيا</option>
+                <option value="financialTimes">Financial Times</option>
+                <option value="bbcPolitics">BBC سىياسەت</option>
+                <option value="cnn">CNN</option>
+                <option value="politico">Politico</option>
+                <option value="wsj">WSJ World News</option>
+                <option value="alMonitor">Al-Monitor</option>
+                <option value="uyghurTimes">ئۇيغۇر ئاگېنتلىقى</option>
+                <option value="uyghurNet">UyghurNet</option>
+                <option value="scmp">خىتتاي ھەققىدە</option>
+                <option value="cgtnChina">CGTN خىتاي</option>
+                <option value="googleNews">Google News</option>
+                <option value="business">خىتاي زۇۋانىدىن</option>
+            </select>
+        </div>
+    </div>
+    <p id="info-message" style='text-align:center; width: 100%; display: block;'>
+        خەۋەرلەر ئەسلى ئېنگىلىزچە بولۇپ، تەرجىمان API بىلەنلا ئۇيغۇرچىغا تەرجىمە قىلىندى. شۇڭا بەزى ئىملا ۋە مەزمۇن خاتالىقى كۆرۈلىشى مۇمكىن.
+    </p>
+
+    <div id="news-container"></div>
+
+    <!-- ئاۋازلىق ئوقۇش كونترول قوراللىرى -->
+    <div id="tts-controls-container" style="display: none;">
+        <h3>بارلىق خەۋەرلەرنى ئاۋازلىق ئاڭلاش</h3>
+        <label for="language">ئاۋازنى تاللاڭ:</label>
+        <select id="language">
+            <option value="ug-UG0">ئۇيغۇرچە (ئەر تۈركچە)</option>
+            <option value="ug-UG1">ئۇيغۇرچە (ئەر ئۆزبېكچە)</option>
+            <option value="ug-UG">ئۇيغۇرچە (ئايال ئۆزبېكچە)</option>
+            <option value="multi-lingual">ئاممىباب ئاۋاز</option>
+            <option value="en-US-male">ئامېرىكا (ئەر)</option>
+        </select>
+        <label for="rate">سۈرئەتنى تاللاڭ:</label>
+        <select id="rate">
+            <option value="1.0">1x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2.0">2.0x</option>
+            <option value="0.75">0.75x</option>
+            <option value="0.5">0.5x</option>
+        </select>
+        <button id="speakAllBtn">بارلىق خەۋەرلەرنى ئوقۇ</button>
+        <button id="saveBtn">خەۋەرلەرنى ساقلا</button>
+        <button id="stopBtn">توختات</button>
+    </div>
+
+    <p style='text-align:center; width: 100%; display: block; padding: 20px;'>ئەسكەرتىش: كۆپ قېتىم يېڭىلاۋەرسىڭىز كۈندىلىك تەرجىمە سانى توشۇپ قالىدۇ ۋە خاتالىق كۆرۈلىدۇ.</p>
+
+    <footer class="site-footer-container">
+        <div class="footer-content">
+            <a href="#" title="Bilik Research Center Home">
+                <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/Biliklogo.png" alt="Bilik Research Center Logo" class="footer-logo" height="100">
+            </a>
+            <p class="description">
+                بۇ كىچىك قۇرال «بىلىك تەتقىقات مەركىزى» تەرىپىدىن يېزىلدى.
+            </p>
+            <p class="description">
+                بىلىك تەتقىقات مەركىزى شەرقىي تۈركىستانلىقلارنىڭ ئۆز كىملىكىدە مەۋجۇدلۇقىنى ساقلىشى ۋە دۆلەتچىلىك ئىدىيىسىدە تەرەققىي قىلىشى ئۈچۈن تەتقىقات ئېلىپ بارىدۇ.
+            </p>
+            <div class="social-links-section">
+                <h4 class="social-title">مېنى بۇ يەردىن ئىزدەڭ</h4>
+                <div class="social-icon-group">
+                    <a href="https://uycoder.github.io/paydilar/" target="_blank" rel="noopener noreferrer" title="Paydilar"><img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png" alt="Paydilar Icon" height="25"></a>
+                    <a href="https://www.linkedin.com/in/ahmed-bughra/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/LinkedIn.svg" alt="LinkedIn" height="25"></a>
+                    <a href="https://github.com/Uycoder" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/github.svg" alt="GitHub" height="25"></a>
+                    <a href="https://www.hackerrank.com/ahmedbughra" target="_blank" rel="noopener noreferrer" title="HackerRank"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/hackerrank.svg" alt="HackerRank" height="25"></a>
+                    <a href="https://stackoverflow.com/users/16111723/ahmad-ali" target="_blank" rel="noopener noreferrer" title="Stack Overflow"><img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/Stack_Overflow.svg" alt="Stack Overflow" height="25"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
 <script>
-    const RSS_FEEDS = {
-        world: 'https://www.trt.net.tr/uyghur/all.rss',
-        sport: 'https://uyghur.uyghurtimes.com/feed/',
-        science: 'https://www.uyghurnet.org/ug/feed/',
-        tech: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
-        china: 'https://www.scmp.com/rss/4/feed',
-        business: ''
-    };
+    // --- GLOBAL VARIABLES & CONFIG ---
+    let selectedTranslator = 'google'; 
+    let geminiApiKey = '';
+    const RSS_FEEDS = { sana: 'https://sana.sy/en/?feed=rss2', googleNews: 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US:en', bbcWorld: 'https://feeds.bbci.co.uk/news/world/rss.xml', bbcPolitics: 'https://feeds.bbci.co.uk/news/politics/rss.xml', cnn: 'http://rss.cnn.com/rss/cnn_topstories.rss', foreignAffairs: 'https://www.foreignaffairs.com/rss.xml', foreignPolicy: 'https://foreignpolicy.com/feed/', politico: 'https://rss.politico.com/politics-news.xml', randPubs: 'https://www.rand.org/pubs/new.xml', randCommentary: 'https://www.rand.org/pubs/commentary.xml', financialTimes: 'https://www.ft.com/world?format=rss', wsj: 'https://feeds.content.dowjones.io/public/rss/RSSWorldNews', asiaTimes: 'https://asiatimes.com/feed/', theDiplomat: 'https://thediplomat.com/feed/', alMonitor: 'https://rss.art19.com/the-al-monitor-brief', yahoo: 'https://news.yahoo.com/rss/world', guardian: 'https://www.theguardian.com/us-news/rss', nationalReview: 'https://www.nationalreview.com/feed/', newYorker: 'https://www.newyorker.com/feed/news', uyghurTimes: 'https://uyghur.uyghurtimes.com/feed/', uyghurNet: 'https://www.uyghurnet.org/ug/feed/', scmp: 'https://www.scmp.com/rss/4/feed', cgtnWorld: 'https://www.cgtn.com/subscribe/rss/section/world.xml', cgtnChina: 'https://www.cgtn.com/subscribe/rss/section/china.xml', business: '' };
+    let allNewsTextToRead = '';
+    let currentUtterance = null;
+    
+    // DOM Elements
+    const mainApp = document.getElementById('main-app');
+    const newsContainer = document.getElementById('news-container');
+    const infoMessage = document.getElementById('info-message');
+    const translatorSelectionModal = document.getElementById('translator-selection-modal');
+    const startAppBtn = document.getElementById('start-app-btn');
+    const geminiKeyContainer = document.getElementById('gemini-key-container');
+    const geminiApiKeyInput = document.getElementById('gemini-api-key');
+    const ttsControlsContainer = document.getElementById('tts-controls-container');
+    const languageSelect = document.getElementById('language');
+    const rateSelect = document.getElementById('rate');
+    const speakAllBtn = document.getElementById('speakAllBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const mobileCategorySelect = document.getElementById('mobile-category-select');
 
-    async function translateText(text, targetLanguage = 'ug') {
-        const sourceLang = 'en'; // Assuming the source language is English
-        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLanguage}`;
+    function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+    // --- TRANSLATION FUNCTIONS ---
+    async function translateWithMyMemory(text, targetLanguage) { if (!text || text.trim() === '') return text; const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLanguage}`; try { const response = await fetch(url); if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); } const data = await response.json(); return data.responseData.translatedText; } catch (error) { console.error('Error with MyMemory translation:', error); if (error.message.includes('429')) { return `[MyMemory تەلەپ چەكتىن ئاشتى، قايتا سىناڭ] ${text}`; } return `[MyMemory تەرجىمە خاتالىقى] ${text}`; } }
+    async function translateWithNiuTrans(text, targetLanguage) { if (!text || text.trim() === '') return text; const niuTransTargetLang = 'uy'; const apiKey = 'a8a17df6e4a80b5fbe84f12096353df8'; const apiUrl = `https://api.niutrans.com/NiuTransServer/translation?from=en&to=${niuTransTargetLang}&apikey=${apiKey}&src_text=${encodeURIComponent(text)}`; const proxyUrl = 'https://corsproxy.io/?'; try { const response = await fetch(proxyUrl + encodeURIComponent(apiUrl)); if (!response.ok) { const errorText = await response.text(); throw new Error(`NiuTrans HTTP error! Status: ${response.status}. Response: ${errorText}`); } const data = await response.json(); if (data && data.tgt_text) { return data.tgt_text; } else { throw new Error(data.error_msg || 'Unknown NiuTrans error in response data'); } } catch (error) { console.error('Error with NiuTrans translation:', error); return `[NiuTrans تەرجىمە خاتالىقى: ${error.message}] ${text}`; } }
+    async function translateWithGemini(text, targetLanguage) { if (!text || text.trim() === '') return text; if (!geminiApiKey) { console.error("Gemini API Key is not set."); return `[Gemini ئاچقۇچى يوق] ${text}`; } const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`; const prompt = `Translate the following English text to Uyghur (using Arabic script). Be accurate and natural. Do not add any extra explanations, just provide the translation.\n\nEnglish Text: "${text}"\n\nUyghur Translation:`; const requestBody = { contents: [{ parts: [{ "text": prompt }] }], safetySettings: [ { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" }, { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" }, { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" }, { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }, ] }; try { const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(requestBody) }); if (!response.ok) { const errorData = await response.json(); throw new Error(`Gemini API Error (${response.status}): ${errorData.error.message}`); } const data = await response.json(); if (!data.candidates || data.candidates.length === 0) { if (data.promptFeedback && data.promptFeedback.blockReason) { console.error("Gemini prompt blocked:", data.promptFeedback.blockReason); return `[Gemini تەرىپىدىن مەزمۇن چەكلەندى: ${data.promptFeedback.blockReason}]`; } return `[Gemini دىن جاۋاب قايتمىدى] ${text}`; } return data.candidates[0].content.parts[0].text.trim(); } catch (error) { console.error('Error with Gemini translation:', error); return `[Gemini تەرجىمە خاتالىقى: ${error.message}]`; } }
+    async function translateText(text, targetLanguage = 'ug') { switch (selectedTranslator) { case 'niutrans': return await translateWithNiuTrans(text, targetLanguage); case 'gemini': return await translateWithGemini(text, targetLanguage); case 'google': default: return await translateWithMyMemory(text, targetLanguage); } }
 
-            if (data.responseStatus === 200) {
-                return data.responseData.translatedText;
-            } else {
-                console.warn('Translation might not be accurate:', data.responseDetails);
-                return data.responseData.translatedText;
-            }
-        } catch (error) {
-            console.error('Error translating text:', error);
-            return text; // Return original text if translation fails
-        }
-    }
+    function displayNewsItem(container, item, displayedTitle, displayedDescription) { const fullContent = `Title: ${displayedTitle}\nContent: ${displayedDescription}\n\n`; allNewsTextToRead += fullContent; const newsItem = document.createElement('div'); newsItem.classList.add('news-item'); const imageUrl = (item.enclosure && item.enclosure.link && item.enclosure.type.startsWith('image')) ? item.enclosure.link : item.thumbnail; if(imageUrl){ const img = document.createElement('img'); img.src = imageUrl; img.alt = displayedTitle; img.classList.add('news-item-image'); newsItem.appendChild(img); } const contentDiv = document.createElement('div'); contentDiv.classList.add('news-item-content'); const newsTitle = document.createElement('h2'); const newsLink = document.createElement('a'); newsLink.href = item.link; newsLink.target = '_blank'; newsLink.textContent = displayedTitle; newsTitle.appendChild(newsLink); const newsDescriptionElem = document.createElement('p'); if (selectedTranslator === 'original') { newsDescriptionElem.style.fontFamily = 'Arial, sans-serif'; newsTitle.style.fontFamily = 'Arial, sans-serif'; } newsDescriptionElem.textContent = displayedDescription; const newsPubDate = document.createElement('p'); newsPubDate.textContent = new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); newsPubDate.classList.add('pub-date'); contentDiv.appendChild(newsTitle); contentDiv.appendChild(newsDescriptionElem); contentDiv.appendChild(newsPubDate); newsItem.appendChild(contentDiv); container.appendChild(newsItem); }
 
-    async function fetchNews(category) {
-        try {
-            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEEDS[category])}`);
-            const data = await response.json();
-            const newsContainer = document.getElementById('news-container');
-            newsContainer.innerHTML = '';
+    async function fetchNews(category) { const loadingMessage = selectedTranslator !== 'original' ? 'خەۋەرلەر يۈكلىنىۋاتىدۇ، تاللىغان ماتوردا تەرجىمە قىلىنىۋاتىدۇ...' : 'Loading news...'; newsContainer.innerHTML = `<p style="font-size: 1.5em;">${loadingMessage}</p>`; allNewsTextToRead = ''; ttsControlsContainer.style.display = 'none'; if (selectedTranslator === 'original') { newsContainer.classList.add('news-container-ltr'); mainApp.style.direction = 'ltr'; infoMessage.style.display = 'none'; } else { newsContainer.classList.remove('news-container-ltr'); mainApp.style.direction = 'rtl'; infoMessage.style.display = 'block'; } try { const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_FEEDS[category])}`); const data = await response.json(); if (data.items && data.items.length > 0) { newsContainer.innerHTML = ''; allNewsTextToRead = `--- خەۋەر ${category.toUpperCase()} ---\n\n`; const limitedItems = data.items.slice(0, 6); for (const item of limitedItems) { const title = item.title || ''; const description = item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 250) + '...' : ''; if (selectedTranslator === 'original') { displayNewsItem(newsContainer, item, title, description); } else { try { const [translatedTitle, translatedDescription] = await Promise.all([ translateText(title), translateText(description) ]); displayNewsItem(newsContainer, item, translatedTitle, translatedDescription); } catch (e) { console.error("Error translating a single news item:", e); displayNewsItem(newsContainer, item, `[تەرجىمە مەغلۇپ بولدى] ${title}`, description); } if (selectedTranslator === 'gemini') { await delay(4100); } else { await delay(500); } } } ttsControlsContainer.style.display = 'block'; } else { newsContainer.innerHTML = '<p>بۇ كاتېگورىيەدە خەۋەر يوق.</p>'; } } catch (error) { console.error('Error fetching or processing news:', error); newsContainer.innerHTML = '<p>خەۋەرلەرنى يۈكلەشتە ياكى تەرجىمە قىلىشتا خاتالىق كۆرۈلدى. تورىڭىزنى تەكشۈرۈپ قايتا سىناڭ.</p>'; } }
+    
+    function speakAllNews() {
+        if (!allNewsTextToRead.length) { alert('ئاۋازلىق ئوقۇيدىغان مەزمۇن يوق!'); return; }
+        if ('speechSynthesis' in window) {
+            if (speechSynthesis.speaking) speechSynthesis.cancel();
+            const lang = languageSelect.value;
+            let textToSpeak = allNewsTextToRead;
 
-            if (data.items && data.items.length > 0) {
-                for (const item of data.items) {
-                    const translatedTitle = await translateText(item.title);
-                    const translatedDescription = await translateText(item.description.replace(/<[^>]*>/g, '').substring(0, 200) + '...');
-
-                    const newsItem = document.createElement('div');
-                    newsItem.classList.add('news-item');
-
-                    const newsTitle = document.createElement('h2');
-                    const newsLink = document.createElement('a');
-                    newsLink.href = item.link;
-                    newsLink.textContent = translatedTitle;
-                    newsTitle.appendChild(newsLink);
-
-                    const newsDescription = document.createElement('p');
-                    newsDescription.textContent = translatedDescription;
-
-                    const newsPubDate = document.createElement('p');
-                    newsPubDate.textContent = new Date(item.pubDate).toLocaleDateString('ug-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-                    newsPubDate.classList.add('pub-date');
-
-                    newsItem.appendChild(newsTitle);
-                    newsItem.appendChild(newsDescription);
-                    newsItem.appendChild(newsPubDate);
-
-                    newsContainer.appendChild(newsItem);
+            if (selectedTranslator !== 'original') {
+                if (lang.startsWith('ug-UG') || lang === 'multi-lingual') { 
+                    textToSpeak = lang === 'ug-UG' ? convertUyghurToULY(allNewsTextToRead) : convertUyghurToULYTurk(allNewsTextToRead);
                 }
-            } else {
-                newsContainer.innerHTML = '<p>بۇ كاتېگورىيەدە خەۋەر يوق.</p>';
             }
-        } catch (error) {
-            console.error('Error fetching or translating news:', error);
-            document.getElementById('news-container').innerHTML = '<p>خەۋەرلەرنى يۈكلەشتە ياكى تەرجىمە قىلىشتا خاتالىق كۆرۈلدى. قايتا سىناڭ.</p>';
-        }
+            
+            currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
+            currentUtterance.rate = parseFloat(rateSelect.value);
+            const voices = speechSynthesis.getVoices();
+
+            // *** ئوڭشالغان ئاۋاز تاللاش لوگىكىسى ***
+            if (lang === 'ug-UG') { currentUtterance.voice = voices.find(v => v.lang === 'uz-UZ' && v.name.includes('Madina')); } 
+            else if (lang === 'ug-UG0') { currentUtterance.voice = voices.find(v => v.lang === 'tr-TR'); } 
+            else if (lang === 'ug-UG1') { currentUtterance.voice = voices.find(v => v.lang === 'uz-UZ' && v.name.includes('Sardor')); } 
+            else if (lang === 'multi-lingual') { currentUtterance.voice = voices.find(v => v.name === 'English (United States) (en-US)' || v.name.includes('Multilingual')); } 
+            else if (lang === 'multi-lingual') { currentUtterance.voice = voices.find(v => v.lang === 'English (United States) (en-US)' && !v.name.includes('Female') && !v.name.includes('Multilingual ')); } 
+            else { currentUtterance.voice = voices.find(v => v.lang === lang); } // Fallback
+
+            speechSynthesis.speak(currentUtterance);
+        } else { alert('سىزنىڭ تور كۆرگۈچىڭىز ئاۋازلىق ئوقۇشنى قوللىمايدىكەن.'); }
     }
 
-    document.querySelectorAll('.category-tab').forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            document.querySelector('.category-tab.active').classList.remove('active');
-            e.target.classList.add('active');
-            fetchNews(e.target.dataset.category);
-        });
-    });
+    function saveNewsAsText() { if (!allNewsTextToRead.trim()) { alert('ساقلايدىغان مەزمۇن يوق!'); return; } const activeTab = document.querySelector('.category-tab.active'); const category = activeTab ? activeTab.dataset.category : mobileCategorySelect.value; const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); const filename = `${category}-${timestamp}.txt`; const blob = new Blob([allNewsTextToRead], { type: 'text/plain;charset=utf-8' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = filename; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
+    function stopReading() { if ('speechSynthesis' in window) { speechSynthesis.cancel(); } }
+    function convertUyghurToULY(text) { const UY_TO_ULY_MAP = {'ا': 'a','ە': 'e','ب': 'b','پ': 'p','ت': 't','ج': 'j','چ': 'ch','خ': 'x','د': 'd','ر': 'r','ز': 'z','ژ': 'zh','س': 's','ش': 'sh','غ': 'gh','ف': 'f','ق': 'q','ك': 'k','گ': 'g','ڭ': 'ng','ل': 'l','م': 'm','ن': 'n','ھ': 'h','و': 'o','ۇ': 'u','ۆ': 'o','ۈ': 'u','ي': 'y','ۋ': 'v','ې': 'e','ى': 'i','ئ': '','؟': '?'}; let result = ''; for (let i = 0; i < text.length; i++) result += UY_TO_ULY_MAP[text[i]] || text[i]; return result; }
+    function convertUyghurToULYTurk(text) { const UY_TO_ULY_MAPT = {'ا': 'a','ە': 'e','ب': 'b','پ': 'p','ت': 't','ج': 'c','چ': 'ç','خ': 'hh','د': 'd','ر': 'r','ز': 'z','ژ': 'j','س': 's','ش': 'ş','غ': 'gh','ف': 'f','ق': 'k','ك': 'k','گ': 'g','ڭ': 'n','ل': 'l','م': 'm','ن': 'n','ھ': 'h','و': 'o','ۇ': 'u','ۆ': 'ö','ۈ': 'ü','ي': 'y','ۋ': 'v','ې': 'e','ى': 'i','ئ': '','؟': '?'}; let result = ''; for (let i = 0; i < text.length; i++) result += UY_TO_ULY_MAPT[text[i]] || text[i]; return result; }
 
-    document.getElementById('business-tab').addEventListener('click', () => {
-        window.location.href = 'https://uycoder.github.io/paydilar/news/UyghurNews-FromCHineseRss.html';
-    });
-
-    fetchNews('world');
+    // --- EVENT LISTENERS ---
+    document.querySelectorAll('input[name="translator"]').forEach(radio => { radio.addEventListener('change', (e) => { geminiKeyContainer.style.display = e.target.value === 'gemini' ? 'block' : 'none'; }); });
+    startAppBtn.addEventListener('click', () => { selectedTranslator = document.querySelector('input[name="translator"]:checked').value; if (selectedTranslator === 'gemini') { geminiApiKey = geminiApiKeyInput.value.trim(); if (!geminiApiKey) { alert('Gemini تاللانغان بولسا، چوقۇم API ئاچقۇچىنى كىرگۈزۈڭ!'); return; } } translatorSelectionModal.style.display = 'none'; mainApp.style.display = 'block'; fetchNews('sana'); });
+    speakAllBtn.addEventListener('click', speakAllNews);
+    saveBtn.addEventListener('click', saveNewsAsText);
+    stopBtn.addEventListener('click', stopReading);
+    document.querySelectorAll('.category-tab').forEach(tab => { tab.addEventListener('click', (e) => { stopReading(); const activeTab = document.querySelector('.category-tab.active'); if(activeTab) activeTab.classList.remove('active'); e.target.classList.add('active'); const category = e.target.dataset.category; mobileCategorySelect.value = category; fetchNews(category); }); });
+    mobileCategorySelect.addEventListener('change', (e) => { stopReading(); const category = e.target.value; const activeTab = document.querySelector('.category-tab.active'); if(activeTab) activeTab.classList.remove('active'); const newActiveTab = document.querySelector(`.category-tab[data-category="${category}"]`); if(newActiveTab) newActiveTab.classList.add('active'); if (category === 'business') { window.location.href = 'https://uycoder.github.io/paydilar/news/UyghurNews-FromCHineseRss.html'; } else { fetchNews(category); } });
+    document.getElementById('business-tab').addEventListener('click', () => { window.location.href = 'https://uycoder.github.io/paydilar/news/UyghurNews-FromCHineseRss.html'; });
+    speechSynthesis.onvoiceschanged = () => { console.log("ئاۋازلار يۈكلەندى."); };
 </script>
 
-<p style='text-align:center; width: 100%; display: block;'>ئەسكەرتىش: كۆپ قېتىم يېڭىلاۋەرسىڭىز كۈندىلىك تەرجىمە سانى توشۇپ قالىدۇ ۋە ئەسلى ئېنگىلىزچە خەۋەر كۆرۈنىدۇ.
-
-    <br>
-    <br>
-    <ba id="contact">مېنى بۇ يەردىن ئىزدەڭ</ba>
-    <a href="https://uycoder.github.io/paydilar/">
-        <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png"
-             height="25">
-    </a>
-    <a href="https://www.linkedin.com/in/ahmed-bughra/">
-        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/LinkedIn.svg"
-             alt="linkedin" height="25">
-    </a>
-    <a href="https://github.com/Uycoder">
-        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/github.svg"
-             alt="github" height="25">
-    </a>
-    <a href="https://www.hackerrank.com/ahmedbughra">
-        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/hackerrank.svg"
-             alt="hackerrank" height="25">
-    </a>
-    <a href="https://stackoverflow.com/users/16111723/ahmad-ali">
-        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/Stack_Overflow.svg"
-             alt="stackoverflow" height="25">
-    </a>
-</p>
 </body>
 </html>

@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="تۈزىتىلدى">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +45,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Javad/IdeaProjects/gpt-uyghur&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Javad/IdeaProjects/gpt-uyghur/Tools&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -57,8 +56,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur" />
       <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\Tools" />
+      <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur" />
       <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\TrasnlateWithXiaoNiu" />
       <recent name="C:\Users\Javad\IdeaProjects\gpt-uyghur\useGoogleTranslate" />
     </key>
@@ -154,21 +153,10 @@
       <workItem from="1751193380954" duration="94000" />
       <workItem from="1751193610632" duration="12000" />
       <workItem from="1751203132641" duration="42000" />
-      <workItem from="1751225492500" duration="334000" />
-    </task>
-    <task id="LOCAL-00001" summary="puttı">
-      <created>1679521578878</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1679521578878</updated>
-    </task>
-    <task id="LOCAL-00002" summary="puttı">
-      <created>1679521683284</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1679521683284</updated>
+      <workItem from="1751225492500" duration="974000" />
+      <workItem from="1751229637811" duration="633000" />
+      <workItem from="1751402597474" duration="703000" />
+      <workItem from="1751620207612" duration="19000" />
     </task>
     <task id="LOCAL-00003" summary="add api key insertion">
       <created>1679564889288</created>
@@ -499,7 +487,21 @@
       <option name="project" value="LOCAL" />
       <updated>1751203169331</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="تۈزىتىلدى">
+      <created>1751226109302</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1751226109303</updated>
+    </task>
+    <task id="LOCAL-00051" summary="تۈزىتىلدى">
+      <created>1751226352242</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1751226352242</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
