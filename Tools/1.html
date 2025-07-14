@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ug" dir="rtl">
 <head>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>خەۋەر خۇلاسىلەش ئەپى</title>
@@ -409,8 +408,8 @@
 2. **سانلىق مەلۇماتلار:** ماقالىدىكى پۈتۈن مۇھىم سان-سىفىرلار ۋە ستاتىستىكىلارنى تىزىپ چىقىڭ.
 3. **شەرقىي تۈركىستانلىقلار ئۈچۈن پايدىسى:** بۇ خەۋەردىن بىز، يەنى شەرقىي تۈركىستانلىقلار مۇستەقىللىق يولىمىزدا قانداق پايدا ئالالايمىز؟ قانداق ئىستراتېگىيە ۋە تەدبىرلەرنى قوللىنىشىمىز كېرەك؟ ئەمەلىي مىساللار بىلەن تەپسىلىي ۋە ئەتراپلىق تەھلىل قىلىپ بېرىڭ.
 4. **تارىخىي سېلىشتۈرۈش** ماقالىدىكى ۋەقەلەر بىلەن ئۇيغۇر تارىخىدىكى ۋە دۇنيا سىياسىي تارىخىتىكى ئوخشاش ۋەقەلەرنى سېلىشتۇرۇش.
-5. **خەلقئارالىق مۇناسىۋەتلەر ۋە دەرس** دۆلەتلەر ئارىسىدىكى مۇناسىۋەت، خەلقئارالىق قارىشى ۋە بىز ئۈچۈن سىياسىي ئىبرەتلەر.
-6. **سىياسىي ۋە ئىستراتېگىي نۇقتاينەزەر** دۆلەتلەرنىڭ ئىستراتېگىي خاتالىقلىرى ياكى مۇۋەپپەقىيەتلىرىدىن بىزگە پايدىلىق بولغان نۇقتىلار.
+5. **خەلقئارالىق مۇناسىۋەتلەر ۋە دەرس** dۆلەتلەر ئارىسىدىكى مۇناسىۋەت، خەلقئارالىق قارىشى ۋە بىز ئۈچۈن سىياسىي ئىبرەتلەر.
+6. **سىياسىي ۋە ئىستراتېگىي نۇقتاينەزەر** dۆلەتلەرنىڭ ئىستراتېگىي خاتالىقلىرى ياكى مۇۋەپپەقىيەتلىرىدىن بىزگە پايدىلىق بولغان نۇقتىلار.
 7. **كىتاپ تەۋسىيە قىلىش:** بۇ ماقالىنىڭ مەزمۇنى بىلەن مۇناسىۋەتلىك ئوقۇشقا تېگىشلىك مۇھىم كىتاپلاردىن بىرنەچچىنى تەۋسىيە قىلىڭ.
 ماقالىدە چوقۇم جۇڭگو دىېمەي خىتاي دەپ ياز.
 شىنجاڭ ئەمەس شەرقىي تۈركىستان دەپ ياز.
@@ -541,17 +540,23 @@ ${articleText.substring(0, 30000)}
         cell2.innerHTML = `<b>خاتالىق:</b> ${errorMessage}`;
     }
 
+    // --- FUNCTION TO FIX - START ---
     function downloadResultsAsText() {
         let textContent = "";
         
         for (const row of resultsBody.rows) {
             const url = row.cells[0].innerText;
-            const summary = row.cells[1].querySelector('.summary-content').innerText;
+            const summaryElement = row.cells[1].querySelector('.summary-content');
             
-            textContent += "==================================================\n";
-            textContent += `ئۇلانما: ${url}\n`;
-            textContent += "==================================================\n\n";
-            textContent += `${summary}\n\n\n`;
+            // Add a check to ensure the summary element exists
+            if (summaryElement) {
+                const summary = summaryElement.innerText;
+                
+                textContent += "==================================================\n";
+                textContent += `ئۇلانما: ${url}\n`;
+                textContent += "==================================================\n\n";
+                textContent += `${summary}\n\n\n`;
+            }
         }
 
         if (textContent === "") {
@@ -563,7 +568,8 @@ ${articleText.substring(0, 30000)}
         const timestamp = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}-${String(date.getSeconds()).padStart(2, '0')}`;
         const filename = `خۇلاسە_نەتىجىلىرى_${timestamp}.txt`;
 
-        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+        // Added '\uFEFF' (UTF-8 BOM) to ensure Uyghur characters are read correctly by all text editors.
+        const blob = new Blob(['\uFEFF' + textContent], { type: 'text/plain;charset=utf-8' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = filename;
@@ -571,6 +577,7 @@ ${articleText.substring(0, 30000)}
         link.click();
         document.body.removeChild(link);
     }
+    // --- FUNCTION TO FIX - END ---
 
     function speakAnswer(textElement, langSelect, rateSelect, readBtn, stopBtn) {
         const textToSpeak = textElement.innerText;
