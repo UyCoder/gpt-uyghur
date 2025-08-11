@@ -21,8 +21,6 @@
         #stopBtn:hover { background-color: #c9302c; }
         #downloadBtn { background-color: #5bc0de; color: #fff; border: none; padding: 10px; cursor: pointer; font-family: 'alkatipTor' !important; }
         #downloadBtn:hover { background-color: #31b0d5; }
-        #telegramBtn { background-color: #0088cc; color: #fff; border: none; padding: 10px; cursor: pointer; font-family: 'alkatipTor' !important; }
-        #telegramBtn:hover { background-color: #006fa3; }
         h1 { color: #009b74; font-size: xx-large; text-align: center; }
         label { color: #b6b5b5; font-size: small; padding: 20px; font-style: italic; }
         select { color: #fff; }
@@ -90,15 +88,6 @@
 <button id="speakBtn">ئاۋازلىق ئوقۇ</button>
 <button id="stopBtn">توختات</button>
 <button id="downloadBtn">ئاۋازنى چۈشۈرۈش</button>
-<button id="telegramBtn">تېلېگرام</button>
-
-<div id="telegramSection" style="display: none; margin-top: 15px;">
-    <input type="text" id="botApiInput" placeholder="بوت ئېيپىئاي كىرگۈزۈڭ" style="background-color: #1e2124; color: #fff; border: 1px solid #009b74; padding: 10px; box-sizing: border-box; font-family: 'alkatipTor' !important; margin-left: 5px;">
-    <input type="text" id="channelIdInput" placeholder="قانال ئايدى(@channel) كىرگۈزۈڭ" style="background-color: #1e2124; color: #fff; border: 1px solid #009b74; padding: 10px; box-sizing: border-box; font-family: 'alkatipTor' !important; margin-left: 5px;">
-    <button id="sendToTelegramBtn" style="background-color: #0088cc; color: #fff; border: none; padding: 10px; cursor: pointer; font-family: 'alkatipTor' !important;">تېلېگرامغا يوللاڭ</button>
-</div>
-
-
 <br><a style="color: #009b74 ; font-size: small">ئەسكەرتىش: ئۇيغۇرچە ئوقۇتقاندا دەسلەپتە كۇنۇپكىنى ئىككى قېتىم بېسىڭ.</a>
 
 <br><br><br><br><br><br><br><br><br>
@@ -120,13 +109,6 @@
     const speakBtn = document.getElementById('speakBtn');
     const stopBtn = document.getElementById('stopBtn');
     const downloadBtn = document.getElementById('downloadBtn');
-    // --- يېڭىدىن قوشۇلغان تېلېگرام ئېلېمېنتلىرى ---
-    const telegramBtn = document.getElementById('telegramBtn');
-    const telegramSection = document.getElementById('telegramSection');
-    const botApiInput = document.getElementById('botApiInput');
-    const channelIdInput = document.getElementById('channelIdInput');
-    const sendToTelegramBtn = document.getElementById('sendToTelegramBtn');
-
 
     let currentUtterance = null;
     let mediaRecorder = null;
@@ -258,59 +240,10 @@
             alert("ئاۋاز خاتىرىلەش مەغلۇپ بولدى. سىز بەلكىم ھەمبەھىرلەش تەلىپىنى رەت قىلغان ياكى تور بېكەتنى http://localhost ئادرېسىدىن ئاچمىغان بولۇشىڭىز مۇمكىن.");
         }
     }
-    
-    // --- يېڭىدىن قوشۇلغان تېلېگرام فۇنكىسىيەسى ---
-    function sendToTelegram() {
-        const botApi = botApiInput.value.trim();
-        const channelId = channelIdInput.value.trim();
-        const text = inputText.value.trim();
-
-        if (!botApi || !channelId || !text) {
-            alert('بوت ئېيپىئاي، قانال ئايدى ۋە يوللىنىدىغان تېكىست مەزمۇنىنى تولدۇرۇڭ!');
-            return;
-        }
-
-        const url = `https://api.telegram.org/bot${botApi}/sendMessage`;
-        const params = {
-            chat_id: channelId,
-            text: text,
-            parse_mode: 'Markdown' // خالىسا بۇنى ئىشلەتسىڭىز بولىدۇ
-        };
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(params)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.ok) {
-                alert('تېكىست تېلېگرامغا مۇۋەپپەقىيەتلىك يوللاندى!');
-            } else {
-                alert(`يوللاش مەغلۇپ بولدى: ${data.description}`);
-            }
-        })
-        .catch(error => {
-            console.error('تېلېگرامغا يوللاشتا خاتالىق:', error);
-            alert('تېلېگرامغا يوللاشتا خاتالىق كۆرۈلدى. كونترول سۇپىسىنى(console) تەكشۈرۈڭ.');
-        });
-    }
-
 
     speakBtn.addEventListener('click', speakText);
     stopBtn.addEventListener('click', stopText);
     downloadBtn.addEventListener('click', downloadAudio);
-    
-    // --- يېڭىدىن قوشۇلغان تېلېگرام كۇنۇپكا ئاڭلىغۇچلىرى ---
-    telegramBtn.addEventListener('click', () => {
-        // تېلېگرام بۆلىكىنى كۆرسىتىش/يوشۇرۇش
-        telegramSection.style.display = telegramSection.style.display === 'none' ? 'block' : 'none';
-    });
-    
-    sendToTelegramBtn.addEventListener('click', sendToTelegram);
-
 
     // Ensure voices are loaded before any action
     speechSynthesis.onvoiceschanged = () => {
