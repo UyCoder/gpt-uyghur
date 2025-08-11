@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تېسكىتنى ئاۋازلىق ئاڭلاش</title>
+
+    <style>
+
+        @font-face {
+            font-family: 'alkatipTor';
+            src: url('ALKATIPTOR.TTF');
+        }
+
+        * {
+            direction: rtl;
+        }
+
+        body {
+            background-color: #282c34;
+            color: #fff;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #inputText {
+            background-color: #1e2124;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 100px;
+            resize: none;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #language {
+            background-color: #1e2124;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 30px;
+            resize: none;
+            direction: ltr !important;
+        }
+
+        #speakBtn {
+            background-color: #009b74;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #speakBtn:hover {
+            background-color: #444;
+        }
+
+        /* توختات كۇنۇپكىسى ئۈچۈن يېڭى ئىستىل*/
+        #stopBtn {
+            background-color: #d9534f; /* توختىتىشنى بىلدۈرىدىغان قىزىل رەڭ */
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'alkatipTor' !important;
+        }
+
+        #stopBtn:hover {
+            background-color: #c9302c;
+        }
+
+        h1 {
+            color: #009b74;
+            font-size: xx-large;
+            text-align: center;
+        }
+
+        label {
+            color: #b6b5b5;
+            font-size: small;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        select {
+            color: #fff;
+        }
+
+        /* Style for the navbar */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar" >
+    <a href="IsilTerjiman.html"> تەرجىمان</a>
+    <a href="HikmetlerHezinesi.html" >ھىكمەت</a>
+    <a href="TextToSpeachUy.html"> ئاڭلاش</a>
+    <a href="../index.html">Gemini</a>
+    <a href="wordcounter.html"> تېكىست </a>
+    <a href="wordreplacer.html"> ئىملا </a>
+    <a href="teshkil.html">تەشكىل</a>
+    <a href="https://www.yulghun.com/tools/"> يۇلغۇن </a>
+    <a href="https://translate.google.com.tr/?sl=auto&tl=ug&text=I%20can%20translate%20uyghur%20language%20to%20english&op=translate" target="_blank"> Google </a>
+</div>
+
+
+<h1 id="b"> .</h1>
+<h1 id="b">تېكىستنى ئاۋازلىق ئاڭلاش قۇرالى </h1>
+<p style="font-size: small;  color: white ; text-align: center " id="random-sentence"></p>
+<a style="color: white ; font-size: small; background-color:#009b74 ">ئەسكەرتىش: ھازىرچە پەقەتلا Edge توركۆرگۈچتە نورمال
+    ئوقۇپ ېېرەلەيدۇ!!!</a>
+<br><br>
+<script>
+    fetch('https://raw.githubusercontent.com/UyCoder/paydilar/master/hikmetler/hikmetler.txt')
+        .then(response => response.text())
+        .then(text => {
+            const sentences = text.split('. ');
+            const randomIndex = Math.floor(Math.random() * sentences.length);
+            const randomSentence = sentences[randomIndex];
+            const prefixedSentence = "« " + randomSentence;
+            const suffixedSentence = prefixedSentence + " »";
+            document.getElementById('random-sentence').textContent = suffixedSentence;
+        });
+</script>
+
+<textarea id="inputText" style="resize: vertical"  rows="50" cols="50" placeholder="ئاڭلىماقچى  بولغان تېكىستنى بۇ يەرگە چاپلاڭ..."></textarea><br>
+
+<label style=" font-family: 'alkatipTor'; font-style: normal; color: white" for="language">تېسكىتنىڭ ئاۋازىنى
+    تاللاڭ:</label>
+<select style=" background-color: white ; color: black ;font-family: 'alkatipTor' ; height: 40px; width: auto"
+        id="language">
+    <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG1">1ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG2">2ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG3">3ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG4">4ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG5">5ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG6">6ئۇيغۇرچە (ئەر)</option>
+    <option value="ug-UG">ئۇيغۇرچە - (ئايال)</option>
+    <option value="en-US">ئارىلاشما تىللار</option>
+    <option value="ar-SA">ئەرەبچە</option>
+    <option value="tr-TR">تۈركچە</option>
+    <option value="zh-CN">خىتايچە</option>
+
+</select><br>
+
+<label style=" font-family: 'alkatipTor'; font-style: normal; color: white" for="rate">ئوقۇش سۈرئىتىنى تاللاڭ</label>
+<select style=" background-color: white ; color: black ; height: 40px; width: auto"
+        id="rate" name="rate">
+    <option value="1.0">1x</option>
+    <option value="1.25">1.25x</option>
+    <option value="1.5">1.5x</option>
+    <option value="2.0">2x</option>
+    <option value="0.5">0.5x</option>
+    <option value="0.75">0.75x</option>
+
+</select>
+<button id="speakBtn">ئاۋازلىق ئوقۇ</button>
+<button id="stopBtn">توختات</button>
+<br><a style="color: #009b74 ; font-size: small">ئەسكەرتىش: ئۇيغۇرچە ئوقۇتقاندا دەسلەپتە كۇنۇپكىنى ئىككى قېتىم
+    بېسىڭ.</a>
+
+<br>
+<br><br>
+<br><br>
+
+<br><br>
+<br><br>
+<br>
+<footer>
+    <ab id="a" style="font-style: italic; font-size: small; color: #b6b5b5">بۇ كىچىك تەرجىمە قورالى مېنىڭ شەخسىي
+        قىزىقىشىم بىلەنلا يېزىپ چىقىلدى. ئەسلىدە ئۇيغۇرچە ئوقۇش مۇلازىمىتى ھازىرچە يوق. ئەمما مەن ئارقا سۇپىدا ئۆزبېكچە
+        ۋە تۈركچە يېزىققا ئايلاندۇرۇپ ئاندىن ئۇنى ئاۋازلىق ئوقۇتتۇم. ئاۋاز ئۈنۈمى كەسپىي ئەمەس. ئەمما تامامەن ئاڭلاپ
+        چۈشىنىشكە بولىدۇ.
+    </ab>
+
+    <br>
+    <br>
+    <ba id="contact">مېنى بۇ يەردىن ئىزدەڭ</ba>
+    <a href="https://uycoder.github.io/paydilar/">
+        <img src="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png"
+             height="25">
+    </a>
+    <a href="https://www.linkedin.com/in/ahmed-bughra/">
+        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/LinkedIn.svg"
+             alt="linkedin" height="25">
+    </a>
+    <a href="https://github.com/Uycoder">
+        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/github.svg"
+             alt="github" height="25">
+    </a>
+    <a href="https://www.hackerrank.com/ahmedbughra">
+        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/hackerrank.svg"
+             alt="hackerrank" height="25">
+    </a>
+    <a href="https://stackoverflow.com/users/16111723/ahmad-ali">
+        <img src="https://raw.githubusercontent.com/UyCoder/gpt-uyghur/a0f5cf2daf86aa371a15086a6214a2444be1ff92/pics/Stack_Overflow.svg"
+             alt="stackoverflow" height="25">
+    </a>
+
+</footer>
+<script>
+    const inputText = document.getElementById('inputText');
+    const language = document.getElementById('language');
+    const speakBtn = document.getElementById('speakBtn');
+    const stopBtn = document.getElementById('stopBtn'); // يېڭى كۇنۇپكىنى ئېلىش
+    let currentUtterance = null;
+    const rateSpeed = document.getElementById('rate');
+    console.log(rateSpeed);
+
+    function speakText() {
+        const text = inputText.value;
+        const lang = language.value;
+
+        if (!text.length) {
+            alert('سىز تېخى بىرەر تېكىست كىرگۈزمىدىڭىز!');
+            return;
+        }
+
+        if ('speechSynthesis' in window) {
+            if (currentUtterance) {
+                speechSynthesis.cancel();
+            }
+            let convertedText = text;
+
+            if (lang === 'ug-UG') {
+                convertedText = convertUyghurToULY(text);
+                console.log(convertedText);
+            }
+
+            if (lang === 'ug-UG0') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+
+            if (lang === 'ug-UG1') {
+                convertedText = convertUyghurToULY(text);
+                console.log(convertedText);
+            }
+
+            if (lang === 'ug-UG2') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+            if (lang === 'ug-UG3') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+            if (lang === 'ug-UG4') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+
+            if (lang === 'ug-UG5') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+
+            if (lang === 'ug-UG6') {
+                convertedText = convertUyghurToULYTurk(text);
+                console.log(convertedText);
+            }
+
+            currentUtterance = new SpeechSynthesisUtterance(convertedText);
+            currentUtterance.lang = lang;
+            currentUtterance.rate = parseFloat(rateSpeed.value);
+            // currentUtterance.rate = 1.25 ;
+            if (lang === 'ug-UG') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'uz-UZ' && voice.name.includes('Madina'));
+            } else if (lang === 'ug-UG0') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'tr-TR');
+            } else if (lang === 'ug-UG1') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'uz-UZ' && voice.name.includes('Sardor'));
+            } else if (lang === 'ug-UG2') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'tr-TR' && voice.name.includes('Ahmet'));
+            } else if (lang === 'ug-UG3') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('Andrew'));
+            } else if (lang === 'ug-UG4') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'fr-FR' && voice.name.includes('Remy'));
+            } else if (lang === 'ug-UG5') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('Brian'));
+            } else if (lang === 'ug-UG6') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'de-DE' && voice.name.includes('Florian'));
+            } else if (lang === 'en-US') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US' && voice.name.includes('Brian'));
+            } else if (lang === 'ar-SA') {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'ar-SA' && voice.name.includes('Hamed'));
+            } else {
+                currentUtterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === lang && voice.gender === 'male');
+            }
+            speechSynthesis.speak(currentUtterance);
+        } else {
+            alert('سىزنىڭ تور كۆرگۈچىڭىز ئاۋازلىق ئوقۇشنى قوللىمايدىكەن، كەچۈرۈڭ. باشقا توركۆرگۈچتە سىناپ بېقىڭ.');
+        }
+    }
+
+    // توختات كۇنۇپكىسى ئۈچۈن يېڭى فۇنكىسىيە
+    function stopText() {
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+        }
+    }
+
+
+    function convertUyghurToULY(text) {
+        const UY_TO_ULY_MAP = {
+            'ا': 'a',
+            'ە': 'e',
+            'ب': 'b',
+            'پ': 'p',
+            'ت': 't',
+            'ج': 'j',
+            'چ': 'ch',
+            'خ': 'x',
+            'د': 'd',
+            'ر': 'r',
+            'ز': 'z',
+            'ژ': 'zh',
+            'س': 's',
+            'ش': 'sh',
+            'غ': 'gh',
+            'ف': 'f',
+            'ق': 'q',
+            'ك': 'k',
+            'گ': 'g',
+            'ڭ': 'ng',
+            'ل': 'l',
+            'م': 'm',
+            'ن': 'n',
+            'ھ': 'h',
+            'و': 'o',
+            'ۇ': 'u',
+            'ۆ': 'o',
+            'ۈ': 'u',
+            'ي': 'y',
+            'ۋ': 'v',
+            'ې': 'e',
+            'ى': 'i',
+            'ئ': '',
+            '؟': '?'
+        };
+
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const ulyChar = UY_TO_ULY_MAP[char];
+            result += ulyChar ? ulyChar : char;
+        }
+        return result;
+    }
+
+
+    function convertUyghurToULYTurk(text) {
+        const UY_TO_ULY_MAPT = {
+            'ا': 'a',
+            'ە': 'e',
+            'ب': 'b',
+            'پ': 'p',
+            'ت': 't',
+            'ج': 'c',
+            'چ': 'ç',
+            'خ': 'hh',
+            'د': 'd',
+            'ر': 'r',
+            'ز': 'z',
+            'ژ': 'j',
+            'س': 's',
+            'ش': 'ş',
+            'غ': 'gh',
+            'ف': 'f',
+            'ق': 'k',
+            'ك': 'k',
+            'گ': 'g',
+            'ڭ': 'n',
+            'ل': 'l',
+            'م': 'm',
+            'ن': 'n',
+            'ھ': 'h',
+            'و': 'o',
+            'ۇ': 'u',
+            'ۆ': 'ö',
+            'ۈ': 'ü',
+            'ي': 'y',
+            'ۋ': 'v',
+            'ې': 'e',
+            'ى': 'i',
+            'ئ': '',
+            '؟': '?'
+        };
+
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const ulyChar = UY_TO_ULY_MAPT[char];
+            result += ulyChar ? ulyChar : char;
+        }
+        return result;
+    }
+
+
+    speakBtn.addEventListener('click', speakText);
+    stopBtn.addEventListener('click', stopText); // يېڭى كۇنۇپكىغا ھەرىكەت قوشۇش
+
+</script>
+
+<script>
+    window.onload = function() {
+        function listVoices() {
+            const voices = speechSynthesis.getVoices();
+            if (voices.length === 0) {
+                console.warn("No voices available or voices not loaded yet.");
+            } else {
+                console.log("Available voices:");
+                voices.forEach((voice, index) => {
+                    console.log(`${index + 1}: ${voice.name} (${voice.lang})`);
+                });
+            }
+        }
+
+        // Wait for the voices to be loaded before listing them
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = listVoices;
+        } else {
+            listVoices();
+        }
+    };
+</script>
+
+
+
+</body>
+</html>

@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="خەۋەر ئانالىز قانىلى بېتى يېڭىلاندى">
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="تۈزىتىلدى">
+      <change afterPath="$PROJECT_DIR$/Tools/TextToSpeachUy...html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/TextToSpeachUy.html" afterDir="false" />
     </list>
@@ -168,14 +169,9 @@
       <workItem from="1754084950097" duration="7000" />
       <workItem from="1754813733172" duration="1321000" />
       <workItem from="1754829351823" duration="241000" />
-      <workItem from="1754893015390" duration="36000" />
-    </task>
-    <task id="LOCAL-00009" summary="configure readme file">
-      <created>1679828435497</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1679828435497</updated>
+      <workItem from="1754893015390" duration="77000" />
+      <workItem from="1754929503440" duration="564000" />
+      <workItem from="1754936300786" duration="351000" />
     </task>
     <task id="LOCAL-00010" summary="configure readme file">
       <created>1679828479609</created>
@@ -513,7 +509,14 @@
       <option name="project" value="LOCAL" />
       <updated>1754816177267</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="تۈزىتىلدى">
+      <created>1754893076544</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1754893076544</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -554,8 +557,8 @@
     <MESSAGE value="fix TextToSpeachUy.html" />
     <MESSAGE value="add move voice TextToSpeachUy.html" />
     <MESSAGE value="add 6 voice TextToSpeachUy.html" />
-    <MESSAGE value="تۈزىتىلدى" />
     <MESSAGE value="خەۋەر ئانالىز قانىلى بېتى يېڭىلاندى" />
-    <option name="LAST_COMMIT_MESSAGE" value="خەۋەر ئانالىز قانىلى بېتى يېڭىلاندى" />
+    <MESSAGE value="تۈزىتىلدى" />
+    <option name="LAST_COMMIT_MESSAGE" value="تۈزىتىلدى" />
   </component>
 </project>
