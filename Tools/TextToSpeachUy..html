@@ -114,107 +114,97 @@
 </footer>
 
 <script>
-    // ==========================================================================================
-    // !!! JAVASCRIPT كودى ئۇزۇن تېكىستلەرنى بۆلۈپ ئوقۇيدىغان قىلىپ يېڭىلاندى !!!
-    // ==========================================================================================
     const inputText = document.getElementById('inputText');
     const language = document.getElementById('language');
     const rateSpeed = document.getElementById('rate');
     const speakBtn = document.getElementById('speakBtn');
     const stopBtn = document.getElementById('stopBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    // --- يېڭىدىن قوشۇلغان تېلېگرام ئېلېمېنتلىرى ---
     const telegramBtn = document.getElementById('telegramBtn');
     const telegramSection = document.getElementById('telegramSection');
     const botApiInput = document.getElementById('botApiInput');
     const channelIdInput = document.getElementById('channelIdInput');
     const sendToTelegramBtn = document.getElementById('sendToTelegramBtn');
 
-    // --- بۆلۈپ ئوقۇش ئۈچۈن يېڭىدىن قوشۇلغان ئۆزگەرگۈچىلەر ---
-    let textChunks = [];
-    let currentChunkIndex = 0;
-    let onSpeakingEndCallback = null;
-    
+
+    let currentUtterance = null;
     let mediaRecorder = null;
     let audioChunks = [];
 
-    // --- تېكىست ئايلاندۇرۇش لوگىكىسى (ئۆزگەرمىدى) ---
     const UY_TO_ULY_MAP = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'j','چ':'ch','خ':'x','د':'d','ر':'r','ز':'z','ژ':'zh','س':'s','ش':'sh','غ':'gh','ف':'f','ق':'q','ك':'k','گ':'g','ڭ':'ng','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'o','ۈ':'u','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
     const UY_TO_ULY_MAPT = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'c','چ':'ç','خ':'hh','د':'d','ر':'r','ز':'z','ژ':'j','س':'s','ش':'ş','غ':'gh','ف':'f','ق':'k','ك':'k','گ':'g','ڭ':'n','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'ö','ۈ':'ü','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
-    function convertUyghurToULY(text) { return text.split('').map(char => UY_TO_ULY_MAP[char] || char).join(''); }
-    function convertUyghurToULYTurk(text) { return text.split('').map(char => UY_TO_ULY_MAPT[char] || char).join(''); }
-    
-    // --- يېڭىدىن قوشۇلغان بۆلەككە ئايرىش ۋە نۆۋەت بىلەن ئوقۇش فۇنكسىيەلىرى ---
-    
-    function createTextChunks(text) {
-        const sentences = text.match(/[^.!?؟]+[.!?؟]+/g) || [text];
-        return sentences.filter(s => s.trim().length > 0);
+
+    function convertUyghurToULY(text) {
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            result += UY_TO_ULY_MAP[char] || char;
+        }
+        return result;
     }
 
-    function speakNextChunk() {
-        if (currentChunkIndex >= textChunks.length) {
-            if (onSpeakingEndCallback) {
-                onSpeakingEndCallback();
-                onSpeakingEndCallback = null;
-            }
-            return;
+    function convertUyghurToULYTurk(text) {
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            result += UY_TO_ULY_MAPT[char] || char;
         }
-
-        const chunk = textChunks[currentChunkIndex];
-        const utterance = new SpeechSynthesisUtterance(chunk);
-        
-        const lang = language.value;
-        utterance.rate = parseFloat(rateSpeed.value);
-
-        const voices = speechSynthesis.getVoices();
-        const voiceMap = {
-            'ug-UG': v => v.lang === 'uz-UZ' && v.name.includes('Madina'), 'ug-UG0': v => v.lang === 'tr-TR',
-            'ug-UG1': v => v.lang === 'uz-UZ' && v.name.includes('Sardor'), 'ug-UG2': v => v.lang === 'tr-TR' && v.name.includes('Ahmet'),
-            'ug-UG3': v => v.lang === 'en-US' && v.name.includes('Andrew'), 'ug-UG4': v => v.lang === 'fr-FR' && v.name.includes('Remy'),
-            'ug-UG5': v => v.lang === 'en-US' && v.name.includes('Brian'), 'ug-UG6': v => v.lang === 'de-DE' && v.name.includes('Florian'),
-            'en-US': v => v.lang === 'en-US' && v.name.includes('Brian'), 'ar-SA': v => v.lang === 'ar-SA' && v.name.includes('Hamed'),
-        };
-        const selectedVoice = voices.find(voiceMap[lang] || (v => v.lang === lang));
-        if (selectedVoice) {
-            utterance.voice = selectedVoice;
-            utterance.lang = selectedVoice.lang;
-        }
-
-        utterance.onend = () => {
-            currentChunkIndex++;
-            speakNextChunk();
-        };
-        
-        speechSynthesis.speak(utterance);
+        return result;
     }
 
-    function startSpeaking(onEndCallback) {
+    // ئاۋاز جۈملىسى ھاسىل قىلىدىغان ياردەمچى فۇنكسىيە
+    function createUtterance() {
         const text = inputText.value;
-        if (!text.trim()) {
-            alert('سىز تېخى بىرەر تېكىست كىرگۈزمىدىڭىز!');
-            return;
-        }
-        
-        speechSynthesis.cancel();
+        const lang = language.value;
+        if (!text.trim()) return null;
 
         let convertedText = text;
-        const lang = language.value;
         if (lang.startsWith('ug-UG')) {
             const converter = (lang === 'ug-UG' || lang === 'ug-UG1') ? convertUyghurToULY : convertUyghurToULYTurk;
             convertedText = converter(text);
         }
 
-        textChunks = createTextChunks(convertedText);
-        currentChunkIndex = 0;
-        onSpeakingEndCallback = onEndCallback;
-        speakNextChunk();
+        const utterance = new SpeechSynthesisUtterance(convertedText);
+        utterance.lang = lang;
+        utterance.rate = parseFloat(rateSpeed.value);
+
+        const voices = speechSynthesis.getVoices();
+        const voiceMap = {
+            'ug-UG': v => v.lang === 'uz-UZ' && v.name.includes('Madina'),
+            'ug-UG0': v => v.lang === 'tr-TR',
+            'ug-UG1': v => v.lang === 'uz-UZ' && v.name.includes('Sardor'),
+            'ug-UG2': v => v.lang === 'tr-TR' && v.name.includes('Ahmet'),
+            'ug-UG3': v => v.lang === 'en-US' && v.name.includes('Andrew'),
+            'ug-UG4': v => v.lang === 'fr-FR' && v.name.includes('Remy'),
+            'ug-UG5': v => v.lang === 'en-US' && v.name.includes('Brian'),
+            'ug-UG6': v => v.lang === 'de-DE' && v.name.includes('Florian'),
+            'en-US': v => v.lang === 'en-US' && v.name.includes('Brian'),
+            'ar-SA': v => v.lang === 'ar-SA' && v.name.includes('Hamed'),
+        };
+        utterance.voice = voices.find(voiceMap[lang] || (v => v.lang === lang && v.gender === 'male'));
+        return utterance;
     }
 
+    // ئاۋازلىق ئوقۇش
+    function speakText() {
+        if (speechSynthesis.speaking) {
+            speechSynthesis.cancel();
+        }
+        currentUtterance = createUtterance();
+        if (currentUtterance) {
+            speechSynthesis.speak(currentUtterance);
+        } else {
+            alert('سىز تېخى بىرەر تېكىست كىرگۈزمىدىڭىز!');
+        }
+    }
+
+    // توختىتىش
     function stopText() {
-        textChunks = [];
-        currentChunkIndex = 0;
         speechSynthesis.cancel();
     }
 
+    // ئاۋازنى چۈشۈرۈش
     async function downloadAudio() {
         if (!inputText.value.trim()) {
             alert('چۈشۈرۈشتىن بۇرۇن بىرەر تېكىست كىرگۈزۈڭ!');
@@ -249,23 +239,27 @@
                 a.remove();
             };
 
-            mediaRecorder.start();
-            // پۈتۈن تېكىست ئوقۇلۇپ بولغاندا خاتىرىلەشنى توختىتىش ئۈچۈن callback ئىشلىتىش
-            startSpeaking(() => {
+            const utteranceForDownload = createUtterance();
+            if (!utteranceForDownload) return;
+
+            utteranceForDownload.onend = () => {
                 setTimeout(() => {
                     if (mediaRecorder && mediaRecorder.state === "recording") {
                         mediaRecorder.stop();
                     }
-                }, 500); // ئاۋازنىڭ ئاخىرقى قىسمىنىڭمۇ خاتىرىلىنىشىگە كاپالەتلىك قىلىش ئۈچۈن
-            });
+                }, 500);
+            };
+
+            mediaRecorder.start();
+            speechSynthesis.speak(utteranceForDownload);
 
         } catch (error) {
             console.error("ئاۋاز خاتىرىلەشتە خاتالىق:", error);
-            alert("ئاۋاز خاتىرىلەش مەغلۇپ بولدى. سىز بەلكىم ھەمبەھىرلەش تەلىپىنى رەت قىلغان بولۇشىڭىز مۇمكىن.");
+            alert("ئاۋاز خاتىرىلەش مەغلۇپ بولدى. سىز بەلكىم ھەمبەھىرلەش تەلىپىنى رەت قىلغان ياكى تور بېكەتنى http://localhost ئادرېسىدىن ئاچمىغان بولۇشىڭىز مۇمكىن.");
         }
     }
     
-    // --- تېلېگرام فۇنكىسىيەسى (ئۆزگەرتىلمىدى) ---
+    // --- يېڭىدىن قوشۇلغان تېلېگرام فۇنكىسىيەسى ---
     function sendToTelegram() {
         const botApi = botApiInput.value.trim();
         const channelId = channelIdInput.value.trim();
@@ -277,10 +271,18 @@
         }
 
         const url = `https://api.telegram.org/bot${botApi}/sendMessage`;
+        const params = {
+            chat_id: channelId,
+            text: text,
+            parse_mode: 'Markdown' // خالىسا بۇنى ئىشلەتسىڭىز بولىدۇ
+        };
+
         fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: channelId, text: text })
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
         })
         .then(response => response.json())
         .then(data => {
@@ -296,19 +298,24 @@
         });
     }
 
-    // --- كۇنۇپكا ئاڭلىغۇچلىرى يېڭى فۇنكسىيەلەرگە باغلىنىدۇ ---
-    speakBtn.addEventListener('click', () => startSpeaking(null));
+
+    speakBtn.addEventListener('click', speakText);
     stopBtn.addEventListener('click', stopText);
     downloadBtn.addEventListener('click', downloadAudio);
     
+    // --- يېڭىدىن قوشۇلغان تېلېگرام كۇنۇپكا ئاڭلىغۇچلىرى ---
     telegramBtn.addEventListener('click', () => {
+        // تېلېگرام بۆلىكىنى كۆرسىتىش/يوشۇرۇش
         telegramSection.style.display = telegramSection.style.display === 'none' ? 'block' : 'none';
     });
     
     sendToTelegramBtn.addEventListener('click', sendToTelegram);
 
+
+    // Ensure voices are loaded before any action
     speechSynthesis.onvoiceschanged = () => {
-        console.log("ئاۋازلار يۈكلەندى:", speechSynthesis.getVoices());
+        const voices = speechSynthesis.getVoices();
+        console.log("ئاۋازلار يۈكلەندى:", voices);
     };
 </script>
 
