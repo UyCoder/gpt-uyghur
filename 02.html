@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بىلىك تەتقىقات مەركىزى - ماقالە ئانالىز قۇرالى</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'), local('UKIJ_Ekran'); }
+        @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'), local('UKIJ_Tuz'); }
+        body { font-family: "UKIJ Ekran", "ALKATIP Tor", "Noto Naskh Arabic", sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        textarea { resize: none; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900 text-white shadow-lg border-b-4 border-sky-600">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-sky-600 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl">B</div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide">بىلىك تەتقىقات مەركىزى</h1>
+                    <p class="text-slate-400 text-xs">ماقالە ئانالىز سىستېمىسى v6.0 (Fixed Edition)</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex-grow container mx-auto p-4 flex flex-col lg:flex-row gap-6 h-[calc(100vh-100px)]">
+        
+        <!-- Left Sidebar -->
+        <div class="w-full lg:w-1/3 flex flex-col gap-4 overflow-y-auto pr-1">
+            <!-- Step 1 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                <div class="bg-sky-50 p-4 border-b border-sky-100 flex justify-between items-center">
+                    <h2 class="font-bold text-sky-800 flex items-center gap-2">
+                        <span class="bg-sky-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
+                        AI ئۈچۈن بۇيرۇق (Prompt)
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="relative group">
+                        <textarea id="aiPrompt" readonly class="w-full h-32 p-3 text-xs font-mono bg-slate-50 border border-gray-300 rounded text-gray-600 focus:outline-none" dir="ltr">
+مەن ساڭا بىر نەچچە ماقالە، خەۋەر ياكى ئانالىزلارنى بېرىمەن. سەن «بىلىك تەتقىقات مەركىزى» نىڭ باش ئانالىزچىسى سالاھىيىتىدە تۆۋەندىكى تەلەپلەر بويىچە چوڭقۇر ۋە كەسپىي ئانالىز قىلىپ، نەتىجىنى پەقەتلا JSON فورماتىدا قايتۇرۇپ بەر.
+
+### تەلەپلەر (تەپسىلىي ئوقۇپ چىق):
+1. **چوڭ خۇلاسە:** بارلىق ماقالىلەرنىڭ مەزمۇنىدىن بىر چوڭ ۋە ئۇزۇن ئابزاسلىق خۇلاسە (ئۇيغۇرچە، ئېنگلىزچە، ئەرەبچە). ئۇيغۇرچىسى ئەڭ تەپسىلىي بولسۇن.
+2. **ماقالىلەر خۇلاسىسى:** ھەر بىر ماقالىنىڭ ئىسمىنىڭ ئۇيغۇرچە تەرجىمىسى، مەنبەسى، ۋاقتى، ئاپتورى، 5 ئابزاسلىق ئاساسلىق مەزمۇنى.
+3. **سان-سىفىرلار:** ماقالىلەردىكى بارلىق مۇھىم سىتاتىستىكىلارنىڭ ھەممىسىنى ۋە ئۇلارنىڭ مەنبەسى.
+4. **نەقىللەر:** ماقالىلەردە تىلغا ئېلىنغان مۇھىم شەخسلەرنىڭ سۆزلىرىنىڭ ھەممىسىنى ئۇيغۇرچە تەرجىمىسى (سۆزلىگۈچى ۋە ئەسلى مەنبەسى بىلەن). ئەگەر ماقالىدا بۇنداق نەقىل بولمىسا، مۇھىم ھەدىسلەرنىڭ ئەرەبچە ۋە ئۇيغۇرچىسىنى مەنبە بىلەن قوشۇپ قويساڭ بولىدۇ.
+5. **شەرقىي تۈركىستان ئۈچۈن:** مۇستەقىللىق ھەرىكىتىمىز ئۈچۈن ئەڭ مۇھىم 3 ماقالە ۋە سەۋەبى، ئالىدىغان تەجرىبىلەردىن 3 نى ياز.
+6. **ئەمەلىي ھەرىكەت ئىستراتېگىيەسى:** بۇ بۆلەك بەك مۇھىم. ئومۇمىي خۇلاسە ۋە كونكرېت قەدەم-باسقۇچلارنى ياز. «ئىستراتېگىيە» قىسمىنى بىر پۈتۈن تېكىست قىلماي، ھەر بىر قەدەمنى ئايرىم تېما ۋە تەپسىلاتى بىلەن بۆلۈپ ياز (JSON دا Array شەكلىدە). شەرقىي تۈركىستان مۇستەقىللىقى ئۈچۈن ئەمەلىي دۇنيادىكى مىساللار بىلەن ئۇزۇن ۋە پايدىلىق يېشىپ تەھلىل قىپ بەر.
+7. **ئىسلامىي ئانالىز:** ئىسلامى نۇقتىدىن بۇ ماقالىلەرنى قانداق تەھلىل قىلىش كېرەك؟ مۇسۇلمان ئۇيغۇرلار نېمە پايدا ئالىدۇ؟ قايسى قۇرئان ئايىتى ياكى ھەدىسنى ئەسلەش مۇمكىن؟ ئايەت ۋە ھەدىسنىڭ ئەسلى ئەرەبچە تېكىستىنى (ھەرىكەتلىرى بىلەن تولۇق) ۋە ئۇيغۇرچە مەنىسىنى قوشۇپ ياز. تارىختىكى ئالىم ياكى ۋەقەنى مىسال قىل.
+8. **ئاتالغۇلار (Technical Terms):** ماقالىلەردىكى ئەڭ مۇھىم 5 سىياسىي ياكى ئىقتىسادىي ئاتالغۇ. (ئېنگلىزچىسى ۋە ئۇيغۇرچە ئىزاھاتى).
+9. **كىتاب تەۋسىيەسى (Book Recommendations):** مۇشۇ ماقالىلەردىكى تېمىغا ۋە شەرقىي تۈركىستان ۋەزىيىتىگە مۇناسىۋەتلىك 3 دانە كىتابنى تونۇشتۇر. (ئېنگلىزچە ئىسمى، تەرجىمىسى، ئاپتورى، نەشر يىلى، قىسقىچە مەزمۇنى ۋە بىز ئۈچۈن پايدىسى).
+
+ھېچقانداق يەرگە قەتئىي شىنجاڭ دەپ يازما چوقۇم شەرقىي تۈركىستان دەپ ياز. 
+جۇڭگونى خىتاي دەپ ياز. مۇھىم ئاتالغۇىلارنىڭ ئەسلى تىلدىكى ئاتىلىشىنى تىرناق ئىچىگە قوشۇپ قويغىن. يېڭى ئاتالغۇلارنى ئۆگىنەلەيمەن.
+
+### JSON فورماتى (مۇشۇ قېلىپتا قايتۇر):
+{
+  "report_title": "دوكلات تېمىسى",
+  "grand_summary": { "uyghur": "...", "english": "...", "arabic": "..." },
+  "articles": [ { "title": "...", "source": "...", "date": "...", "author": "...", "summary": "..." } ],
+  "statistics": [ { "value": "...", "context": "...", "source_article": "..." } ],
+  "quotes": [ { "text": "...", "speaker": "...", "source_article": "..." } ],
+  "top_3_focus": [ { "article_title": "...", "reason": "...", "lesson": "..." } ],
+  "action_plan": {
+    "conclusion": "ئومۇمىي خۇلاسە",
+    "strategy_steps": [
+       { "title": "1-قەدەم: تېمىسى", "detail": "تەپسىلاتى..." },
+       { "title": "2-قەدەم: تېمىسى", "detail": "تەپسىلاتى..." }
+    ]
+  },
+  "islamic_analysis": {
+    "analysis": "...",
+    "scripture": { "arabic": "...", "uyghur": "..." },
+    "scholar_ref": "..."
+  },
+  "key_terms": [ { "term": "English Term", "definition": "ئۇيغۇرچە..." } ],
+  "books": [
+    {
+      "title_en": "...", "title_uy": "...", "author": "...", "year": "...",
+      "summary": "...", "relevance": "..."
+    }
+  ]
+}
+
+---
+تۆۋەندىكىسى ماقالىلەر:
+[ماقالىلەرنى چاپلاڭ]</textarea>
+                        <button onclick="copyPromptText()" class="absolute top-2 right-2 bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded shadow transition flex items-center gap-1">
+                            كۆچۈرۈش
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-grow flex flex-col">
+                <div class="bg-gray-50 p-4 border-b border-gray-100">
+                    <h2 class="font-bold text-gray-700 flex items-center gap-2">
+                        <span class="bg-gray-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
+                        JSON نەتىجىسىنى چاپلاش
+                    </h2>
+                </div>
+                <textarea id="jsonInput" class="w-full flex-grow p-4 font-mono text-xs ltr bg-white focus:ring-2 focus:ring-sky-500 outline-none" placeholder='AI چىقىرىپ بەرگەن JSON كودىنى چاپلاڭ...' dir="ltr"></textarea>
+                <div class="p-4 border-t border-gray-100 grid grid-cols-2 gap-3">
+                    <button onclick="generateReport()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-lg shadow">⚡ كۆرۈش</button>
+                    <button onclick="downloadHtml()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow">💾 HTML ساقلاش</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Preview -->
+        <div class="w-full lg:w-2/3 bg-slate-200 rounded-xl border border-slate-300 overflow-hidden relative shadow-inner">
+            <iframe id="previewFrame" class="w-full h-full bg-white"></iframe>
+        </div>
+    </div>
+
+    <!-- Main Logic Script -->
+    <script>
+        function copyPromptText() {
+            const promptText = document.getElementById('aiPrompt');
+            promptText.select();
+            promptText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(promptText.value).then(() => {
+                alert("بۇيرۇق (Prompt) كۆچۈرۈلدى!");
+            });
+        }
+
+        // HTML Template Generator
+        function getTemplate(data) {
+            const d = new Date();
+            const dateStr = `${d.getFullYear()}-يىلى ${d.getMonth() + 1}-ئاينىڭ ${d.getDate()}-كۈنى`;
+
+            // Articles
+            const articlesHtml = data.articles.map((art, i) => `
+                <div class="mb-6 pb-6 border-b border-gray-100 last:border-0">
+                    <h4 class="text-lg font-bold text-sky-800 mb-2">${i+1}. ${art.title}</h4>
+                    <div class="flex flex-wrap gap-4 text-xs text-gray-500 mb-3 font-mono bg-gray-50 p-2 rounded">
+                        <span>✍️ ${art.author}</span>
+                        <span>🗓️ ${art.date}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm leading-relaxed text-justify">${art.summary}</p>
+                </div>`).join('');
+
+            // Strategy Steps (Block Style)
+            let strategyHtml = '';
+            if (data.action_plan.strategy_steps && Array.isArray(data.action_plan.strategy_steps)) {
+                strategyHtml = data.action_plan.strategy_steps.map((step, i) => `
+                    <div class="bg-white/10 p-4 rounded-lg border border-white/20 mb-4">
+                        <h4 class="font-bold text-yellow-400 mb-2 flex items-center gap-2">
+                            <span class="bg-yellow-500 text-slate-900 w-5 h-5 rounded-full flex items-center justify-center text-xs">${i+1}</span>
+                            ${step.title}
+                        </h4>
+                        <p class="text-sm leading-relaxed text-gray-100 pl-7">${step.detail}</p>
+                    </div>`).join('');
+            } else {
+                strategyHtml = `<div class="bg-white/10 p-4"><p class="text-sm text-gray-100">${data.action_plan.strategy}</p></div>`;
+            }
+
+            // Books
+            let booksHtml = '';
+            if (data.books) {
+                booksHtml = data.books.map(book => `
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 shadow-sm">
+                        <h4 class="font-bold text-amber-900 mb-1">📖 ${book.title_uy}</h4>
+                        <p class="text-xs text-amber-700 italic mb-2 dir-ltr text-right">"${book.title_en}" (${book.year})</p>
+                        <p class="text-sm text-gray-700 mb-2">${book.summary}</p>
+                        <p class="text-xs text-sky-700 bg-white p-2 rounded border border-amber-100">💡 ${book.relevance}</p>
+                    </div>`).join('');
+            }
+
+            // Terms
+            let termsHtml = '';
+            if (data.key_terms) {
+                termsHtml = data.key_terms.map(item => `
+                    <div class="flex justify-between items-start border-b border-gray-100 pb-2 mb-2">
+                        <div class="text-right text-sm font-bold text-gray-700">${item.definition}</div>
+                        <div class="text-left font-mono text-xs text-sky-600 bg-sky-50 px-2 py-1 rounded" dir="ltr">${item.term}</div>
+                    </div>`).join('');
+            }
+
+            // Stats
+            const statsHtml = data.statistics.map(s => `
+                <div class="flex items-start gap-3 p-3 bg-white rounded border border-gray-100 shadow-sm mb-2">
+                    <div class="text-sky-600 text-xl">📊</div>
+                    <div><div class="font-bold text-gray-800 font-mono">${s.value}</div><div class="text-xs text-gray-500">${s.context}</div></div>
+                </div>`).join('');
+
+            // Top 3
+            const top3Html = data.top_3_focus.map((item, i) => `
+                <div class="bg-gradient-to-br from-white to-sky-50 p-4 rounded-lg border border-sky-200 shadow-sm mb-4 relative">
+                    <div class="absolute top-0 right-0 bg-sky-600 text-white px-2 py-1 text-xs font-bold rounded-bl">TOP ${i+1}</div>
+                    <h4 class="font-bold text-sky-900 mt-4 text-sm">${item.article_title}</h4>
+                    <p class="text-xs text-gray-600 mt-2"><strong>سەۋەبى:</strong> ${item.reason}</p>
+                </div>`).join('');
+
+            // Quotes
+            const quotesHtml = data.quotes.map(q => `
+                <blockquote class="border-r-4 border-sky-500 pr-3 py-2 bg-slate-50 rounded mb-3">
+                    <p class="text-sm text-gray-800 italic">«${q.text}»</p>
+                    <footer class="text-xs text-gray-500 mt-1">— ${q.speaker}</footer>
+                </blockquote>`).join('');
+
+            // *** IMPORTANT: The backticks below start the HTML string. Note the escaped scripts! ***
+            return `<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>${data.report_title}</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'), local('UKIJ_Ekran'); }
+        @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'), local('UKIJ_Tuz'); }
+        body { font-family: "UKIJ Ekran", "ALKATIP Tor", "Noto Naskh Arabic", sans-serif; background: #f8fafc; }
+        .font-tuz { font-family: "UKIJ Tuz", sans-serif; }
+        .quran-font { font-family: 'Amiri', serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="report-content" class="p-8 max-w-5xl mx-auto text-gray-800 bg-white shadow-2xl my-8 rounded-xl">
+        <header class="text-center mb-12 pb-8 border-b-2 border-sky-200">
+            <h1 class="text-4xl font-bold text-sky-900 mb-2">بىلىك تەتقىقات مەركىزى</h1>
+            <h2 class="text-2xl text-gray-600 font-tuz mb-4">${data.report_title}</h2>
+            <div class="inline-block bg-sky-100 text-sky-800 px-4 py-1 rounded-full text-sm font-bold">دوكلات ۋاقتى: ${dateStr}</div>
+        </header>
+
+        <section class="mb-12 bg-white p-8 rounded-2xl shadow-inner border border-gray-100 border-t-8 border-sky-600">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-sky-600">◈ ئومۇمىي خۇلاسە</h3>
+            <div class="space-y-6">
+                <div><h4 class="font-bold text-sky-800 mb-2">ئۇيغۇرچە</h4><p class="text-gray-700 leading-8 text-justify">${data.grand_summary.uyghur}</p></div>
+                <!-- Foreign Summaries (Hidden from initial visual flow if needed, but here we show them at bottom visually or just via TTS logic) -->
+                <!-- User requested visual order: Uyghur Top. Foreign Bottom. -->
+                <div id="foreign-summaries" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-gray-50 p-4 rounded" dir="ltr"><h4 class="font-bold text-xs uppercase">English</h4><p class="text-sm font-serif">${data.grand_summary.english}</p></div>
+                    <div class="bg-green-50 p-4 rounded"><h4 class="font-bold text-sm">العربية</h4><p class="text-sm font-serif">${data.grand_summary.arabic}</p></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+                <section class="bg-white p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 border-b-2 border-sky-100 pb-2">ماقالىلەر ئانالىزى</h3>
+                    ${articlesHtml}
+                </section>
+                <section class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-sky-400 mb-4">⚡ ھەرىكەت قوللانمىسى</h3>
+                    <div class="mb-6"><p class="leading-relaxed opacity-90">${data.action_plan.conclusion}</p></div>
+                    <h4 class="font-bold text-yellow-400 mb-4">ئەمەلىي ئىستراتېگىيە:</h4>
+                    ${strategyHtml}
+                </section>
+                <section class="bg-white p-6 rounded-xl border border-amber-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-amber-800 mb-6">📚 تەۋسىيە كىتابلار</h3>
+                    <div class="grid grid-cols-1 gap-4">${booksHtml}</div>
+                </section>
+            </div>
+
+            <div class="space-y-8">
+                <section><h3 class="text-lg font-bold text-gray-800 mb-4">ئەڭ مۇھىم 3 ماقالە</h3>${top3Html}</section>
+                <section class="bg-green-50 p-6 rounded-xl border-t-4 border-green-600 shadow-sm">
+                    <h3 class="text-lg font-bold text-green-800 mb-4">☪️ ئىسلامىي نۇقتىنەزەر</h3>
+                    <p class="text-sm text-gray-700 mb-4 text-justify leading-7">${data.islamic_analysis.analysis}</p>
+                    <div class="bg-white p-6 rounded border border-green-100 mb-3 text-center shadow-inner">
+                        <p class="quran-font text-2xl text-green-900 mb-3 leading-loose" dir="rtl">${data.islamic_analysis.scripture.arabic}</p>
+                        <p class="text-xs text-gray-500 border-t border-gray-100 pt-3">${data.islamic_analysis.scripture.uyghur}</p>
+                    </div>
+                    <div class="text-xs text-green-700 font-bold text-right">ئۆرنەك: ${data.islamic_analysis.scholar_ref}</div>
+                </section>
+                <section class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">ئاتالغۇلار</h3>${termsHtml}
+                </section>
+                <section><h3 class="text-lg font-bold text-gray-800 mb-4">سىتاتىستىكا</h3>${statsHtml}</section>
+                <section><h3 class="text-lg font-bold text-gray-800 mb-4">نەقىللەر</h3>${quotesHtml}</section>
+            </div>
+        </div>
+        <footer class="mt-16 text-center text-gray-400 text-sm border-t border-gray-200 pt-8">Bilik Research Center Analysis Tool</footer>
+    </div>
+    <div class="h-24"></div>
+
+    <!-- Controls inside generated file -->
+    <div class="fixed bottom-6 left-6 z-50 flex flex-col gap-2 bg-slate-800 p-3 rounded-lg shadow-xl" data-html2canvas-ignore="true">
+        <div class="flex gap-2 mb-1">
+            <select id="voiceSelect" class="bg-slate-700 text-white text-[10px] p-1.5 rounded w-32 dir-ltr">
+                <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG">ئۇيغۇرچە (ئايال)</option>
+                <option value="ar-SA">العربية</option>
+                <option value="en-US">English</option>
+            </select>
+            <select id="rateSelect" class="bg-slate-700 text-white text-[10px] p-1.5 rounded w-16 text-center">
+                <option value="1.0">1.0x</option>
+                <option value="1.5" selected>1.5x</option>
+                <option value="2.0">2.0x</option>
+            </select>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="startReading()" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded text-xs font-bold flex-1">▶ ئوقۇ</button>
+            <button onclick="stopReading()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-xs font-bold flex-1">■ توختا</button>
+            <button onclick="savePDF()" class="bg-pink-600 hover:bg-pink-700 text-white px-3 py-2 rounded text-xs font-bold flex-1">📄 PDF</button>
+        </div>
+    </div>
+
+    <script>
+        function convertForTTS(text) {
+            const map = {'ا': 'a', 'ە': 'e', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ج': 'j', 'چ': 'ch', 'خ': 'x', 'د': 'd', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'گ': 'g', 'ڭ': 'ng', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ھ': 'h', 'و': 'o', 'ۇ': 'u', 'ۆ': 'o', 'ۈ': 'u', 'ي': 'y', 'ۋ': 'v', 'ې': 'e', 'ى': 'i', 'ئ': '', '؟': '?'};
+            return text.split('').map(c => map[c] || c).join('');
+        }
+        let utterance = null;
+        function startReading() {
+            window.speechSynthesis.cancel();
+            const voiceVal = document.getElementById('voiceSelect').value;
+            const rateVal = parseFloat(document.getElementById('rateSelect').value);
+            
+            // Logic to read foreign summaries LAST
+            const reportEl = document.getElementById('report-content');
+            const foreignEl = document.getElementById('foreign-summaries');
+            let fullText = reportEl.innerText;
+            let foreignText = foreignEl ? foreignEl.innerText : '';
+            let mainText = fullText.replace(foreignText, '');
+            let finalText = mainText + " . . . " + foreignText; // Append at end
+
+            if(voiceVal.startsWith('ug')) finalText = convertForTTS(finalText);
+            
+            utterance = new SpeechSynthesisUtterance(finalText);
+            const voices = window.speechSynthesis.getVoices();
+            let chosenVoice = null;
+            if(voiceVal === 'ug-UG0') chosenVoice = voices.find(v => v.lang === 'tr-TR');
+            else if (voiceVal === 'ug-UG') chosenVoice = voices.find(v => v.lang === 'uz-UZ' && v.name.includes('Madina')) || voices.find(v => v.lang.includes('tr'));
+            else chosenVoice = voices.find(v => v.lang === voiceVal);
+            
+            if(chosenVoice) utterance.voice = chosenVoice;
+            utterance.rate = rateVal;
+            window.speechSynthesis.speak(utterance);
+        }
+        function stopReading() { window.speechSynthesis.cancel(); }
+        function savePDF() {
+            const el = document.getElementById('report-content');
+            const opt = { margin: [10,10,10,10], filename: 'Bilik_Report.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
+            html2pdf().set(opt).from(el).save();
+        }
+    <\/script>
+</body>
+</html>`;
+        }
+
+        // Action Functions
+        function generateReport() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            const previewFrame = document.getElementById('previewFrame');
+            
+            if (!jsonInput.trim()) { alert("JSON كودىنى چاپلاڭ!"); return; }
+            
+            try {
+                const cleanJson = jsonInput.replace(/```json/g, '').replace(/```/g, '').trim();
+                const data = JSON.parse(cleanJson);
+                const htmlContent = getTemplate(data);
+                
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                previewFrame.src = URL.createObjectURL(blob);
+            } catch (e) {
+                alert("JSON خاتالىقى:\n" + e.message);
+            }
+        }
+
+        function downloadHtml() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            try {
+                const cleanJson = jsonInput.replace(/```json/g, '').replace(/```/g, '').trim();
+                const data = JSON.parse(cleanJson);
+                const htmlContent = getTemplate(data);
+                
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([htmlContent], { type: 'text/html' }));
+                a.download = `Bilik_Report_${new Date().toISOString().slice(0,10)}.html`;
+                a.click();
+            } catch (e) { alert("JSON خاتا!"); }
+        }
+    </script>
+</body>
+</html>

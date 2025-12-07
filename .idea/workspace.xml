@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="تۈزىتىلدى" />
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="تۈزىتىلدى">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -170,13 +172,8 @@
       <workItem from="1754936300786" duration="655000" />
       <workItem from="1754938911761" duration="653000" />
       <workItem from="1755207811653" duration="180000" />
-    </task>
-    <task id="LOCAL-00011" summary="correct some text">
-      <created>1679828845817</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1679828845817</updated>
+      <workItem from="1755453498596" duration="124000" />
+      <workItem from="1755455097584" duration="9000" />
     </task>
     <task id="LOCAL-00012" summary="add google analitics code">
       <created>1679832869415</created>
@@ -514,7 +511,14 @@
       <option name="project" value="LOCAL" />
       <updated>1754936744357</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="تۈزىتىلدى">
+      <created>1755453609147</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1755453609147</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

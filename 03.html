@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بىلىك تەتقىقات مەركىزى - دوكلات ياساش قۇرالى</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'), local('UKIJ_Ekran'); }
+        @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'), local('UKIJ_Tuz'); }
+        body { font-family: "UKIJ Ekran", "ALKATIP Tor", "Noto Naskh Arabic", sans-serif; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4 flex flex-col gap-4">
+
+    <!-- Header & Instructions -->
+    <div class="bg-white p-6 rounded-xl shadow-md border-b-4 border-sky-600 mb-2">
+        <div class="flex justify-between items-start">
+            <div>
+                <h1 class="text-2xl font-bold text-sky-700 mb-2">بىلىك تەتقىقات مەركىزى - دوكلات ياساش قۇرالى</h1>
+                <p class="text-gray-600 text-sm mb-4">
+                    بۇ قۇرال خام خەۋەرلەرنى رەتلەنگەن HTML دوكلاتقا ئايلاندۇرۇپ بېرىدۇ.
+                </p>
+            </div>
+            <div class="text-left dir-ltr text-xs text-gray-400 font-mono">
+                v2.0 with Prompt Integration
+            </div>
+        </div>
+
+        <!-- Prompt Section (Collapsible) -->
+        <details class="bg-sky-50 border border-sky-200 rounded-lg group mb-4">
+            <summary class="list-none flex items-center justify-between p-4 cursor-pointer font-bold text-sky-800 hover:bg-sky-100 transition rounded-lg">
+                <span class="flex items-center gap-2">
+                    <span class="bg-sky-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">1</span>
+                    خەۋەرلەرنى JSON غا ئايلاندۇرۇش ئۈچۈن بۇيرۇق (Prompt) نى ئېلىش
+                </span>
+                <span class="transform group-open:rotate-180 transition">▼</span>
+            </summary>
+            <div class="p-4 pt-0 border-t border-sky-200">
+                <p class="text-sm text-sky-700 mb-2 mt-2">
+                    تۆۋەندىكى رامكىدىكى مەزمۇننى كۆچۈرۈۋېلىپ، توپلىغان خەۋەرلىرىڭىز بىلەن بىللە <strong>ChatGPT</strong> ياكى <strong>Gemini</strong> غا يوللاڭ. ئۇ سىزگە JSON كودى چىقىرىپ بېرىدۇ.
+                </p>
+                <div class="relative">
+                    <textarea id="aiPrompt" readonly class="w-full h-48 p-3 text-xs font-mono bg-white border border-sky-300 rounded text-gray-600 focus:outline-none" dir="ltr">
+سەن ھازىر «بىلىك تەتقىقات مەركىزى» نىڭ باش ئانالىزچىسى. مەن ساڭا تەمىنلىگەن خەۋەر ۋە مەلۇماتلارغا ئاساسەن، تۆۋەندىكى JSON فورماتىدا سانلىق مەلۇمات چىقىرىپ بەر.
+
+تەلەپلەر:
+1. مەزمۇن ئۇيغۇرچە (ئەرەب يېزىقىدا) بولسۇن.
+2. ھەر بىر دۆلەت ئۈچۈن مۇۋاپىق «رەڭ» (color) تاللا (تاللاشلىرى: red, green, blue, yellow, purple, teal, slate).
+3. مەزمۇنلار قىسقا، ئېنىق ۋە نۇقتىلىق بولسۇن.
+4. JSON فورماتى مۇشۇنداق بولسۇن (پەقەت JSON كودىنىلا چىقىرىپ بەر، باشقا گەپ قىلما):
+
+{
+  "report_title": "دۇنيا ۋەزىيىتى ۋە ھەربىي يېڭىلىقلار",
+  "report_subtitle": "ھەپتىلىك مۇھىم ئۆزگىرىشلەر خۇلاسىسى",
+  "date_range_text": "1-5 دېكابىر",
+  "report_date_en": "2025 Dec 01 - 05",
+  "intro_text": "بۇ يەرگە بارلىق خەۋەرلەرنىڭ قىسقىچە ئومۇمىي خۇلاسىسى يېزىلىدۇ...",
+  "countries": [
+    {
+      "name": "دۆلەت ئىسمى (ئىنگلىزچىسى)",
+      "flag": "🇺🇸",
+      "color": "blue", 
+      "points": [
+        {
+          "type": "normal",
+          "text": "بۇ يەرگە مۇھىم بىر خەۋەر نۇقتىسى."
+        },
+        {
+          "type": "nested",
+          "title": "بۇ يەرگە تېما (مەسىلەن: ھەربىي ھەرىكەت)",
+          "sub_items": [
+            "تەپسىلىي مەزمۇن 1",
+            "تەپسىلىي مەزمۇن 2"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+---
+تۆۋەندىكىسى خام ماتېرىياللار:
+[بۇ يەرگە توپلىغان خەۋەرلىرىڭىزنى چاپلاڭ]</textarea>
+                    <button onclick="copyPromptText()" class="absolute top-2 right-2 bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1 rounded shadow transition">بۇيرۇقنى كۆچۈرۈش</button>
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="flex flex-col lg:flex-row gap-4 h-screen">
+        
+        <!-- Input Section -->
+        <div class="w-full lg:w-1/3 flex flex-col gap-2">
+            <div class="bg-white p-2 rounded-t-lg border-b border-gray-200 flex justify-between items-center">
+                <span class="font-bold text-gray-700 text-sm">JSON كودىنى چاپلاش</span>
+                <span class="text-xs text-gray-400">Step 2</span>
+            </div>
+            <textarea id="jsonInput" class="w-full flex-grow p-4 rounded-b-lg rounded-t-none border border-gray-300 font-mono text-sm ltr bg-white focus:ring-2 focus:ring-sky-500 outline-none shadow-sm" placeholder='AI چىقىرىپ بەرگەن JSON كودىنى مۇشۇ يەرگە چاپلاڭ...' dir="ltr"></textarea>
+            
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <button onclick="generateReport()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-lg transition shadow flex items-center justify-center gap-2">
+                    <span>⚡</span> دوكلاتنى كۆرۈش
+                </button>
+                <button onclick="downloadHtml()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition shadow flex items-center justify-center gap-2">
+                    <span>💾</span> HTML ساقلاش
+                </button>
+            </div>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="w-full lg:w-2/3 bg-gray-200 rounded-lg border border-gray-300 overflow-hidden relative shadow-inner">
+            <div class="absolute top-0 right-0 bg-gray-600 text-white px-3 py-1 text-xs font-bold z-10 rounded-bl-lg shadow">نەتىجىنى ئالدىن كۆرۈش</div>
+            <iframe id="previewFrame" class="w-full h-full bg-white"></iframe>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Function to copy the prompt
+        function copyPromptText() {
+            const promptText = document.getElementById('aiPrompt');
+            promptText.select();
+            promptText.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(promptText.value).then(() => {
+                alert("بۇيرۇق (Prompt) كۆچۈرۈلدى! ئەمدى ChatGPT غا بېرىپ چاپلىسىڭىزلا بولىدۇ.");
+            });
+        }
+
+        // --- Same Generation Logic as Before ---
+        function getTemplate(data) {
+            const colors = {
+                red: { border: 'border-red-600', text: 'text-red-700', textLight: 'text-red-500', bg: 'bg-red-50' },
+                green: { border: 'border-green-700', text: 'text-green-800', textLight: 'text-green-600', bg: 'bg-green-50' },
+                blue: { border: 'border-blue-600', text: 'text-blue-800', textLight: 'text-blue-500', bg: 'bg-blue-50' },
+                yellow: { border: 'border-yellow-400', text: 'text-yellow-700', textLight: 'text-yellow-500', bg: 'bg-yellow-50' },
+                purple: { border: 'border-purple-600', text: 'text-purple-800', textLight: 'text-purple-500', bg: 'bg-purple-50' },
+                slate: { border: 'border-slate-600', text: 'text-slate-800', textLight: 'text-slate-500', bg: 'bg-slate-50' },
+                teal: { border: 'border-teal-600', text: 'text-teal-800', textLight: 'text-teal-500', bg: 'bg-teal-50' }
+            };
+
+            let cardsHtml = '';
+
+            data.countries.forEach((country, index) => {
+                const theme = colors[country.color] || colors.slate;
+                
+                let pointsHtml = '';
+                country.points.forEach(point => {
+                    if (point.type === 'normal') {
+                        pointsHtml += `
+                        <li class="flex items-start">
+                            <span class="${theme.textLight} ml-2 mt-1">●</span>
+                            <span>${point.text}</span>
+                        </li>`;
+                    } else if (point.type === 'nested') {
+                        const subItems = point.sub_items.map(item => `<li>${item}</li>`).join('');
+                        pointsHtml += `
+                        <li class="flex items-start">
+                            <span class="${theme.textLight} ml-2 mt-1">●</span>
+                            <div class="bg-gray-50 p-3 rounded-lg w-full">
+                                <strong>${point.title}</strong>
+                                <ul class="list-disc list-inside mt-2 text-sm text-gray-600 space-y-1">
+                                    ${subItems}
+                                </ul>
+                            </div>
+                        </li>`;
+                    }
+                });
+
+                cardsHtml += `
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover border-t-4 ${theme.border}">
+                    <div class="flex items-center justify-between mb-4 border-b pb-2 border-gray-100">
+                        <h2 class="text-2xl ${theme.text}">${index + 1}. ${country.name}</h2>
+                        <span class="text-3xl">${country.flag}</span>
+                    </div>
+                    <ul class="space-y-4">
+                        ${pointsHtml}
+                    </ul>
+                </div>`;
+            });
+
+            return `<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${data.report_title}</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'), local('UKIJ_Ekran'); }
+        @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'), local('UKIJ_Tuz'); }
+        
+        body {
+            font-family: "UKIJ Ekran", "UKIJ Tuz", "ALKATIP Basma", "Noto Naskh Arabic", sans-serif;
+            background-color: #f3f4f6;
+            line-height: 1.8;
+        }
+        h1, h2, h3 { font-family: "UKIJ Ekran", "ALKATIP Tor", "Noto Naskh Arabic", sans-serif; font-weight: bold; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="text-gray-800">
+    <header class="bg-gradient-to-l from-slate-900 via-slate-800 to-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-right mb-4 md:mb-0">
+                    <h1 class="text-2xl md:text-4xl font-bold text-sky-400 mb-2">${data.report_title}</h1>
+                    <p class="text-slate-300 text-sm md:text-base opacity-90">${data.report_subtitle}</p>
+                </div>
+                <div class="bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/20">
+                    <span class="text-yellow-400 font-bold block text-center text-sm">دوكلات ۋاقتى</span>
+                    <span class="block font-mono dir-ltr text-center">${data.report_date_en}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-r-4 border-sky-500">
+            <p class="text-lg text-gray-700 leading-relaxed">${data.intro_text}</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            ${cardsHtml}
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2 text-slate-400">بۇ خۇلاسە بىلىك تەتقىقات مەركىزى تەرىپىدىن تەييارلاندى.</p>
+            <p class="text-xs text-slate-600 font-sans">Bilik Research Center &copy; 2025</p>
+        </div>
+    </footer>
+</body>
+</html>`;
+        }
+
+        function generateReport() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            const previewFrame = document.getElementById('previewFrame');
+            
+            try {
+                const data = JSON.parse(jsonInput);
+                const htmlContent = getTemplate(data);
+                
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                previewFrame.src = url;
+            } catch (e) {
+                alert("JSON خاتالىقى! كودنى توغرا چاپلىغانلىقىڭىزنى تەكشۈرۈڭ.\n\n" + e.message);
+            }
+        }
+
+        function downloadHtml() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            try {
+                const data = JSON.parse(jsonInput);
+                const htmlContent = getTemplate(data);
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Bilik_Report_${data.date_range_text}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (e) {
+                alert("چۈشۈرۈشتىن بۇرۇن توغرا JSON كىرگۈزۈڭ.");
+            }
+        }
+    </script>
+</body>
+</html>
