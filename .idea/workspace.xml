@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="تۈزىتىلدى">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="488ae988-933b-4d18-a6a6-e075c4156478" name="Changes" comment="يېڭى قۇراللار قوشۇلدى" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -174,13 +172,7 @@
       <workItem from="1755207811653" duration="180000" />
       <workItem from="1755453498596" duration="124000" />
       <workItem from="1755455097584" duration="9000" />
-    </task>
-    <task id="LOCAL-00012" summary="add google analitics code">
-      <created>1679832869415</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1679832869415</updated>
+      <workItem from="1765135745684" duration="811000" />
     </task>
     <task id="LOCAL-00013" summary="add google analitics code">
       <created>1679833041220</created>
@@ -518,7 +510,14 @@
       <option name="project" value="LOCAL" />
       <updated>1755453609147</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="يېڭى قۇراللار قوشۇلدى">
+      <created>1765135818458</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1765135818458</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -536,7 +535,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add api key insertion" />
     <MESSAGE value="add nav bar" />
     <MESSAGE value="video link correction" />
     <MESSAGE value="configure readme file" />
@@ -561,6 +559,7 @@
     <MESSAGE value="add 6 voice TextToSpeachUy.html" />
     <MESSAGE value="خەۋەر ئانالىز قانىلى بېتى يېڭىلاندى" />
     <MESSAGE value="تۈزىتىلدى" />
-    <option name="LAST_COMMIT_MESSAGE" value="تۈزىتىلدى" />
+    <MESSAGE value="يېڭى قۇراللار قوشۇلدى" />
+    <option name="LAST_COMMIT_MESSAGE" value="يېڭى قۇراللار قوشۇلدى" />
   </component>
 </project>
