@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بىلىك تەتقىقات مەركىزى - كىتاب ئانالىز سىستېمىسى</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* خەت نۇسخىلىرى */
+        @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'), local('UKIJ_Tuz'), url('https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts/hinted/ttf/NotoNaskhArabic/NotoNaskhArabic-Regular.ttf'); }
+        @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'), local('UKIJ_Ekran'); }
+        
+        body { font-family: "UKIJ Ekran", "Noto Naskh Arabic", sans-serif; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Form elements */
+        textarea { resize: none; font-family: 'Courier New', monospace; }
+        
+        /* Animation */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-slate-900 text-white shadow-xl border-b-4 border-amber-500 sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center shadow-lg shadow-amber-500/20">
+                    <span class="text-slate-900 font-bold text-2xl">B</span>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide text-amber-400 font-[UKIJ Tuz]">بىلىك تەتقىقات مەركىزى</h1>
+                    <p class="text-slate-400 text-xs tracking-wider opacity-80">BILIK RESEARCH CENTER BOOK TOOL</p>
+                </div>
+            </div>
+            <div class="hidden md:block text-slate-400 text-sm">v2.0 Pro Edition</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-grow container mx-auto p-6 flex flex-col lg:flex-row gap-8 h-[calc(100vh-100px)]">
+        
+        <!-- Left Sidebar (Controls) -->
+        <div class="w-full lg:w-1/3 flex flex-col gap-6 overflow-y-auto pr-2 custom-scroll">
+            
+            <!-- Step 1: Prompt -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition">
+                <div class="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
+                    <h2 class="font-bold text-slate-700 flex items-center gap-2">
+                        <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-mono">1</span>
+                        AI ئۈچۈن بۇيرۇق (Prompt)
+                    </h2>
+                </div>
+                <div class="p-4 relative">
+                    <textarea id="aiPrompt" readonly class="w-full h-32 p-3 text-[11px] leading-relaxed text-slate-600 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-amber-400" dir="rtl">
+مەن ساڭا بىر كىتابنىڭ بىر بابىنىڭ مەزمۇنىنى بېرىمەن (Word ھۆججىتىدىن ئېلىنغان). سەن «بىلىك تەتقىقات مەركىزى» نىڭ باش مۇھەررىرى بولۇش سۈپىتىڭ بىلەن بۇ مەزمۇننى ناھايىتى سىلىق، چىرايلىق ۋە تولۇق رەتلەپ، پەقەت JSON فورماتىدا قايتۇرۇپ بەر.
+
+قاتتىق تەلەپلەر:
+1. «ھېچقانداق مەزمۇننى قىسقارتما!» ئەسلى تېكىست ۋە ئىزاھاتلار تولۇق ساقلانسۇن.
+2. مەزمۇندىكى بەت ئاستى ئىزاھاتلىرىنى (Footnotes) تېپىپ، تېكىست ئىچىگە `[1]`، `[2]` شەكلىدە بەلگە قوي، ۋە مەزمۇننى ئايرىم `footnotes` بۆلىكىگە رەتلىك تىزىپ چىق.
+3. ھەر بىر بابنىڭ ئاخىرىدىكى پايدىلانغان مەنبەلەرنى ئايرىم `references` قىلىپ تىز.
+4. كىتاب قۇرۇلمىسى: باب (Chapter) -> پاراگراف (Section/Subtitle) -> مەزمۇن (Paragraphs).
+
+JSON قېلىپى مۇشۇنداق بولسۇن:
+{
+  "book_info": {
+    "title": "كىتاب ئىسمى",
+    "chapter_number": "1-باب",
+    "chapter_title": "باب تېمىسى"
+  },
+  "content": [
+    {
+      "subtitle": "كىچىك تېما ئىسمى",
+      "paragraphs": [
+        "بىرىنچى پاراگراف مەزمۇنى... (بۇ يەردە ئىزاھات بولسا [1] دەپ بەلگە قوي)",
+        "ئىككىنچى پاراگراف..."
+      ]
+    }
+  ],
+  "footnotes": [
+    { "id": "1", "text": "بۇ يەردە ئىزاھاتنىڭ تولۇق مەزمۇنى بولىدۇ." },
+    { "id": "2", "text": "يەنە بىر ئىزاھات..." }
+  ],
+  "references": [
+    "پايدىلانغان مەنبە 1",
+    "پايدىلانغان مەنبە 2"
+  ]
+}
+
+تۆۋەندىكىسى كىتاب مەزمۇنى:
+[مەزمۇننى بۇ يەرگە چاپلاڭ]
+                    </textarea>
+                    <button onclick="copyPromptText()" class="absolute top-6 left-6 bg-amber-500 hover:bg-amber-600 text-white text-xs px-3 py-1.5 rounded shadow-lg transition flex items-center gap-1 font-bold">
+                        كۆچۈرۈش
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Input & Actions -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 flex-grow flex flex-col hover:shadow-md transition">
+                <div class="bg-slate-50 p-4 border-b border-slate-100">
+                    <h2 class="font-bold text-slate-700 flex items-center gap-2">
+                        <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-mono">2</span>
+                        JSON چاپلاش ۋە ھاسىللاش
+                    </h2>
+                </div>
+                <textarea id="jsonInput" class="w-full flex-grow p-4 font-mono text-xs bg-white focus:ring-2 focus:ring-amber-100 outline-none text-slate-600" placeholder='AI بەرگەن JSON كودىنى بۇ يەرگە چاپلاڭ...' dir="ltr"></textarea>
+                
+                <div class="p-4 bg-slate-50 border-t border-slate-100 grid grid-cols-2 gap-3">
+                    <button onclick="generateReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-slate-200 transition flex items-center justify-center gap-2">
+                        <span>⚡</span> كۆرۈش
+                    </button>
+                    <button onclick="downloadHtml()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-200 transition flex items-center justify-center gap-2">
+                        <span>💾</span> HTML ساقلاش
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Preview -->
+        <div class="w-full lg:w-2/3 bg-slate-200 rounded-2xl border-4 border-slate-300 overflow-hidden relative shadow-inner">
+            <div class="absolute top-0 left-0 bg-slate-300 px-3 py-1 text-xs font-bold text-slate-600 z-10 rounded-br">Live Preview</div>
+            <iframe id="previewFrame" class="w-full h-full bg-white"></iframe>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        function copyPromptText() {
+            const promptText = document.getElementById('aiPrompt');
+            promptText.select();
+            promptText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(promptText.value).then(() => {
+                const btn = document.querySelector('button[onclick="copyPromptText()"]');
+                const originalText = btn.innerText;
+                btn.innerText = "كۆچۈرۈلدى!";
+                setTimeout(() => btn.innerText = originalText, 2000);
+            });
+        }
+
+        // HTML Template Generator
+        function getTemplate(data) {
+            const d = new Date();
+            const dateStr = `${d.getFullYear()}-يىلى ${d.getMonth() + 1}-ئاينىڭ ${d.getDate()}-كۈنى`;
+
+            // Process Footnotes Map
+            const footnoteMap = {};
+            if(data.footnotes) {
+                data.footnotes.forEach(fn => {
+                    footnoteMap[fn.id] = fn.text;
+                });
+            }
+
+            // Process Content
+            let contentHtml = '';
+            if (data.content && Array.isArray(data.content)) {
+                contentHtml = data.content.map(section => {
+                    // Process Paragraphs
+                    const paras = section.paragraphs.map(p => {
+                        // Replace [1], [2] with Tooltips
+                        let processedText = p.replace(/\[(\d+)\]/g, (match, id) => {
+                            const noteText = footnoteMap[id] || "ئىزاھات تېپىلمىدى";
+                            return `<span class="footnote-wrapper">
+                                <sup class="footnote-ref">${id}</sup>
+                                <span class="footnote-tooltip">
+                                    <span class="tooltip-header">ئىزاھات ${id}:</span>
+                                    <span class="tooltip-body">${noteText}</span>
+                                </span>
+                            </span>`;
+                        });
+                        return `<p class="chapter-text">${processedText}</p>`;
+                    }).join('');
+
+                    return `
+                    <div class="section-block">
+                        <h3 class="section-title">${section.subtitle}</h3>
+                        <div class="section-content">${paras}</div>
+                    </div>`;
+                }).join('');
+            }
+
+            // References
+            let referencesHtml = '';
+            if(data.references && data.references.length > 0) {
+                referencesHtml = `
+                <div class="references-section">
+                    <h4 class="ref-title">پايدىلانغان مەنبەلەر:</h4>
+                    <ul class="ref-list">
+                        ${data.references.map(ref => `<li>${ref}</li>`).join('')}
+                    </ul>
+                </div>`;
+            }
+
+            return `<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>${data.book_info.title} - ${data.book_info.chapter_title}</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'), local('UKIJ_Tuz'), url('https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts/hinted/ttf/NotoNaskhArabic/NotoNaskhArabic-Regular.ttf'); }
+        @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'), local('UKIJ_Ekran'); }
+        
+        body { 
+            background-color: #fdfbf7; /* Paper color */
+            font-family: 'UKIJ Tuz', 'Noto Naskh Arabic', serif; 
+            color: #1a202c;
+            padding: 40px;
+        }
+        
+        #book-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            padding: 60px 80px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header Styling */
+        .book-header {
+            text-align: center;
+            border-bottom: 3px double #cbd5e1;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        .main-title {
+            font-family: 'UKIJ Ekran', sans-serif;
+            color: #0f172a;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .sub-title {
+            color: #b45309; /* Amber 700 */
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .meta-info {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Content Styling */
+        .section-block { margin-bottom: 30px; }
+        
+        .section-title {
+            background-color: #f1f5f9;
+            color: #334155;
+            padding: 8px 15px;
+            border-right: 4px solid #0ea5e9; /* Sky 500 */
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .chapter-text {
+            font-size: 18px;
+            line-height: 2; /* Comfortable reading */
+            text-align: justify;
+            text-indent: 2.5em; /* 2 character indent */
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* Footnotes (Tooltip Style) */
+        .footnote-wrapper { position: relative; display: inline-block; }
+        .footnote-ref {
+            color: #0ea5e9;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.75em;
+            vertical-align: super;
+            margin: 0 2px;
+            padding: 0 2px;
+            transition: color 0.2s;
+        }
+        .footnote-ref:hover { color: #d97706; }
+        
+        .footnote-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            border-radius: 8px;
+            z-index: 100;
+            transition: opacity 0.2s, visibility 0.2s;
+            text-align: right;
+            text-indent: 0;
+        }
+        
+        .footnote-wrapper:hover .footnote-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-header {
+            display: block;
+            background: #f8fafc;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-size: 12px;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tooltip-body {
+            display: block;
+            padding: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #475569;
+            text-align: justify;
+            font-family: 'UKIJ Tuz', serif;
+            max-height: 200px; /* Scrollable limit */
+            overflow-y: auto; /* Scrollable */
+        }
+        
+        /* Custom Scrollbar for Tooltip */
+        .tooltip-body::-webkit-scrollbar { width: 4px; }
+        .tooltip-body::-webkit-scrollbar-track { background: #f1f1f1; }
+        .tooltip-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        /* References */
+        .references-section {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px dashed #cbd5e1;
+        }
+        .ref-title { font-weight: bold; color: #475569; margin-bottom: 10px; }
+        .ref-list { list-style: decimal inside; font-size: 14px; color: #64748b; line-height: 1.8; }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Top Branding -->
+    <div class="bg-slate-900 text-amber-400 p-4 text-center mb-8 rounded shadow-lg">
+        <h1 style="font-family: 'UKIJ Ekran'; font-size: 24px;">بىلىك تەتقىقات مەركىزى</h1>
+    </div>
+
+    <div id="book-container">
+        <header class="book-header">
+            <div class="main-title">${data.book_info.title}</div>
+            <div class="sub-title">${data.book_info.chapter_number}: ${data.book_info.chapter_title}</div>
+            <div class="meta-info">ھۆججەت تەييارلانغان ۋاقىت: ${dateStr}</div>
+        </header>
+
+        <main>
+            ${contentHtml}
+            ${referencesHtml}
+        </main>
+
+        <footer class="page-footer">
+            <p>بۇ ھۆججەت بىلىك تەتقىقات مەركىزى ئانالىز قۇرالى ئارقىلىق تەييارلاندى.</p>
+        </footer>
+    </div>
+
+    <!-- Floating Controls -->
+    <div class="fixed bottom-5 left-5 bg-slate-800 p-3 rounded-xl shadow-2xl flex flex-col gap-2 z-50 border border-slate-600" data-html2canvas-ignore="true">
+        <div class="text-white text-xs font-bold text-center mb-1">ئاۋازلىق ئوقۇش</div>
+        <div class="flex gap-2">
+            <select id="voiceSelect" class="bg-slate-700 text-white text-xs p-2 rounded outline-none border border-slate-600">
+                <option value="tr-TR">تۈركچە (Türkçe)</option>
+                <option value="uz-UZ">ئۆزبېكچە (O'zbek)</option>
+            </select>
+            <select id="rateSelect" class="bg-slate-700 text-white text-xs p-2 rounded outline-none border border-slate-600">
+                <option value="1.0">1.0x</option>
+                <option value="1.5" selected>1.5x</option>
+                <option value="2.0">2.0x</option>
+                <option value="0.8">0.8x</option>
+            </select>
+        </div>
+        <div class="flex gap-2 mt-1">
+            <button onclick="startReading()" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg text-xs font-bold flex-1 transition">▶ ئوقۇش</button>
+            <button onclick="stopReading()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs font-bold flex-1 transition">■ توختاش</button>
+        </div>
+        <button onclick="savePDF()" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg text-xs font-bold mt-1 transition w-full">📄 PDF ساقلاش</button>
+    </div>
+
+    <script>
+        // Transliteration Logic
+        const charMap = {
+            'ا': 'a', 'ە': 'e', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ج': 'j', 'چ': 'ch', 'خ': 'x', 'د': 'd', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'گ': 'g', 'ڭ': 'ng', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ھ': 'h', 'و': 'o', 'ۇ': 'u', 'ۆ': 'o', 'ۈ': 'u', 'ي': 'y', 'ۋ': 'v', 'ې': 'e', 'ى': 'i', 'ئ': '', '؟': '?', '،': ',', '؛': ';', '.': '.'
+        };
+
+        function transliterate(text, lang) {
+            let result = text.split('').map(char => charMap[char] || char).join('');
+            
+            // Special Rule for Turkish: Replace q with k
+            if (lang === 'tr-TR') {
+                result = result.replace(/q/g, 'k');
+                result = result.replace(/sh/g, 'ş');
+                result = result.replace(/ch/g, 'ç');
+            }
+            
+            return result;
+        }
+
+        let synth = window.speechSynthesis;
+        let utterance = null;
+
+        function startReading() {
+            synth.cancel(); // Stop previous
+
+            // Extract text from the main container only (ignore nav/footer)
+            const container = document.querySelector('main');
+            let originalText = container.innerText;
+            
+            const voiceLang = document.getElementById('voiceSelect').value;
+            const rate = parseFloat(document.getElementById('rateSelect').value);
+            
+            // Convert text
+            const spokenText = transliterate(originalText, voiceLang);
+            
+            utterance = new SpeechSynthesisUtterance(spokenText);
+            
+            // Select Voice
+            const voices = synth.getVoices();
+            let selectedVoice = voices.find(v => v.lang === voiceLang);
+            
+            // Fallback strategy
+            if (!selectedVoice && voiceLang === 'tr-TR') {
+                selectedVoice = voices.find(v => v.lang.includes('tr'));
+            }
+            if (!selectedVoice && voiceLang === 'uz-UZ') {
+                 // Fallback to Turkish if Uzbek not found, or Russian/English
+                 selectedVoice = voices.find(v => v.lang.includes('tr')) || voices.find(v => v.lang.includes('ru')); 
+            }
+
+            if (selectedVoice) utterance.voice = selectedVoice;
+            
+            utterance.rate = rate;
+            synth.speak(utterance);
+        }
+
+        function stopReading() {
+            synth.cancel();
+        }
+
+        function savePDF() {
+            const element = document.getElementById('book-container');
+            const opt = {
+                margin: [10, 10, 10, 10], // mm
+                filename: 'Bilik_Book_Chapter.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    <\/script>
+</body>
+</html>`;
+        }
+
+        // Action Functions
+        function generateReport() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            const previewFrame = document.getElementById('previewFrame');
+            
+            if (!jsonInput.trim()) { 
+                alert("JSON كودىنى چاپلاڭ!"); 
+                return; 
+            }
+            
+            try {
+                // Remove Markdown code blocks if user pasted them
+                const cleanJson = jsonInput.replace(/```json/g, '').replace(/```/g, '').trim();
+                const data = JSON.parse(cleanJson);
+                const htmlContent = getTemplate(data);
+                
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                previewFrame.src = URL.createObjectURL(blob);
+            } catch (e) {
+                alert("JSON فورماتى خاتا:\n" + e.message);
+            }
+        }
+
+        function downloadHtml() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            try {
+                const cleanJson = jsonInput.replace(/```json/g, '').replace(/```/g, '').trim();
+                const data = JSON.parse(cleanJson);
+                const htmlContent = getTemplate(data);
+                
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([htmlContent], { type: 'text/html' }));
+                a.download = `Bilik_Book_${data.book_info.chapter_number}.html`;
+                a.click();
+            } catch (e) { alert("JSON خاتا!"); }
+        }
+    </script>
+</body>
+</html>
