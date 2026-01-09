@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بىلىك تەتقىقات مەركىزى - ئاخىرقى نۇسخا v8.3</title>
+    <title>بىلىك تەتقىقات مەركىزى - ئاخىرقى نۇسخا v8.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
@@ -16,148 +16,167 @@
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #e2e8f0; }
         ::-webkit-scrollbar-thumb { background: #0f172a; border-radius: 5px; }
+
+        /* تەرجىمە تېكىستىنى رەتلەش */
+        .translation-text p {
+            text-indent: 2em; /* بىرىنچى قۇر بوشلۇقى */
+            text-align: justify; /* ئىككى تەرەپكە توغرىلاش */
+            margin-bottom: 1.2em;
+            line-height: 1.8;
+        }
+
+        /* ئۇلانما */
+        a { text-decoration: none; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <!-- Top Navigation -->
-    <nav class="bg-slate-900 text-white border-b-4 border-amber-500 shadow-2xl z-50 flex-none h-16">
-        <div class="container mx-auto px-4 h-full flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="bg-amber-500 text-slate-900 w-8 h-8 rounded flex items-center justify-center font-bold text-lg">B</div>
-                <h1 class="text-lg md:text-xl font-bold tracking-wider">بىلىك تەتقىقات مەركىزى <span class="text-xs text-slate-400 font-normal opacity-70 ml-2">v8.3 FINAL</span></h1>
-            </div>
-            <div class="text-xs text-amber-500 font-mono" id="clock"></div>
+<!-- Top Navigation -->
+<nav class="bg-slate-900 text-white border-b-4 border-amber-500 shadow-2xl z-50 flex-none h-16">
+    <div class="container mx-auto px-4 h-full flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="bg-amber-500 text-slate-900 w-8 h-8 rounded flex items-center justify-center font-bold text-lg">B</div>
+            <h1 class="text-lg md:text-xl font-bold tracking-wider">بىلىك تەتقىقات مەركىزى <span class="text-xs text-slate-400 font-normal opacity-70 ml-2">v8.5 Islamic Pro</span></h1>
         </div>
-    </nav>
+        <div class="text-xs text-amber-500 font-mono" id="clock"></div>
+    </div>
+</nav>
 
-    <!-- Main Content -->
-    <div class="flex flex-col lg:flex-row h-[calc(100vh-64px)]">
-        
-        <!-- Left Panel: Controls -->
-        <div class="w-full lg:w-[400px] bg-white border-l border-gray-200 flex flex-col shadow-xl z-20 flex-none">
-            
-            <!-- Step 1: Prompt Selection -->
-            <div class="p-4 border-b border-gray-100 bg-slate-50">
-                <label class="block text-xs font-bold text-slate-600 mb-2 uppercase tracking-wide">1. ئانالىز تۈرىنى تاللاڭ</label>
-                <select id="promptSelector" onchange="loadPrompt()" class="w-full bg-white border border-gray-300 text-slate-800 text-sm rounded-lg p-2.5 focus:ring-amber-500 focus:border-amber-500 shadow-sm">
-                    <option value="blog">📝 يېڭى بلوگ يازمىسى</option>
-                    <option value="book">📚 كىتاب تونۇشتۇرۇش</option>
-                    <option value="report">📊 دوكلات تونۇشتۇرۇش</option>
-                    <option value="arabic">🇸🇦 ئەرەبچە ئۆگىنىش تەرجىمىسى</option>
-                    <option value="news">📰 ھەپتىلىك خەۋەر خۇلاسىسى</option>
-                </select>
-            </div>
+<!-- Main Content -->
+<div class="flex flex-col lg:flex-row h-[calc(100vh-64px)]">
 
-            <!-- Prompt Display Area -->
-            <div class="flex-1 p-4 relative flex flex-col min-h-0">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs font-bold text-slate-500">AI غا بېرىدىغان بۇيرۇق (Prompt):</span>
-                    <button onclick="copyPrompt()" class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] px-3 py-1 rounded transition flex items-center gap-1">
-                        <span>نۇسخىلاش</span> 📋
-                    </button>
-                </div>
-                <textarea id="promptOutput" readonly class="w-full flex-1 bg-slate-100 border border-slate-200 rounded p-3 text-[10px] font-mono text-slate-600 resize-none outline-none leading-relaxed" dir="ltr"></textarea>
-            </div>
+    <!-- Left Panel: Controls -->
+    <div class="w-full lg:w-[400px] bg-white border-l border-gray-200 flex flex-col shadow-xl z-20 flex-none">
 
-            <!-- Step 2: JSON Input & Buttons -->
-            <div class="p-4 border-t border-gray-200 bg-slate-50 h-1/3 flex flex-col">
-                <label class="block text-xs font-bold text-slate-600 mb-2">2. JSON نەتىجىسىنى چاپلاڭ</label>
-                <textarea id="jsonInput" class="w-full flex-1 bg-white border border-gray-300 rounded p-3 text-[10px] font-mono mb-3 focus:ring-2 focus:ring-amber-500 outline-none resize-none" placeholder="AI چىقىرىپ بەرگەن JSON كودىنى بۇ يەرگە چاپلاڭ..." dir="ltr"></textarea>
-                
-                <!-- Buttons Row -->
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="renderHTML()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded text-sm shadow transition flex items-center justify-center gap-2">
-                        <span>⚡</span> ئانالىزلاش
-                    </button>
-                    <button onclick="downloadHTML()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded text-sm shadow transition flex items-center justify-center gap-2">
-                        <span>💾</span> HTML ساقلاش
-                    </button>
-                </div>
-            </div>
+        <!-- Step 1: Prompt Selection -->
+        <div class="p-4 border-b border-gray-100 bg-slate-50">
+            <label class="block text-xs font-bold text-slate-600 mb-2 uppercase tracking-wide">1. ئانالىز تۈرىنى تاللاڭ</label>
+            <select id="promptSelector" onchange="loadPrompt()" class="w-full bg-white border border-gray-300 text-slate-800 text-sm rounded-lg p-2.5 focus:ring-amber-500 focus:border-amber-500 shadow-sm">
+                <option value="blog">📝 يېڭى بلوگ يازمىسى</option>
+                <option value="book">📚 كىتاب تونۇشتۇرۇش</option>
+                <option value="report">📊 دوكلات تونۇشتۇرۇش</option>
+                <option value="arabic">🇸🇦 ئەرەبچە ئۆگىنىش تەرجىمىسى</option>
+                <option value="news">📰 ھەپتىلىك خەۋەر خۇلاسىسى</option>
+            </select>
         </div>
 
-        <!-- Right Panel: Report Preview -->
-        <div class="flex-1 bg-slate-200 relative overflow-hidden">
-            <iframe id="previewFrame" class="w-full h-full border-none bg-white"></iframe>
+        <!-- Prompt Display Area -->
+        <div class="flex-1 p-4 relative flex flex-col min-h-0">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-slate-500">AI غا بېرىدىغان بۇيرۇق (Prompt):</span>
+                <button onclick="copyPrompt()" class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] px-3 py-1 rounded transition flex items-center gap-1">
+                    <span>نۇسخىلاش</span> 📋
+                </button>
+            </div>
+            <textarea id="promptOutput" readonly class="w-full flex-1 bg-slate-100 border border-slate-200 rounded p-3 text-[10px] font-mono text-slate-600 resize-none outline-none leading-relaxed" dir="ltr"></textarea>
+        </div>
+
+        <!-- Step 2: JSON Input & Buttons -->
+        <div class="p-4 border-t border-gray-200 bg-slate-50 h-1/3 flex flex-col">
+            <label class="block text-xs font-bold text-slate-600 mb-2">2. JSON نەتىجىسىنى چاپلاڭ</label>
+            <textarea id="jsonInput" class="w-full flex-1 bg-white border border-gray-300 rounded p-3 text-[10px] font-mono mb-3 focus:ring-2 focus:ring-amber-500 outline-none resize-none" placeholder="AI چىقىرىپ بەرگەن JSON كودىنى بۇ يەرگە چاپلاڭ..." dir="ltr"></textarea>
+
+            <!-- Buttons Row -->
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="renderHTML()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded text-sm shadow transition flex items-center justify-center gap-2">
+                    <span>⚡</span> ئانالىزلاش
+                </button>
+                <button onclick="downloadHTML()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded text-sm shadow transition flex items-center justify-center gap-2">
+                    <span>💾</span> HTML ساقلاش
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // --- 1. USER PROMPTS ---
-        const prompts = {
-            blog: `بلوگ يازمىسى يېڭى
+    <!-- Right Panel: Report Preview -->
+    <div class="flex-1 bg-slate-200 relative overflow-hidden">
+        <iframe id="previewFrame" class="w-full h-full border-none bg-white"></iframe>
+    </div>
+</div>
+
+<!-- JAVASCRIPT LOGIC -->
+<script>
+    // --- 1. USER PROMPTS ---
+    const commonPromptEnd = `
+12. ئىسلامىي نۇقتىنەزەر: بۇ ماقالىدىكى مەزمۇنغا قارىتا بىر مۇسۇلمان قانداق ئايەت ياكى ھەدىسنى ئەسلەپ، قانداق ئىبرەت ياكى نەسىھەت ئېلىشى كېرەك؟
+   - بىر مۇۋاپىق قۇرئان ئايىتى (ئەرەبچە ۋە ئۇيغۇرچە مەنىسى)
+   - بىر مۇۋاپىق ھەدىس (ئەرەبچە ۋە ئۇيغۇرچە مەنىسى)
+   - ئىسلام تارىخىدىكى بىر ئوخشىشىپ كېتىدىغان ۋەقە ياكى ئۈلگە.
+   - مۇسۇلمان ئۇيغۇرلارغا نەسىھەت.
+
+رىئال ۋەقەلەرنىڭ ۋاقتى ۋە ئورننى تىرناق ئىچىگە ئەسكەرتىشنى ئۇنۇتما. ئۇندىن باشقا خىتاينىڭ ھۆكۈمەت ئورگانلىرىنىڭ خىتايچە ئسمىنى تىرناق ئىچىگە ئەسكەرتىپ قويغىن.
+قارشى ئىستىخبارات، جۇغراپىيىلىك سىياسەت دېگەن سۆزلەرنى تەرجىمىدە ئىشلەتكىن.`;
+
+    const prompts = {
+        blog: `بلوگ يازمىسى يېڭى
 ====================
-1. ئەڭ ئاۋۋال بۇ ماقالىنىڭ تېمىسىنى تولۇق تەرجىمە قىل، ئاندىن قاچان ۋە نەدە ئىلان قىلىنغانلىقى، ئاپتورنىڭ كىملىكى، قىسقىچە تەرجىمھالى، ماقالنىڭ قىسقىچە مەزمۇنىنى 3 ئابزاستا ياز. ھەمدە بۇ 3 ئابزاس خۇلاسىنىڭ ئېنگىلىزچىسىنمۇ بەر. بۇنى ئوقۇپ ئېنگزلىچە ئۆگىنىمەن.  بۇ 3 ئابزاس خۇلاسىنىڭ ئەرەبچىسىنىمۇ بەر. بۇنى ئوقۇپ ئەرەبچە ئۆگىنىمەن. 
-2. كېيىن ئاندىن تولۇق تېكىستنىڭ تەرجىمسىنى بەرگىن. راۋان ۋە ئىلمىي بولسۇن. ئۇيغۇرچە سۆز جۈملىلىرى بەكمۇ ماسلاشقان ۋە ئەسلى مەزمۇنى ئۆزگىرىپ كەتمىگەن ئاساستا مەنا تەرجىمىىسنى قىلساڭمۇ بولىدۇ. جۇڭگونى چوقۇم خىتاي دۆلىتى دەپ  تەرجىمە قىل. خەنزۇ نى خىتاي دەپ  تەرجىمە قىل. شىنجاڭ دېمەي شەرقىي تۈركىستان دەپ  تەرجىمە قىل. دائىش دەپ تەرجىمە قىل. SNA  نى تۈركىيە قوللايدىغان جەيش ۋاتانىي دەپ تەرجىمە قىل. GSS نى سۈرىيە ئومۇمىي بىخەتەرلىك ئورگىنى دەپ تەرجىمە قىل. SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەرجىمە قىل. يېڭى تەشكىلاتلارنىڭ ياكى يېڭى شەخسلەرنىڭ ئىسمى چىقسا ئۇنىڭ ئېنگزىلچە يېزىلىشىنى قوشۇپ قويغىن. كىچىك تەشكىلاتلىرىنىڭ ئىسمىنىڭ كەيدىغان قىسقا پائالىيەت دائىرىسىنى يېزىپ قويغىن. 
+1. ئەڭ ئاۋۋال بۇ ماقالىنىڭ تېمىسىنى تولۇق تەرجىمە قىل، ئاندىن قاچان ۋە نەدە ئىلان قىلىنغانلىقى، ئاپتورنىڭ كىملىكى، قىسقىچە تەرجىمھالى، ماقالنىڭ قىسقىچە مەزمۇنىنى 3 ئابزاستا ياز. ھەمدە بۇ 3 ئابزاس خۇلاسىنىڭ ئېنگىلىزچىسىنمۇ بەر. بۇنى ئوقۇپ ئېنگزلىچە ئۆگىنىمەن.  بۇ 3 ئابزاس خۇلاسىنىڭ ئەرەبچىسىنىمۇ بەر. بۇنى ئوقۇپ ئەرەبچە ئۆگىنىمەن.
+2. كېيىن ئاندىن تولۇق تېكىستنىڭ تەرجىمسىنى بەرگىن. راۋان ۋە ئىلمىي بولسۇن. ئۇيغۇرچە سۆز جۈملىلىرى بەكمۇ ماسلاشقان ۋە ئەسلى مەزمۇنى ئۆزگىرىپ كەتمىگەن ئاساستا مەنا تەرجىمىىسنى قىلساڭمۇ بولىدۇ. جۇڭگونى چوقۇم خىتاي دۆلىتى دەپ  تەرجىمە قىل. خەنزۇ نى خىتاي دەپ  تەرجىمە قىل. شىنجاڭ دېمەي شەرقىي تۈركىستان دەپ  تەرجىمە قىل. دائىش دەپ تەرجىمە قىل. SNA  نى تۈركىيە قوللايدىغان جەيش ۋاتانىي دەپ تەرجىمە قىل. GSS نى سۈرىيە ئومۇمىي بىخەتەرلىك ئورگىنى دەپ تەرجىمە قىل. SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەرجىمە قىل. يېڭى تەشكىلاتلارنىڭ ياكى يېڭى شەخسلەرنىڭ ئىسمى چىقسا ئۇنىڭ ئېنگزىلچە يېزىلىشىنى قوشۇپ قويغىن. كىچىك تەشكىلاتلىرىنىڭ ئىسمىنىڭ كەيدىغان قىسقا پائالىيەت دائىرىسىنى يېزىپ قويغىن.
 بەزى مۇھىم شەخسلەرنىڭ ۋە مۇھىم ئاتالغۇلارنىڭ ئەسلى تىلدىكى ھالىتىنى چوقۇم تىرناق ئىچىگە يېزىپ ئەسكەرتىپ ماڭ.تەرجىمىنى چوقۇم ئۇيغۇر كونا يېزىقىدا يەنى ئەرەب يېزىقى ئاساسىدىكى ئۇيغۇر يېزىقىدا ياز. پۈتۈن  تەرجىمە قىلىپ بەر، تولۇق مەزمۇنىنى چۈشۈرۈپ قويماي يازغىن. چۈنكى مەن بۇ ماقالىنىڭ تەرجىسىمى دەپ بلوگىمغا چىقىرىمەن.
-3. ئەسلىي مەزمۇندىكى بارلىق سان-سېفىرلارنى ۋە سىتاتېستىكلارنى ھەمدە مۇھىم ۋەقەلەرنى تىزىپ بەرگىن. چۈنكى  شۇ سان-سىفىرلەر ۋە قىسقا ۋەقە ئىسمى بىلەن ئەسلىۋالىمەن. 
+3. ئەسلىي مەزمۇندىكى بارلىق سان-سېفىرلارنى ۋە سىتاتېستىكلارنى ھەمدە مۇھىم ۋەقەلەرنى تىزىپ بەرگىن. چۈنكى  شۇ سان-سىفىرلەر ۋە قىسقا ۋەقە ئىسمى بىلەن ئەسلىۋالىمەن.
 4. ئەسلىي ماقالە مەزمۇنىدىكى بارلىق باياناتلارنى، بارلىق سۆزلەرنى سۆزلىگۈچىنى ئەسكەرتىپ تىزىپ بەرگىن. چۈنكى ماقالىدە مۇھىم كشىلەرنىڭ سۆزلىرىنىڭ ئەسلى تېكىست ئەڭ ئىشەنچلىك ئىسپات ھېسابلىنىدۇ. شۇڭا تولۇق يازغىن.
 5. مۇشۇ ماقالە مەزمۇنى بىلەن مۇناسىۋەتلىك كىتاپلاردىن 3 كىتاپنى تەۋسىيە قىلغىن. كىتاپنىڭ قىسىچە مەزمۇنىنىمۇ يېزىپ قوي.
 6.  مۇشۇ ماقالە مەزمۇنى بىلەن مۇناسىۋەتلىك ئىلمىي ماقالىدىن 3 نى تەۋسىيە قىلغىن. ماقالىنىڭ  قىسىچە مەزمۇنىنىمۇ يېزىپ قوي ھەمدە ماقالىنىڭ ئۇلانمىسىنىمۇ قوشۇپ قويغىن.
 7. بۇ ماقالە پىكىرى بىلەن قارشى پىكىرلەردىن قايسىسى بار؟ نېمە ئۈچۈن؟
 8. بۇ ماقالە بىلەن مۇناسىۋەتلىك خەلقئارا مۇناسىۋەت ۋە جۇغراپىيىلىك سىياسەت نەزەرىيەلىرىدىن قايسىلار بار؟
-9. ماقالىدە چوقۇم تەھلىل قىلىنىشى كېرەك بولغان شەرقىي تۈركىستان ھەققىدە قانداق مەزمۇنلار بار؟ سىتاتېستىكا، بايانات ۋە تەھلىللەر بولسا بۇنى قىسقا تەھلىل قىپ بەرگىن. 
-10. ئاخىرىدا ۋەتەن سرىتدىكى ۋە ئىچىدىكى مۇستەقىل شەرقىي تۈركستانلىق قۇرماقچى بولغان ئۇيغۇرلارغا بۇ ماقالىدىن قانداق پايدىلار چىقىدىغانلىقى ھەققىدە خۇلاسە يېزىپ بەر. ۋە بۇ خۇلاسىنى سۈپەتلىك چۈشەندۈرۈپ قويغىن. چۈنكى  ئۇيغۇرلار ھەرگىزمۇ تېرورچى ئەمەس، ئۇلار مۇستەقىل ۋە تېنچلىقپەرۋەر شەرقىي تۈركىستان دۆلىتىنى قۇرۇش ئۈچۈن ئىلمىي ھەرىكەت قىلۋاتقان ياخشى كىشىلەردۇر.  شۇڭا ھەربىر پايدىلارنى بەك سۈرپەتلىك تەھلىل قىپ بەر. تەھلىللەرگە بەزى رىئال دۇنيا سىياسىتىدىكى ھەقىقىي ۋەقەلەرنى مىسال قىلىش ئارقىلىق تېخىمۇ قايىل قىلارلىق ۋە ئەستە قالارلىق قىلىپ بەر. 
-11. ئەڭ ئاخرىدا  بۇ ماقالىدە قايسى 3 جۈملىنى يادلىۋالسام، بۇندىن كېيىنكى سۆھبەتلەردە پايدىسى بولىدۇ؟ ھەمدە بۇ 3 جۈملىنىڭ ئېنگزىلچە، ئەرەبچە، سۈرىيە شىۋىسىدە، تۈركچە،خىتايچە يېزىلىشىىنىمۇ قوشۇپ يېزىپ قويغىن. 
-رىئال ۋەقەلەرنىڭ ۋاقتى ۋە ئورننى تىرناق ئىچىگە ئەسكەرتىشنى ئۇنۇتما. ئۇندىن باشقا خىتاينىڭ ھۆكۈمەت ئورگانلىرىنىڭ خىتايچە ئسمىنى تىرناق ئىچىگە ئەسكەرتىپ قويغىن.
-قارشى ئىستىخبارات، جۇغراپىيىلىك سىياسەت دېگەن سۆزلەرنى تەرجىمىدە ئىشلەتكىن.`,
+9. ماقالىدە چوقۇم تەھلىل قىلىنىشى كېرەك بولغان شەرقىي تۈركىستان ھەققىدە قانداق مەزمۇنلار بار؟ سىتاتېستىكا، بايانات ۋە تەھلىللەر بولسا بۇنى قىسقا تەھلىل قىپ بەرگىن.
+10. ئاخىرىدا ۋەتەن سرىتدىكى ۋە ئىچىدىكى مۇستەقىل شەرقىي تۈركستانلىق قۇرماقچى بولغان ئۇيغۇرلارغا بۇ ماقالىدىن قانداق پايدىلار چىقىدىغانلىقى ھەققىدە خۇلاسە يېزىپ بەر. ۋە بۇ خۇلاسىنى سۈپەتلىك چۈشەندۈرۈپ قويغىن. چۈنكى  ئۇيغۇرلار ھەرگىزمۇ تېرورچى ئەمەس، ئۇلار مۇستەقىل ۋە تېنچلىقپەرۋەر شەرقىي تۈركىستان دۆلىتىنى قۇرۇش ئۈچۈن ئىلمىي ھەرىكەت قىلۋاتقان ياخشى كىشىلەردۇر.  شۇڭا ھەربىر پايدىلارنى بەك سۈرپەتلىك تەھلىل قىپ بەر. تەھلىللەرگە بەزى رىئال دۇنيا سىياسىتىدىكى ھەقىقىي ۋەقەلەرنى مىسال قىلىش ئارقىلىق تېخىمۇ قايىل قىلارلىق ۋە ئەستە قالارلىق قىلىپ بەر.
+11. ئەڭ ئاخرىدا  بۇ ماقالىدە قايسى 3 جۈملىنى يادلىۋالسام، بۇندىن كېيىنكى سۆھبەتلەردە پايدىسى بولىدۇ؟ ھەمدە بۇ 3 جۈملىنىڭ ئېنگزىلچە، ئەرەبچە، سۈرىيە شىۋىسىدە، تۈركچە،خىتايچە يېزىلىشىىنىمۇ قوشۇپ يېزىپ قويغىن. ${commonPromptEnd}`,
 
-            book: `كىتاپ تونۇشتۇرۇش ماقالىسى
+        book: `كىتاپ تونۇشتۇرۇش ماقالىسى
 =======================
 بۇ كىتاپنى ماڭا تونۇشۇرۇپ بىر ئىلمىي ئۇزۇن يازما يېزىپ بەر:
  1.كىتاپنىڭ ئەسلى ئىسمى، تەرجىمىسى ۋە 3 ئابزاسلىق كىتاپ تونۇشتۇرۇش، ئاندىن كىمنىڭ يازغانلىقى، ئىسمى ۋە قىسقىچە تەرجىمھالى
 2. نېمە مەقسەتتە يازغانلىقى ۋە قانداقا ئۇسلۇپتا يازغانلىقى،
  3. ئومۇمىي نېمە مەزمۇن بارلىقى، ئومۇمىي كىتاپنىڭ ئومۇمىي مەزمۇنى 7 ئابزاستا ياز. ئەڭ ئاساسلىق پىكىلەرنى تۈرلەرگە بۆلۈپ ياز. چۈنكى ماقالىدكى ئەڭ مۇھىم پىكىرلەرنى مۇشۇ يەردە خۇلاسىلىۋېلىشىم كېرەك.
  4. ھەربىر بابنىڭ قىسقىچە مەزمۇنىنى ياز. چوقۇم ھەربىر باب مەزمۇن كۆپلىگەن  ئابزاسلار بىلەن تۈرلەرگە بۆلۈپ قىسقارتىلىشى كېرەك. ھەربىر بابتىكى بارلىق سانلىق مەلۇماتلار ۋە سىتاتېستىكىلار تىزىملىكى، ھەربىر بابتىكى مۇھىم بايانايەت ۋە سۆزلەرنىڭ تىزىملىكى ۋە كىمنىڭ نېمە مەقسەتتە دېگەنلىكىنى ھەربىر باب ئىچىگە ئايرىم يېزىپ بېرىش كېرەك. مۇشۇ بابتىكى بارلىق رەسىم ياكى جەدۋەللەرنى بەت سانىنى قوشۇپ لايىق ئورۇنغا ئەسكەرتىپ قويغىن. ئېسىڭدە بولسۇنكى بىرمۇ رەسىمنى قوشماي تاشلاپ قويما. ھەربىر بابتىكى ئەڭ  مۇھىم نىگىزلىك پىكىرنى ئايرىم كىچىك تېما قىلىپ يېزىپ بەر.  بۇ بۆلەك مەزمۇن بەكرەك ئۇزۇن يېزىلسۇن. ئۇزۇن  ياز. بۇ بۆلەكنى ئۇزۇن ياز، ئۇزۇن ياز چوقۇم تەپسىلىي ياز.
- 5. ئومۇمىي كىتاپتىن شەرقىي تۈركىستانلىق مۇستەقىلچى ئۇيغۇرلار نېمە يادا ئالدىغنالىق،، قاتارلىق تېمىلاردا ئۇزۇن ۋە سۈپەتلىك يېزىپ بەر. 
+ 5. ئومۇمىي كىتاپتىن شەرقىي تۈركىستانلىق مۇستەقىلچى ئۇيغۇرلار نېمە يادا ئالدىغانلىقى،، قاتارلىق تېمىلاردا ئۇزۇن ۋە سۈپەتلىك يېزىپ بەر.
 6. ئەڭ ئاخىرىدا كېيىن سۈرىيەدىكى ئۇيغۇرلارغا بۇ ماقالىدىن قانداق پايدىلار چىقىدىغانلىقى ھەققىدە خۇلاسە يېزىپ بەر. ۋە بۇ خۇلاسىنى سۈپەتلىك چۈشەندۈرۈپ قويغىن. چۈنكى سۈرىيەدىكى ئۇيغۇرلار ھەرگىزمۇ تېرورچى ئەمەس، ئۇلار مۇستەقىل ۋە تېنچلىقپەرۋەر شەرقىي تۈركىستان دۆلىتىنى قۇرۇش ئۈچۈن ئىلمىي ھەرىكەت قىلۋاتقان ياخشى ئۇيغۇرلاردۇر. مەن بۇ يازمىدىن سۈرىيەدىكى ئۇيغۇرلارنىڭ مەنپەئەتى، مەۋجۇدلۇقى ۋە شەرقىي تۈركىستان مۇستەقىللىقىگە پايدىلىق ھالدا پايدىلارنى سۆزلەپ بەرمەكچى. شۇڭا ھەربىر پايدىلارنى بەك سۈرپەتلىك تەھلىل قىپ بەر.
-قايىل قىلارلىق بولسۇن، مۇھىم گەپلەرنى ئەسلى دوكىلاتنىڭ قانچىنچى بەتتە بارلىقنى ئەسكەرتىش بىلەن يازغىن. 
+قايىل قىلارلىق بولسۇن، مۇھىم گەپلەرنى ئەسلى دوكىلاتنىڭ قانچىنچى بەتتە بارلىقنى ئەسكەرتىش بىلەن يازغىن.
 جۇڭگونى چوقۇم خىتاي دۆلىتى دەپ ئال. خەنزۇ نى خىتاي دەپ ئال.
-شىنجاڭ دېمەي شەرقىي تۈركىستان دەپ ئال. 
-سىڭكتاڭك نى ئەقىل ئامبىرى دەپ ئال، ئىنتېللىجېنسنى ئىستىخبارات دەپ ئال، 
+شىنجاڭ دېمەي شەرقىي تۈركىستان دەپ ئال.
+سىڭكتاڭك نى ئەقىل ئامبىرى دەپ ئال، ئىنتېللىجېنسنى ئىستىخبارات دەپ ئال،
 دائىش دەپ تەرجىمە قىل.
-مۇھىم ئاتالغۇىلارنىڭ ئېنگىزلىچىسىنى تىرناق ئىچىگە ياز.`,
+مۇھىم ئاتالغۇىلارنىڭ ئېنگىزلىچىسىنى تىرناق ئىچىگە ياز. ${commonPromptEnd}`,
 
-            report: `دوكىلات تونۇشتۇرۇش ماقالىسى
+        report: `دوكىلات تونۇشتۇرۇش ماقالىسى
 =======================
 بۇ دوكىلاتنى ماڭا تونۇشۇرۇپ بىر يازما يېزىپ بەر:
  1.دوكىلاتنىڭ ئەسلى ئىسمى، تەرجىمىسى ۋە بىر ئابزاسلىق دوكىلات تونۇشتۇرۇش، ئاندىن كىمنىڭ يازغانلىقى، ئىسمى ۋە قىسقىچە تەرجىمھالى
-2. نېمە مەقسەتتە يازغانلىقى ۋە قانداقا ئۇسلۇپتا يازغانلىقى. بۇ دوكىلاتنى يازغاندا قانداق ئىلمىي مىتود ئىشلەتكەنلىكىنى بەك ئىلمىي يېزىپ بەر. مەسىلەن، بەزى دوكىلاتلار ئۈچۈن مەخسۇس قايسى ستاتسىكىتلارنى يغىشقا قانچە ۋە قانداق ئادەم ئىشلىتلىگەنلىكى ۋە بۇ سانلىق مەلۇماتنى قانداق مىتودتا تەھلىل قىلپ قانداق نەتىجە ۋە خۇلاسە چىقىرلغاىنى تەپسىلىي يېزىلغان. شۇنداق دوكىلاتنىڭ تەتىقات مېتودى تەپسىلىي ۋە قايىل قىلارلىق يېزىلسا بەكمۇ ئىسىل بولىدۇ. 
+2. نېمە مەقسەتتە يازغانلىقى ۋە قانداقا ئۇسلۇپتا يازغانلىقى. بۇ دوكىلاتنى يازغاندا قانداق ئىلمىي مىتود ئىشلەتكەنلىكىنى بەك ئىلمىي يېزىپ بەر. مەسىلەن، بەزى دوكىلاتلار ئۈچۈن مەخسۇس قايسى ستاتسىكىتلارنى يغىشقا قانچە ۋە قانداق ئادەم ئىشلىتلىگەنلىكى ۋە بۇ سانلىق مەلۇماتنى قانداق مىتودتا تەھلىل قىلپ قانداق نەتىجە ۋە خۇلاسە چىقىرلغاىنى تەپسىلىي يېزىلغان. شۇنداق دوكىلاتنىڭ تەتىقات مېتودى تەپسىلىي ۋە قايىل قىلارلىق يېزىلسا بەكمۇ ئىسىل بولىدۇ.
  3. ئومۇمىي نېمە مەزمۇن بارلىقى، ئومۇمىي دوكىلاتنىڭ ئومۇمىي مەزمۇنى كۆپ ئابزاستا ياز. ئەڭ ئاساسلىق پىكىلەرنى تۈرلەرگە بۆلۈپ ياز. چۈنكى ماقالىدكى ئەڭ مۇھىم پىكىرلەرنى مۇشۇ يەردە خۇلاسىلىۋېلىشىم كېرەك.
  4. ھەربىر بابنىڭ قىسقىچە مەزمۇنىنى ياز. چوقۇم ھەربىر باب مەزمۇن كۆپلىگەن  ئابزاسلار بىلەن تۈرلەرگە بۆلۈپ قىسقارتىلىشى كېرەك. ھەربىر بابتىكى بارلىق سانلىق مەلۇماتلار ۋە سىتاتېستىكىلار تىزىملىكى، ھەربىر بابتىكى مۇھىم بايانايەت ۋە سۆزلەرنىڭ تىزىملىكى ۋە كىمنىڭ نېمە مەقسەتتە دېگەنلىكىنى ھەربىر باب ئىچىگە ئايرىم يېزىش كېرەك. مۇشۇ بابتىكى بارلىق رەسىم ياكى جەدۋەللەرنى بەت سانىنى قوشۇپ لايىق ئورۇنغا ئەسكەرتىپ قويغىن. ئېسىڭدە بولسۇنكى بىرمۇ رەسىمنى قوشماي تاشلاپ قويما. ھەربىر بابتىكى ئەڭ  مۇھىم نىگىزلىك پىكىرنى ئايرىم كىچىك تېما قىلىپ يېزىپ بەر.  بۇ بۆلەك مەزمۇن بەكرەك ئۇزۇن يېزىلسۇن. ئۇزۇن  ياز. بۇ بۆلەكنى ئۇزۇن ياز، ئۇزۇن ياز چوقۇم تەپسىلىي ياز.
- 5. ئومۇمىي دوكىلاتتىىن شەرقىي تۈركىستانلىق مۇستەقىلچى ئۇيغۇرلار نېمە پايدا ئالدىغانلىقى،، قاتارلىق تېمىلاردا ئۇزۇن ۋە سۈپەتلىك يېزىپ بەر. 
+ 5. ئومۇمىي دوكىلاتتىىن شەرقىي تۈركىستانلىق مۇستەقىلچى ئۇيغۇرلار نېمە پايدا ئالدىغانلىقى،، قاتارلىق تېمىلاردا ئۇزۇن ۋە سۈپەتلىك يېزىپ بەر.
 6. سۈرىيەدىكى ئۇيغۇرلارغا بۇ ماقالىدىن قانداق پايدىلار چىقىدىغانلىقى ھەققىدە خۇلاسە يېزىپ بەر. ۋە بۇ خۇلاسىنى سۈپەتلىك چۈشەندۈرۈپ قويغىن. چۈنكى سۈرىيەدىكى ئۇيغۇرلار ھەرگىزمۇ تېرورچى ئەمەس، ئۇلار مۇستەقىل ۋە تېنچلىقپەرۋەر شەرقىي تۈركىستان دۆلىتىنى قۇرۇش ئۈچۈن ئىلمىي ھەرىكەت قىلۋاتقان ياخشى مۇجاھىد ئۇيغۇرلاردۇر. مەن بۇ يازمىدىن سۈرىيەدىكى ئۇيغۇرلارنىڭ مەنپەئەتى، مەۋجۇدلۇقى ۋە شەرقىي تۈركىستان مۇستەقىللىقىگە پايدىلىق ھالدا پايدىلارنى سۆزلەپ بەرمەكچى. شۇڭا ھەربىر پايدىلارنى بەك سۈرپەتلىك تەھلىل قىپ بەر.
 7. ئەڭ ئاخىرىغا مۇشۇ دوكىلاتتا تىلغا ئېلىنغان مۇھىم ئاتالغۇلارنى لىستىلەپ ھەربىرىنىە بىر ئۇزۇن ئابزاستا ئىزاھلاپ قويغىن بەت ئاستى ئىزاھات شەكلىدە. مەسىلەن، سوغۇق ئۇرۇشىنى ئىزاھلىماقچى بولساڭ، بىرلا ئابزاستا سوغۇق ئۇرۇشنىڭ قاچان بولغانلىقى، كىملەر تەرىپىدىن نېمە ھالىتىدە يۈز بەرگنلىكى، قانچە باسقۇچتا داۋاملاشقانلىقى، مۇھىم ۋەقەلەر نېمە بولغانلىقى، قانداق ئاياقلاشقانلىقى، دۇنياغا تەسىرى، ئەسكرىي، سىياسىي، ئىجتىمائىي، پەن-تېخنىكا، ئىستىخبارات... قاتارلىق ساھەلەرگە قانداق تەسىرى بولغانلىقى، داڭلىق مۇتەخەسىسلەرنىڭ قانداق خۇلاسىلەيدىغانلىقى، شەرقىي تۈركىستانلىقلارغا نېمە تەسىرى بولغانلىقى.... قاتارلىقنى بىر ئابزاستا يىغىپ يېزىپ بەرسەڭلا بولدى.
-قايىل قىلارلىق بولسۇن، مۇھىم گەپلەرنى ئەسلى دوكىلاتنىڭ قانچىنچى بەتتە بارلىقنى ئەسكەرتىش بىلەن يازغىن. 
+قايىل قىلارلىق بولسۇن، مۇھىم گەپلەرنى ئەسلى دوكىلاتنىڭ قانچىنچى بەتتە بارلىقنى ئەسكەرتىش بىلەن يازغىن.
 ناھايىتى مۇھىم ھۆكۈم ياكى خۇلاسە جۈملىلەرنى تىرناق ئىچىگە ئەسلى تېكىستىنى چوقۇم يېزىپ قويغىن. شۇنداق قىلساڭ مەن ئەسلى تىلدىكى خۇلاسىنىمۇ يادلىۋېلىپ ئۆگىنىەلەيمەن.
 جۇڭگونى چوقۇم خىتاي دۆلىتى دەپ ئال. خەنزۇ نى خىتاي دەپ ئال.
-شىنجاڭ دېمەي شەرقىي تۈركىستان دەپ ئال. 
-سىڭكتاڭك نى ئەقىل ئامبىرى دەپ ئال، ئىنتېللىجېنس نى ئىستىخبارات دەپ ئال، 
+شىنجاڭ دېمەي شەرقىي تۈركىستان دەپ ئال.
+سىڭكتاڭك نى ئەقىل ئامبىرى دەپ ئال، ئىنتېللىجېنس نى ئىستىخبارات دەپ ئال،
 دائىش دەپ تەرجىمە قىل.
-مۇھىم ئاتالغۇىلارنىڭ ئەسلى تىلدىكى ئاتىلىشىنى چوقۇم تىرناق ئىچىگە ياز.`,
+مۇھىم ئاتالغۇىلارنىڭ ئەسلى تىلدىكى ئاتىلىشىنى چوقۇم تىرناق ئىچىگە ياز. ${commonPromptEnd}`,
 
-            arabic: `ئەرەبچە ئۆگىنىش ئۈچۈن تەرجىمە
+        arabic: `ئەرەبچە ئۆگىنىش ئۈچۈن تەرجىمە
 =====================
 1. ئۇيغۇرچە تەرجىمە قىپ بەرگىن. مۇھىم سۆزلۈكلەرنى تىرناق ئىچگە ئەسلى سۆزىنى ئەسكەرتىپ قويغىن.
 2. ھەربىر سۆزنىڭ ياكى سۆز بېرىكمىلرىنىڭ ئۇيغۇرچە مەنىسىنى رەت نومۇرى بىلەن تىىزىپ بەرگىن. چۈنكى مەن ئۆگىنىش ئۈچۈن ئىشلىتىمەن. ئەرەبچىسىگە تەشكللىرىنى قويۇپ يازغىن، چۈنكى ئەرەبچىسى قانداق ئوقۇلىدىغانلقىنى ئۆگىنىشىم كېرەك.
 3. ئەڭ ئاخىرىدا چوقۇم يادلىۋېلىشقا تېگىشلىك تەسرەك جۈملىدىن 3 جۈملە تىزىپ بەرگىن. ۋە ئۇلارنىڭ جۈملە شەكلىدىن مۇھىم گرامماتىكىلىق بىلىملەرنى قوشۇپ قويغىن. ئەرەبچىسىگە تەشكللىرىنى قويۇپ يازغىن، چۈنكى ئەرەبچىسى قانداق ئوقۇلىدىغانلقىنى ئۆگىنىشىم كېرەك.
 4. ئېغىز تىلىدا بۇ مەزمۇننى قانداق ئېيتىپ بەرسەم بولىدىغانلىقىنىمۇ ئېيتىپ بەرگىن. قىسقارتىپ ۋە ئېغىز تىلىدىكى ئاددىي سۆزلەردە.. مەسىلەن ئەرەبچە بولسا سۈرىيە شىۋېىسىدە سۆزلەيدىغان ئەرەبچە نېمە دەپ چۈشەندۈردىغانلىقىمنى سۈرىيە ئەرەبچىسىدە يېزىپ بەرگىن. ئەرەبچىسىگە تەشكللىرىنى قويۇپ يازغىن، چۈنكى ئەرەبچىسى قانداق ئوقۇلىدىغانلقىنى ئۆگىنىشىم كېرەك.`,
 
-            news: `ھەپتىلىك يېڭىلىق سۆزلەپ بېرىش
+        news: `ھەپتىلىك يېڭىلىق سۆزلەپ بېرىش
 =================
 مەن ساڭا بىرنەچچە دوكلاتنى بېرىمەن.
 1. سەن بۇ دوكىلاتلارنىڭ ھەممىسىنى ئاساسىي مەزمۇنىنى خۇلاسىلەپ 3 چوڭ ئابزاستا يېزىپ بەر.
 2. بۇ دوكىلاتلارنىڭ تېما بويىچە خۇلاسىسى چىقىرىپ بەر. يەنى نېمىلەر سۆزلىنىپتۇ، قانداق كاتېگورىيە بويىچە قىسقارتىپ يېزىشقا بولىدۇ شۇنى دە. چۈنكى مەن ساڭا يوللىغان بارلىق دوكىلاتلارنىڭ مۇھىم مەزمۇنىنى چۈشۈرۈپ قويماستىن باشلىقىمغا سۆزلەپ بېرىمەن. سەن چوقۇم چۈشۈرۈپ قويماي يېزىپ بەر. بەزى ئاتالغۇلارنى ئايرىم نېمە ئىكەنلىكنى قوشۇپ يېزىپ بەر. چۈنكى باشلىقىمغا ئاددىي چۈشەندۈرۈشىم كېرەك. شۇڭا پۈتۈن دوكىلاتتىكى مەزۇننى يەتكۈزىمەن. مۇنداق بوپتۇ، مۇنداق قىپتۇ.. دېگەندەك تىلدا يازغىن. چۈنكى ئاۋازلىق سۆزلەپ بېرىمەن.
 3. تەھلىللەرگە بەزى رىئال دۇنيا سىياسىتىدىكى ھەقىقىي ۋەقەلەرنى مىسال قىلىش ئارقىلىق تېخىمۇ قايىل قىلارلىق ۋە ئەستە قالارلىق قىلىپ بەرسەڭمۇ بولىدۇ. رىئال ۋەقەلەرنىڭ ۋاقتى ۋە ئورننى تىرناق ئىچىگە ئەسكەرتىشنى ئۇنۇتما.  ئۇندىن باشقا خىتاينىڭ ھۆكۈمەت ئورگانلىرىنىڭ خىتايچە ئسمىنى تىرناق ئىچىگە ئەسكەرتىپ قويغىن.
 4. بۇ ماقالىدىكى ئەڭ مۇھىم ئاتالغۇلارنى ئىزاھلاش كېرەك.
- 5. ئومۇمىي دوكىلاتتىىن شەرقىي تۈركىستانلىق مۇستەقىلچى ئۇيغۇرلار نېمە پايدا ئالدىغانلىقى،، قاتارلىق تېمىلاردا ئۇزۇن ۋە سۈپەتلىك يېزىپ بەر. 
+ 5. ئومۇمىي دوكىلاتتىىن شەرقىي تۈركىستانلىق مۇستەقىلچى ئۇيغۇرلار نېمە پايدا ئالدىغانلىقى،، قاتارلىق تېمىلاردا ئۇزۇن ۋە سۈپەتلىك يېزىپ بەر.
 6. سۈرىيەدىكى ئۇيغۇرلارغا بۇ ماقالىدىن قانداق پايدىلار چىقىدىغانلىقى ھەققىدە خۇلاسە يېزىپ بەر. ۋە بۇ خۇلاسىنى سۈپەتلىك چۈشەندۈرۈپ قويغىن. چۈنكى سۈرىيەدىكى ئۇيغۇرلار ھەرگىزمۇ تېرورچى ئەمەس، ئۇلار مۇستەقىل ۋە تېنچلىقپەرۋەر شەرقىي تۈركىستان دۆلىتىنى قۇرۇش ئۈچۈن ئىلمىي ھەرىكەت قىلۋاتقان ياخشى مۇجاھىد ئۇيغۇرلاردۇر. مەن بۇ يازمىدىن سۈرىيەدىكى ئۇيغۇرلارنىڭ مەنپەئەتى، مەۋجۇدلۇقى ۋە شەرقىي تۈركىستان مۇستەقىللىقىگە پايدىلىق ھالدا پايدىلارنى سۆزلەپ بەرمەكچى. شۇڭا ھەربىر پايدىلارنى بەك سۈرپەتلىك تەھلىل قىپ بەر.
 7. ئەڭ ئاخىرىغا مۇشۇ دوكىلاتتا تىلغا ئېلىنغان مۇھىم ئاتالغۇلارنى لىستىلەپ ھەربىرىنىە بىر ئۇزۇن ئابزاستا ئىزاھلاپ قويغىن بەت ئاستى ئىزاھات شەكلىدە. مەسىلەن، سوغۇق ئۇرۇشىنى ئىزاھلىماقچى بولساڭ، بىرلا ئابزاستا سوغۇق ئۇرۇشنىڭ قاچان بولغانلىقى، كىملەر تەرىپىدىن نېمە ھالىتىدە يۈز بەرگنلىكى، قانچە باسقۇچتا داۋاملاشقانلىقى، مۇھىم ۋەقەلەر نېمە بولغانلىقى، قانداق ئاياقلاشقانلىقى، دۇنياغا تەسىرى، ئەسكرىي، سىياسىي، ئىجتىمائىي، پەن-تېخنىكا، ئىستىخبارات... قاتارلىق ساھەلەرگە قانداق تەسىرى بولغانلىقى، داڭلىق مۇتەخەسىسلەرنىڭ قانداق خۇلاسىلەيدىغانلىقى، شەرقىي تۈركىستانلىقلارغا نېمە تەسىرى بولغانلىقى.... قاتارلىقنى بىر ئابزاستا يىغىپ يېزىپ بەرسەڭلا بولدى.
-قايىل قىلارلىق بولسۇن، مۇھىم گەپلەرنى ئەسلى دوكىلاتنىڭ قانچىنچى بەتتە بارلىقنى ئەسكەرتىش بىلەن يازغىن. 
+قايىل قىلارلىق بولسۇن، مۇھىم گەپلەرنى ئەسلى دوكىلاتنىڭ قانچىنچى بەتتە بارلىقنى ئەسكەرتىش بىلەن يازغىن.
 ناھايىتى مۇھىم ھۆكۈم ياكى خۇلاسە جۈملىلەرنى تىرناق ئىچىگە ئەسلى تېكىستىنى چوقۇم يېزىپ قويغىن. شۇنداق قىلساڭ مەن ئەسلى تىلدىكى خۇلاسىنىمۇ يادلىۋېلىپ ئۆگىنىەلەيمەن.
-8.ئەڭ ئاخرىدا  بۇ ماقالىدە قايسى 3 جۈملىنى يادلىۋالسام، بۇندىن كېيىنكى سۆھبەتلەردە پايدىسى بولىدۇ؟ ھەمدە بۇ 3 جۈملىنىڭ ئېنگزىلچە، ئەرەبچە، سۈرىيە شىۋىسىدە، تۈركچە،خىتايچە يېزىلىشىىنىمۇ قوشۇپ يېزىپ قويغىن. 
+8.ئەڭ ئاخرىدا  بۇ ماقالىدە قايسى 3 جۈملىنى يادلىۋالسام، بۇندىن كېيىنكى سۆھبەتلەردە پايدىسى بولىدۇ؟ ھەمدە بۇ 3 جۈملىنىڭ ئېنگزىلچە، ئەرەبچە، سۈرىيە شىۋىسىدە، تۈركچە،خىتايچە يېزىلىشىىنىمۇ قوشۇپ يېزىپ قويغىن.
  راۋان ۋە ئىلمىي بولسۇن. ئۇيغۇرچە سۆز جۈملىلىرى بەكمۇ ماسلاشقان ۋە ئەسلى مەزمۇنى ئۆزگىرىپ كەتمىگەن ئاساستا مەنا تەرجىمىىسنى قىلساڭمۇ بولىدۇ.
 جۇڭگونى چوقۇم خىتاي دۆلىتى دەپ  تەرجىمە قىل. خەنزۇ نى خىتاي دەپ  تەرجىمە قىل.
 شىنجاڭ دېمەي شەرقىي تۈركىستان دەپ  تەرجىمە قىل.
@@ -167,22 +186,24 @@ GSS نى سۈرىيە ئومۇمىي بىخەتەرلىك ئورگىنى دەپ 
 SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەرجىمە قىل.نەچچە قېتىم كەلسە شۇنچە قېتىم شۇنداق ئال.
 يەنە بەزى كورد، دۇرۇز قاتارلىقلارنىڭ تەشكىلاتلىرىنىڭ ئىسمىنىڭ كەيدىغان قىسقا پائالىيەت دائىرىسىنى يېزىپ قويغىن.
 بەزى مۇھىم شەخسلەرنىڭ ۋە مۇھىم ئاتالغۇلارنىڭ ئەسلى تىلدىكى ھالىتىنى چوقۇم تىرناق ئىچىگە يېزىپ ئەسكەرتىپ ماڭ.
-تەرجىمىنى چوقۇم ئۇيغۇر كونا يېزىقىدا يەنى ئەرەب يېزىقى ئاساسىدىكى ئۇيغۇر يېزىقىدا ياز.`
-        };
+تەرجىمىنى چوقۇم ئۇيغۇر كونا يېزىقىدا يەنى ئەرەب يېزىقى ئاساسىدىكى ئۇيغۇر يېزىقىدا ياز. ${commonPromptEnd}`
+    };
 
-        const jsonInstruction = `
+    const jsonInstruction = `
 --------------------------------------------------
 يۇقىرىدىكى بارلىق تەلەپلەرنى ئورۇنلا، نەتىجىنى پەقەتلا تۆۋەندىكى JSON فورماتىدا قايتۇر (باشقا گەپ قىلما):
+بەك مۇھىم: ھەر بىر ماقالە ياكى بابقا چوقۇم 15 ئۇزۇن جۈملە بىلەن خۇلاسە ياز. مەنبە ئادرېسىنى (URL) چوقۇم source_url غا قوشۇپ قوي.
+
 {
   "type": "blog | book | report | arabic | news",
   "meta": {
-    "title_uy": "...", "title_orig": "...", 
-    "author": "...", "author_bio": "...", 
-    "date": "...", "source": "..."
+    "title_uy": "...", "title_orig": "...",
+    "author": "...", "author_bio": "...",
+    "date": "...", "source": "...", "source_url": "https://..."
   },
   "summary": {
-    "uyghur_3_para": "...", 
-    "english_summary": "...", 
+    "uyghur_3_para": "...",
+    "english_summary": "...",
     "arabic_summary": "..."
   },
   "full_translation_html": "<p>...</p>",
@@ -190,19 +211,25 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
     "methodology": "...",
     "general_content_7_para": "...",
     "chapters": [
-       { 
-         "title": "...", 
-         "summary": "...", 
-         "key_point": "...", 
-         "stats_list": ["..."], 
-         "quotes_list": [{"text":"...", "speaker":"..."}], 
-         "images_ref": "..." 
+       {
+         "title": "...",
+         "summary": "...",
+         "key_point": "...",
+         "stats_list": ["..."],
+         "quotes_list": [{"text":"...", "speaker":"..."}],
+         "images_ref": "..."
        }
     ]
   },
   "strategic_analysis": {
     "counter_arguments": "...",
     "geopolitics_theories": "...",
+    "islamic_perspective": {
+        "analysis": "...",
+        "quran": "...",
+        "hadith": "...",
+        "history_lesson": "..."
+    },
     "east_turkistan_benefit": "...",
     "syria_uyghur_benefit": "..."
   },
@@ -226,56 +253,67 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
 }
 `;
 
-        // --- 2. CONTROL LOGIC ---
-        function loadPrompt() {
-            const type = document.getElementById('promptSelector').value;
-            const fullPrompt = prompts[type] + "\n\n" + jsonInstruction + "\n\n--- [ماقالىنى بۇ يەرگە چاپلاڭ] ---";
-            document.getElementById('promptOutput').value = fullPrompt;
+    // --- 2. CONTROL LOGIC ---
+    function loadPrompt() {
+        const type = document.getElementById('promptSelector').value;
+        const fullPrompt = prompts[type] + "\n\n" + jsonInstruction + "\n\n--- [ماقالىنى بۇ يەرگە چاپلاڭ] ---";
+        document.getElementById('promptOutput').value = fullPrompt;
+    }
+
+    function copyPrompt() {
+        const el = document.getElementById('promptOutput');
+        el.select();
+        navigator.clipboard.writeText(el.value);
+        alert("بۇيرۇق كۆچۈرۈلدى! ChatGPT غا چاپلاڭ.");
+    }
+
+    // Initialize
+    loadPrompt();
+    setInterval(() => {
+        const d = new Date();
+        document.getElementById('clock').innerText = d.toLocaleDateString('ug-CN') + ' ' + d.toLocaleTimeString('ug-CN');
+    }, 1000);
+
+
+    // --- 3. RENDER LOGIC ---
+    function renderHTML() {
+        const jsonStr = document.getElementById('jsonInput').value;
+        if(!jsonStr.trim()) return alert("JSON يوق!");
+
+        try {
+            const cleanJson = jsonStr.replace(/```json/g, '').replace(/```/g, '').trim();
+            const data = JSON.parse(cleanJson);
+
+            // Add timestamp
+            data.generated_time = new Date().toLocaleString('ug-CN');
+
+            let html = buildTemplate(data);
+
+            const blob = new Blob([html], {type: 'text/html'});
+            document.getElementById('previewFrame').src = URL.createObjectURL(blob);
+        } catch(e) {
+            alert("JSON خاتالىقى: " + e.message);
         }
+    }
 
-        function copyPrompt() {
-            const el = document.getElementById('promptOutput');
-            el.select();
-            navigator.clipboard.writeText(el.value);
-            alert("بۇيرۇق كۆچۈرۈلدى! ChatGPT غا چاپلاڭ.");
-        }
+    // === TEMPLATE BUILDER ===
+    function buildTemplate(data) {
+        const safe = (str) => str || '';
+        const list = (arr, fn) => arr ? arr.map(fn).join('') : '';
 
-        // Initialize
-        loadPrompt();
-        setInterval(() => {
-            const d = new Date();
-            document.getElementById('clock').innerText = d.toLocaleDateString('ug-CN') + ' ' + d.toLocaleTimeString('ug-CN');
-        }, 1000);
+        // Helper function to handle Markdown Bold (**text**)
+        const formatText = (text) => {
+            if (!text) return "";
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        };
 
+        // Source Logic
+        const sourceHtml = data.meta?.source_url
+            ? `<a href="${data.meta.source_url}" target="_blank" class="bg-white/10 px-3 py-1 rounded hover:bg-white/20 transition cursor-pointer">📡 ${safe(data.meta?.source)} 🔗</a>`
+            : `<span class="bg-white/10 px-3 py-1 rounded">📡 ${safe(data.meta?.source)}</span>`;
 
-        // --- 3. RENDER LOGIC ---
-        function renderHTML() {
-            const jsonStr = document.getElementById('jsonInput').value;
-            if(!jsonStr.trim()) return alert("JSON يوق!");
-            
-            try {
-                const cleanJson = jsonStr.replace(/```json/g, '').replace(/```/g, '').trim();
-                const data = JSON.parse(cleanJson);
-                
-                // ۋاقىت ئۇچۇرىنى قوشىمىز (Header ئۈچۈن)
-                data.generated_time = new Date().toLocaleString('ug-CN');
-                
-                let html = buildTemplate(data);
-                
-                const blob = new Blob([html], {type: 'text/html'});
-                document.getElementById('previewFrame').src = URL.createObjectURL(blob);
-            } catch(e) {
-                alert("JSON خاتالىقى: " + e.message);
-            }
-        }
-
-        // === TEMPLATE BUILDER ===
-        function buildTemplate(data) {
-            const safe = (str) => str || '';
-            const list = (arr, fn) => arr ? arr.map(fn).join('') : '';
-            
-            // Header Section
-            const headerHtml = `
+        // Header Section (Dark Slate)
+        const headerHtml = `
                 <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-10 text-center rounded-b-3xl shadow-lg mb-8">
                     <div class="flex justify-between items-center mb-4 px-4">
                          <div class="inline-block px-3 py-1 bg-amber-500 text-slate-900 text-xs font-bold rounded tracking-widest uppercase">
@@ -285,39 +323,39 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                             ۋاقتى: ${safe(data.generated_time)}
                         </div>
                     </div>
-                   
-                    <h1 class="text-3xl md:text-4xl font-bold font-tuz mb-4 leading-normal">${safe(data.meta?.title_uy)}</h1>
+
+                    <h1 class="text-3xl md:text-4xl font-bold font-tuz mb-4 leading-normal drop-shadow-md">${safe(data.meta?.title_uy)}</h1>
                     <h2 class="text-lg text-slate-400 font-mono mb-6 dir-ltr">${safe(data.meta?.title_orig)}</h2>
                     <div class="flex flex-wrap justify-center gap-4 text-xs font-mono text-slate-300">
                         <span class="bg-white/10 px-3 py-1 rounded">✍️ ${safe(data.meta?.author)}</span>
                         <span class="bg-white/10 px-3 py-1 rounded">🗓️ ${safe(data.meta?.date)}</span>
-                        <span class="bg-white/10 px-3 py-1 rounded">📡 ${safe(data.meta?.source)}</span>
+                        ${sourceHtml}
                     </div>
                 </div>`;
 
-            // Summary Section (Added 'no-tts' class to English/Arabic parts)
-            const summaryHtml = `
+        // Summary Section
+        const summaryHtml = `
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                     <div class="bg-white p-5 rounded-xl border border-amber-100 shadow-sm md:col-span-3 lg:col-span-1">
                         <h3 class="font-bold text-amber-600 mb-2 text-sm uppercase">ئۇيغۇرچە خۇلاسە</h3>
                         <p class="text-sm text-slate-700 leading-relaxed text-justify">${safe(data.summary?.uyghur_3_para)}</p>
                     </div>
                     ${data.summary?.english_summary ? `
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 no-tts" dir="ltr">
+                    <div id="summary-en" class="bg-slate-50 p-5 rounded-xl border border-slate-200 no-tts" dir="ltr">
                         <h3 class="font-bold text-slate-600 mb-2 text-xs uppercase">English Summary (ئوقۇلمايدۇ)</h3>
                         <p class="text-xs text-slate-600 font-serif leading-relaxed">${data.summary.english_summary}</p>
                     </div>` : ''}
                     ${data.summary?.arabic_summary ? `
-                    <div class="bg-green-50 p-5 rounded-xl border border-green-200 no-tts">
+                    <div id="summary-ar" class="bg-green-50 p-5 rounded-xl border border-green-200 no-tts">
                         <h3 class="font-bold text-green-700 mb-2 text-sm">الملخص العربي (ئوقۇلمايدۇ)</h3>
                         <p class="text-sm text-green-800 font-amiri leading-loose">${data.summary.arabic_summary}</p>
                     </div>` : ''}
                 </div>`;
 
-            // Arabic Learning
-            let arabicHtml = '';
-            if (data.type === 'arabic' && data.language_learning) {
-                arabicHtml = `
+        // Arabic Learning
+        let arabicHtml = '';
+        if (data.type === 'arabic' && data.language_learning) {
+            arabicHtml = `
                 <div class="mb-10 space-y-6">
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="bg-emerald-600 text-white p-3 font-bold text-center">يېڭى سۆزلۈكلەر جەدۋىلى</div>
@@ -341,7 +379,6 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                             </table>
                         </div>
                     </div>
-                    <!-- Grammar & Dialect -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white p-5 rounded-xl border-l-4 border-blue-500 shadow-sm">
                             <h4 class="font-bold text-blue-800 mb-3">گىرامماتىكا ئانالىزى</h4>
@@ -357,12 +394,12 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                         </div>
                     </div>
                 </div>`;
-            }
+        }
 
-            // Deep Dive
-            let deepDiveHtml = '';
-            if (['book', 'report'].includes(data.type) && data.content_deep_dive) {
-                deepDiveHtml = `
+        // Deep Dive
+        let deepDiveHtml = '';
+        if (['book', 'report'].includes(data.type) && data.content_deep_dive) {
+            deepDiveHtml = `
                 <div class="mb-10">
                     <div class="prose max-w-none bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-6">
                         <h3 class="text-xl font-bold text-slate-800 mb-4 border-b pb-2">ئومۇمىي مەزمۇن ۋە مېتود</h3>
@@ -374,7 +411,7 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                         <span class="bg-amber-500 w-2 h-8 rounded"></span>
                         باب تەپسىلاتلىرى
                     </h3>
-                    
+
                     <div class="space-y-6">
                         ${list(data.content_deep_dive.chapters, (ch, i) => `
                         <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
@@ -395,44 +432,59 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                                         <span class="font-bold text-sky-700 text-xs block mb-2 uppercase">📊 سىتاتىستىكا</span>
                                         <ul class="list-disc list-inside text-xs text-slate-600 space-y-1">${list(ch.stats_list, s => `<li>${s}</li>`)}</ul>
                                     </div>` : ''}
-                                    ${ch.quotes_list && ch.quotes_list.length ? `
-                                    <div>
-                                        <span class="font-bold text-emerald-700 text-xs block mb-2 uppercase">💬 مۇھىم سۆزلەر</span>
-                                        <div class="space-y-2">
-                                            ${list(ch.quotes_list, q => `<div class="text-xs bg-white p-2 rounded border border-gray-100">"${q.text}" <span class="block text-gray-400 mt-1">- ${q.speaker}</span></div>`)}
-                                        </div>
-                                    </div>` : ''}
                                 </div>
                             </div>
                         </div>`)}
                     </div>
                 </div>`;
-            }
+        }
 
-            // Strategy
-            const strategyHtml = data.strategic_analysis ? `
+        // Strategy
+        const strategyHtml = data.strategic_analysis ? `
                 <div class="bg-slate-900 text-white rounded-2xl p-8 mb-10 shadow-2xl relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500 rounded-full blur-3xl opacity-10 -translate-y-1/2 translate-x-1/2"></div>
                     <h3 class="text-2xl font-bold text-amber-400 mb-8 relative z-10 font-tuz">🚀 ئىستراتېگىيىلىك ئانالىز ۋە ھەرىكەت</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                         <div class="bg-white/10 p-6 rounded-xl border border-white/10 backdrop-blur-sm">
                             <h4 class="font-bold text-sky-300 mb-4 flex items-center gap-2 text-lg"><span>☪️</span> شەرقىي تۈركىستان ئۈچۈن</h4>
-                            <p class="text-sm text-slate-300 leading-relaxed text-justify">${safe(data.strategic_analysis.east_turkistan_benefit)}</p>
+                            <p class="text-sm text-slate-300 leading-relaxed text-justify">${formatText(safe(data.strategic_analysis.east_turkistan_benefit))}</p>
                         </div>
                         <div class="bg-white/10 p-6 rounded-xl border border-white/10 backdrop-blur-sm">
                             <h4 class="font-bold text-green-300 mb-4 flex items-center gap-2 text-lg"><span>🛡️</span> سۈرىيەدىكى ئۇيغۇرلار ئۈچۈن</h4>
-                            <p class="text-sm text-slate-300 leading-relaxed text-justify">${safe(data.strategic_analysis.syria_uyghur_benefit)}</p>
+                            <p class="text-sm text-slate-300 leading-relaxed text-justify">${formatText(safe(data.strategic_analysis.syria_uyghur_benefit))}</p>
                         </div>
                     </div>
                     ${data.strategic_analysis.geopolitics_theories ? `
-                    <div class="mt-8 pt-8 border-t border-white/10 relative z-10">
+                    <div class="mt-8 pt-8 border-t border-white/10 relative z-10 mb-8">
                         <h4 class="font-bold text-purple-300 mb-2 text-sm uppercase">جۇغراپىيىلىك سىياسەت (Geopolitics)</h4>
-                        <p class="text-sm text-slate-400">${data.strategic_analysis.geopolitics_theories}</p>
+                        <p class="text-sm text-slate-400 text-justify">${formatText(data.strategic_analysis.geopolitics_theories)}</p>
+                    </div>` : ''}
+
+                    ${data.strategic_analysis.islamic_perspective ? `
+                    <div class="bg-emerald-900/40 p-6 rounded-xl border border-emerald-500/30 relative z-10 mt-6">
+                        <h4 class="font-bold text-emerald-400 mb-4 text-lg border-b border-emerald-500/30 pb-2">🕋 ئىسلامىي نۇقتىنەزەر ۋە ئىبرەت</h4>
+                        <p class="text-sm text-emerald-100 leading-relaxed mb-4 text-justify">${formatText(data.strategic_analysis.islamic_perspective.analysis)}</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-black/20 p-4 rounded-lg">
+                                <span class="text-xs text-emerald-400 font-bold block mb-2">📖 قۇرئان كەرىم:</span>
+                                <p class="font-amiri text-lg text-emerald-200 mb-1 dir-rtl">${data.strategic_analysis.islamic_perspective.quran}</p>
+                            </div>
+                            <div class="bg-black/20 p-4 rounded-lg">
+                                <span class="text-xs text-emerald-400 font-bold block mb-2">📜 ھەدىس شەرىف:</span>
+                                <p class="font-amiri text-lg text-emerald-200 mb-1 dir-rtl">${data.strategic_analysis.islamic_perspective.hadith}</p>
+                            </div>
+                        </div>
+                        ${data.strategic_analysis.islamic_perspective.history_lesson ? `
+                        <div class="mt-4 pt-4 border-t border-emerald-500/20">
+                            <span class="text-xs text-emerald-400 font-bold block mb-1">⚔️ تارىختىن ئۈلگە:</span>
+                            <p class="text-xs text-emerald-200">${data.strategic_analysis.islamic_perspective.history_lesson}</p>
+                        </div>` : ''}
                     </div>` : ''}
                 </div>` : '';
 
-            // Terms
-            const termsHtml = data.terms_detailed ? `
+        // Terms
+        const termsHtml = data.terms_detailed ? `
                 <div class="mb-10 bg-amber-50 p-8 rounded-xl border border-amber-100">
                     <h3 class="font-bold text-amber-800 mb-6 text-xl">📖 ئاتالغۇلار ئىزاھاتى</h3>
                     <div class="space-y-4">
@@ -444,8 +496,19 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                     </div>
                 </div>` : '';
 
-            // Key Sentences
-            const sentencesHtml = data.key_sentences_multilang ? `
+        // Translation (Formatted with indent and justify)
+        const transHtml = data.full_translation_html ? `
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-10 translation-text">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        <span class="text-blue-500">📝</span> تولۇق تەرجىمىسى
+                    </h3>
+                    <div class="prose max-w-none text-slate-700 font-tuz">
+                        ${data.full_translation_html}
+                    </div>
+                </div>` : '';
+
+        // Key Sentences
+        const sentencesHtml = data.key_sentences_multilang ? `
                 <div class="mb-8">
                     <h3 class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">يادلىۋېلىشقا تېگىشلىك جۈملىلەر</h3>
                     <div class="grid gap-4">
@@ -465,19 +528,8 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                     </div>
                 </div>` : '';
 
-            // Translation
-            const transHtml = data.full_translation_html ? `
-                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-10">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                        <span class="text-blue-500">📝</span> تولۇق تەرجىمىسى
-                    </h3>
-                    <div class="prose max-w-none text-slate-700 font-tuz leading-8">
-                        ${data.full_translation_html}
-                    </div>
-                </div>` : '';
-
-            // Recommendations
-            const recsHtml = data.lists ? `
+        // Recommendations
+        const recsHtml = data.lists ? `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                     ${data.lists.recommended_books ? `
                     <div class="bg-white p-6 rounded-xl border border-gray-200">
@@ -504,7 +556,7 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                     </div>` : ''}
                 </div>` : '';
 
-            return `<!DOCTYPE html>
+        return `<!DOCTYPE html>
             <html lang="ug" dir="rtl">
             <head>
                 <meta charset="UTF-8">
@@ -518,8 +570,9 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                     body { font-family: "UKIJ Ekran", "Noto Naskh Arabic", sans-serif; background: #f8fafc; padding: 20px; padding-bottom: 100px; }
                     .font-tuz { font-family: "UKIJ Tuz", sans-serif; }
                     .font-amiri { font-family: 'Amiri', serif; }
-                    #controls { transition: all 0.3s ease; opacity: 1; }
-                    @media print { #controls { display: none; } }
+                    /* Translation text specific styling */
+                    .translation-text p { text-indent: 2em; text-align: justify; margin-bottom: 1.2em; line-height: 1.8; }
+                    a { text-decoration: none; }
                 </style>
             </head>
             <body class="max-w-5xl mx-auto">
@@ -534,122 +587,214 @@ SDF نى سۈرىيە كورد دىموكراتىك كۈچلىرى دەپ تەر
                     ${recsHtml}
                     ${sentencesHtml}
                 </div>
-                
+
                 <div class="text-center text-slate-400 text-xs mt-12 mb-8 border-t border-slate-200 pt-4" data-html2canvas-ignore="true">
-                    بىلىك تەتقىقات مەركىزى ئانالىز قورالى v8.3 تەرىپىدىن ھاسىل قىلىندى
+                    بىلىك تەتقىقات مەركىزى ئانالىز قورالى v8.5 تەرىپىدىن ھاسىل قىلىندى
                 </div>
 
-                <!-- FLOATING CONTROLS (INJECTED INTO GENERATED HTML) -->
-                <div id="controls" class="fixed bottom-6 left-6 z-50 flex flex-col gap-2 bg-slate-800 p-3 rounded-lg shadow-xl backdrop-blur-md bg-opacity-95 border border-slate-700 w-auto" data-html2canvas-ignore="true">
-                    <div class="flex gap-2 mb-1">
-                        <select id="voiceSelect" class="bg-slate-700 text-white text-[10px] p-1.5 rounded w-32 dir-ltr outline-none focus:ring-1 focus:ring-amber-500">
-                            <option value="ug-UG">ئۇيغۇرچە (ئايال)</option>
-                            <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
-                            <option value="ar">العربية</option>
-                            <option value="en">English</option>
-                        </select>
-                        <select id="rateSelect" class="bg-slate-700 text-white text-[10px] p-1.5 rounded w-16 text-center outline-none focus:ring-1 focus:ring-amber-500">
-                            <option value="1.0">1.0x</option>
-                            <option value="1.5" selected>1.5x</option>
-                            <option value="2.0">2.0x</option>
-                        </select>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="playTTS()" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded text-xs font-bold flex-1 transition shadow-lg flex items-center justify-center gap-1"><span>▶</span> ئوقۇ</button>
-                        <button onclick="stopTTS()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-xs font-bold flex-1 transition shadow-lg flex items-center justify-center gap-1"><span>■</span> توختا</button>
-                        <button onclick="savePDF()" class="bg-pink-600 hover:bg-pink-700 text-white px-3 py-2 rounded text-xs font-bold flex-1 transition shadow-lg flex items-center justify-center gap-1"><span>📄</span> PDF</button>
+                <!-- Compact Floating Controls (New UI) -->
+                <div id="controlsContainer" class="fixed bottom-4 left-4 z-50 flex items-end gap-2" data-html2canvas-ignore="true">
+                    <!-- Toggle Button -->
+                    <button onclick="toggleControls()" id="toggleBtn" class="bg-slate-800 text-white w-8 h-8 rounded-full shadow-xl flex items-center justify-center text-xs hover:bg-slate-700 transition">⚙️</button>
+
+                    <!-- Main Panel (Hidden by default) -->
+                    <div id="controlPanelMain" class="hidden bg-slate-900/95 backdrop-blur-sm p-2 rounded-lg shadow-2xl border border-slate-700 flex flex-col gap-2 w-64">
+                        <div class="flex gap-1">
+                            <select id="voiceSelect" class="bg-slate-700 text-white text-[10px] p-1 rounded w-full dir-ltr focus:outline-none focus:ring-1 focus:ring-sky-500">
+                                <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+                                <option value="ug-UG">ئۇيغۇرچە (ئايال)</option>
+                                <option value="ar-SA">العربية (ئەرەبچە)</option>
+                                <option value="en-US">English (ئېنگلىزچە)</option>
+                            </select>
+                            <select id="rateSelect" class="bg-slate-700 text-white text-[10px] p-1 rounded w-14 text-center focus:outline-none focus:ring-1 focus:ring-sky-500">
+                                <option value="1.0">1.0x</option>
+                                <option value="1.5" selected>1.5x</option>
+                                <option value="2.0">2.0x</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-5 gap-1">
+                            <button onclick="prevChunk()" class="bg-slate-600 hover:bg-slate-500 text-white p-1.5 rounded text-[10px] font-bold" title="ئالدىنقى">⏮</button>
+                            <button onclick="startReading()" class="bg-sky-600 hover:bg-sky-500 text-white p-1.5 rounded text-[10px] font-bold" title="ئوقۇش">▶</button>
+                            <button onclick="nextChunk()" class="bg-indigo-600 hover:bg-indigo-500 text-white p-1.5 rounded text-[10px] font-bold" title="كېيىنكى">⏭</button>
+                            <button onclick="stopReading()" class="bg-red-600 hover:bg-red-500 text-white p-1.5 rounded text-[10px] font-bold" title="توختا">■</button>
+                            <button onclick="savePDF()" class="bg-pink-600 hover:bg-pink-500 text-white p-1.5 rounded text-[10px] font-bold" title="PDF">📄</button>
+                        </div>
                     </div>
                 </div>
 
                 <script>
-                    function convertForTTS(text) {
-                        if (!text) return "";
-                        const map = { 'ا': 'a', 'ە': 'e', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ج': 'j', 'چ': 'ch', 'خ': 'x', 'د': 'd', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'گ': 'g', 'ڭ': 'ng', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ھ': 'h', 'و': 'o', 'ۇ': 'u', 'ۆ': 'o', 'ۈ': 'u', 'ي': 'y', 'ۋ': 'v', 'ې': 'e', 'ى': 'i', 'ئ': '', '؟': '?', '،': ',', '؛': ';' };
+                    const UY_TO_ULY_MAP = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'j','چ':'ch','خ':'x','د':'d','ر':'r','ز':'z','ژ':'zh','س':'s','ش':'sh','غ':'gh','ف':'f','ق':'q','ك':'k','گ':'g','ڭ':'ng','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'o','ۈ':'u','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
+                    const UY_TO_ULY_MAPT = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'c','چ':'ç','خ':'hh','د':'d','ر':'r','ز':'z','ژ':'j','س':'s','ش':'ş','غ':'gh','f':'f','ق':'k','ك':'k','گ':'g','ڭ':'n','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'ö','ۈ':'ü','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
+
+                    function convertForTTS(text, map) {
                         return text.split('').map(c => map[c] || c).join('');
                     }
 
-                    function savePDF() {
-                        const element = document.getElementById('report-content');
-                        const opt = { 
-                            margin: [10, 10, 10, 10], 
-                            filename: 'Bilik_Report_v8.pdf', 
-                            image: { type: 'jpeg', quality: 0.98 }, 
-                            html2canvas: { scale: 2, useCORS: true }, 
-                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
-                        };
-                        html2pdf().set(opt).from(element).save();
+                    let chunks = [];
+                    let chunkIndex = 0;
+                    let isReading = false;
+
+                    function toggleControls() {
+                        const panel = document.getElementById('controlPanelMain');
+                        const btn = document.getElementById('toggleBtn');
+                        if (panel.classList.contains('hidden')) {
+                            panel.classList.remove('hidden');
+                            btn.innerHTML = '▼';
+                        } else {
+                            panel.classList.add('hidden');
+                            btn.innerHTML = '⚙️';
+                        }
                     }
 
-                    function playTTS() {
-                        window.speechSynthesis.cancel();
+                    function startReading() {
+                        stopReading();
+                        isReading = true;
+
+                        const voiceVal = document.getElementById('voiceSelect').value;
+                        const reportEl = document.getElementById('report-content');
+                        let clone = reportEl.cloneNode(true);
+                        let fullText = "";
+
+                        // --- Language Logic ---
+                        if (voiceVal === 'ar-SA') {
+                            const arSummary = clone.querySelector('#summary-ar p');
+                            fullText = arSummary ? arSummary.innerText : "تېكىست تېپىلمىدى";
+                        } else if (voiceVal === 'en-US') {
+                            const enSummary = clone.querySelector('#summary-en p');
+                            fullText = enSummary ? enSummary.innerText : "Text not found";
+                        } else {
+                            // Uyghur Mode: Read Everything EXCEPT Foreign Summaries
+                            const foreignEl = clone.querySelector('#foreign-summaries');
+                            if(foreignEl) {
+                                const noTts = clone.querySelectorAll('.no-tts');
+                                noTts.forEach(el => el.remove());
+                            }
+                            fullText = clone.innerText;
+                        }
+
+                        // --- Chunking & Deduplication ---
+                        let rawChunks = fullText.split(/\\n+/);
+                        chunks = [];
+                        let lastChunk = "";
+                        for (let i = 0; i < rawChunks.length; i++) {
+                            let clean = rawChunks[i].trim();
+                            if (clean.length > 0 && clean !== lastChunk) {
+                                chunks.push(clean);
+                                lastChunk = clean;
+                            }
+                        }
+
+                        chunkIndex = 0;
+                        speakNextChunk();
+                    }
+
+                    function speakNextChunk() {
+                        if (!isReading) return;
+                        if (chunkIndex >= chunks.length) {
+                            isReading = false;
+                            return;
+                        }
+
                         const voiceVal = document.getElementById('voiceSelect').value;
                         const rateVal = parseFloat(document.getElementById('rateSelect').value);
-                        const contentEl = document.getElementById('report-content');
-                        
-                        // CLONE and REMOVE no-tts elements (FILTERING LOGIC)
-                        const clone = contentEl.cloneNode(true);
-                        const badElements = clone.querySelectorAll('.no-tts');
-                        badElements.forEach(el => el.remove());
-                        
-                        let finalText = clone.innerText;
-                        
-                        if(voiceVal.startsWith('ug')) finalText = convertForTTS(finalText);
-                        
+                        let chunkText = chunks[chunkIndex];
+                        let finalText = chunkText;
+
+                        // Apply mapping only for Uyghur voices
+                        if(voiceVal === 'ug-UG0') finalText = convertForTTS(chunkText, UY_TO_ULY_MAPT);
+                        else if (voiceVal === 'ug-UG') finalText = convertForTTS(chunkText, UY_TO_ULY_MAP);
+
                         const utterance = new SpeechSynthesisUtterance(finalText);
                         const voices = window.speechSynthesis.getVoices();
                         let chosenVoice = null;
 
-                        if(voiceVal === 'ug-UG0') chosenVoice = voices.find(v => v.lang === 'tr-TR' && v.name.includes('Male')) || voices.find(v => v.lang === 'tr-TR');
-                        else if (voiceVal === 'ug-UG') chosenVoice = voices.find(v => v.lang === 'uz-UZ') || voices.find(v => v.lang.includes('tr'));
-                        else if (voiceVal === 'ar') chosenVoice = voices.find(v => v.lang.includes('ar'));
-                        else chosenVoice = voices.find(v => v.lang.includes('en'));
-                        
+                        if(voiceVal === 'ug-UG0') chosenVoice = voices.find(v => v.lang === 'tr-TR');
+                        else if (voiceVal === 'ug-UG') chosenVoice = voices.find(v => v.lang === 'uz-UZ' && v.name.includes('Madina')) || voices.find(v => v.lang.includes('tr'));
+                        else chosenVoice = voices.find(v => v.lang === voiceVal);
+
                         if(chosenVoice) utterance.voice = chosenVoice;
                         utterance.rate = rateVal;
+
+                        utterance.onend = function() {
+                            if (isReading) {
+                                chunkIndex++;
+                                speakNextChunk();
+                            }
+                        };
+                        utterance.onerror = function() { if (isReading) { chunkIndex++; speakNextChunk(); } };
+
                         window.speechSynthesis.speak(utterance);
                     }
 
-                    function stopTTS() { window.speechSynthesis.cancel(); }
+                    function nextChunk() {
+                        if (!isReading || chunks.length === 0) return;
+                        window.speechSynthesis.cancel();
+                    }
+
+                    function prevChunk() {
+                        if (!isReading || chunks.length === 0) return;
+                        if (chunkIndex > 0) {
+                            chunkIndex -= 2;
+                            if (chunkIndex < -1) chunkIndex = -1;
+                            window.speechSynthesis.cancel();
+                        }
+                    }
+
+                    function stopReading() {
+                        isReading = false;
+                        window.speechSynthesis.cancel();
+                    }
+
+                    function savePDF() {
+                        const el = document.getElementById('report-content');
+                        const d = new Date();
+                        const f = (n) => n.toString().padStart(2, '0');
+                        const fname = \`Bilik_Report_\${d.getFullYear()}-\${f(d.getMonth()+1)}-\${f(d.getDate())}_\${f(d.getHours())}-\${f(d.getMinutes())}-\${f(d.getSeconds())}.pdf\`;
+
+                        const opt = { margin: [10,10,10,10], filename: fname, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
+                        html2pdf().set(opt).from(el).save();
+                    }
                 <\/script>
             </body>
             </html>`;
+    }
+
+    // --- 4. EXPORT FEATURE ---
+    function downloadHTML() {
+        // Get data fresh to ensure timestamp is there
+        const jsonStr = document.getElementById('jsonInput').value;
+        if(!jsonStr.trim()) return alert("JSON يوق!");
+
+        try {
+            const cleanJson = jsonStr.replace(/```json/g, '').replace(/```/g, '').trim();
+            const data = JSON.parse(cleanJson);
+            // Add timestamp
+            const now = new Date();
+            data.generated_time = now.toLocaleString('ug-CN');
+
+            // Build HTML
+            const htmlContent = buildTemplate(data);
+
+            // Create Filename with Timestamp (YYYY-MM-DD_HH-mm-ss)
+            const f = (n) => n.toString().padStart(2, '0');
+            const dateStr = `${now.getFullYear()}-${f(now.getMonth()+1)}-${f(now.getDate())}_${f(now.getHours())}-${f(now.getMinutes())}-${f(now.getSeconds())}`;
+            const fileName = `Bilik_Report_${dateStr}.html`;
+
+            const blob = new Blob([htmlContent], {type: 'text/html'});
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch(e) {
+            alert("چۈشۈرۈشتە خاتالىق كۆرۈلدى: " + e.message);
         }
+    }
 
-        // --- 4. EXPORT FEATURE ---
-        function downloadHTML() {
-            // Get data fresh to ensure timestamp is there
-            const jsonStr = document.getElementById('jsonInput').value;
-            if(!jsonStr.trim()) return alert("JSON يوق!");
-            
-            try {
-                const cleanJson = jsonStr.replace(/```json/g, '').replace(/```/g, '').trim();
-                const data = JSON.parse(cleanJson);
-                // Add timestamp
-                const now = new Date();
-                data.generated_time = now.toLocaleString('ug-CN');
-                
-                // Build HTML
-                const htmlContent = buildTemplate(data);
-                
-                // Create Filename with Timestamp (YYYY-MM-DD_HH-mm-ss)
-                const dateStr = now.toISOString().slice(0,19).replace(/:/g, "-").replace("T", "_");
-                const fileName = `Bilik_Report_${dateStr}.html`;
-
-                const blob = new Blob([htmlContent], {type: 'text/html'});
-                const url = URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            } catch(e) {
-                alert("چۈشۈرۈشتە خاتالىق كۆرۈلدى: " + e.message);
-            }
-        }
-
-    </script>
+</script>
 </body>
 </html>
