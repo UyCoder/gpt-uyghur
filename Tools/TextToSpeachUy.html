@@ -101,6 +101,56 @@
 
 <br><a style="color: #009b74 ; font-size: small">ئەسكەرتىش: ئۇيغۇرچە ئوقۇتقاندا دەسلەپتە كۇنۇپكىنى ئىككى قېتىم بېسىڭ.</a>
 
+
+
+
+
+
+
+
+
+
+<!-- يېڭى قوشۇلغان بۆلەك باشلاندى -->
+<div id="extra-tts-container" style="margin-top: 50px; padding: 20px; border-top: 2px solid #009b74; background-color: #1e2124;">
+    <h2 style="color: #009b74; text-align: center;">بارلىق سىستېما ئاۋازلىرىدا ئوقۇتۇش بۆلىكى</h2>
+    
+    <textarea id="extraInputText" rows="10" style="width: 100%; background-color: #282c34; color: #fff; border: 1px solid #444; padding: 10px; font-family: 'alkatipTor' !important;" placeholder="بۇ يەرگە ئوقۇتماقچى بولغان تېكىستنى كىرگۈزۈڭ..."></textarea>
+    
+    <div style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+        <label style="color: #ccc;">ئاۋاز تاللاڭ:</label>
+        <select id="extraVoiceSelect" style="flex-grow: 1; padding: 8px; background: #fff; color: #000; border-radius: 4px; min-width: 200px;"></select>
+        
+        <label style="color: #ccc;">سۈرئەت:</label>
+        <select id="extraSpeedSelect" style="padding: 8px; background: #fff; color: #000; border-radius: 4px;">
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2.0">2x</option>
+        </select>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <button id="extraSpeakBtn" style="background-color: #009b74; color: white; padding: 10px 25px; border: none; cursor: pointer; border-radius: 4px; margin-left: 10px;">ئوقۇش</button>
+        <button id="extraStopBtn" style="background-color: #d9534f; color: white; padding: 10px 25px; border: none; cursor: pointer; border-radius: 4px; margin-left: 10px;">توختاش</button>
+        <button id="extraDownloadBtn" style="background-color: #5bc0de; color: white; padding: 10px 25px; border: none; cursor: pointer; border-radius: 4px;">ئاۋازنى چۈشۈرۈۋېلىش</button>
+    </div>
+</div>
+<!-- يېڭى قوشۇلغان بۆلەك ئاخىرلاشتى -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br><br><br><br><br><br><br><br>
 <footer>
     <ab id="a" style="font-style: italic; font-size: small; color: #b6b5b5">بۇ كىچىك تەرجىمە قورالى مېنىڭ شەخسىي قىزىقىشىم بىلەنلا يېزىپ چىقىلدى. ئەسلىدە ئۇيغۇرچە ئوقۇش مۇلازىمىتى ھازىرچە يوق. ئەمما مەن ئارقا سۇپىدا ئۆزبېكچە ۋە تۈركچە يېزىققا ئايلاندۇرۇپ ئاندىن ئۇنى ئاۋازلىق ئوقۇتتۇم. ئاۋاز ئۈنۈمى كەسپىي ئەمەس. ئەمما تامامەن ئاڭلاپ چۈشىنىشكە بولىدۇ.</ab>
@@ -310,6 +360,162 @@
     speechSynthesis.onvoiceschanged = () => {
         console.log("ئاۋازلار يۈكلەندى:", speechSynthesis.getVoices());
     };
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// --- يېڭى ئىقتىدار ئۈچۈن لوگىكا ---
+const extraInput = document.getElementById('extraInputText');
+const extraVoiceSelect = document.getElementById('extraVoiceSelect');
+const extraSpeedSelect = document.getElementById('extraSpeedSelect');
+const extraSpeakBtn = document.getElementById('extraSpeakBtn');
+const extraStopBtn = document.getElementById('extraStopBtn');
+const extraDownloadBtn = document.getElementById('extraDownloadBtn');
+
+let allVoices = [];
+
+// بارلىق ئاۋازلارنى يۈكلەش
+function populateVoiceList() {
+    allVoices = window.speechSynthesis.getVoices();
+    extraVoiceSelect.innerHTML = '';
+    
+    allVoices.forEach((voice, index) => {
+        const option = document.createElement('option');
+        option.textContent = `${voice.name} (${voice.lang})`;
+        option.value = index;
+        extraVoiceSelect.appendChild(option);
+    });
+}
+
+// Edge ۋە باشقا كۆرگۈچلەر ئۈچۈن ئاۋاز يۈكلەنگەندە ئىجرا بولىدۇ
+window.speechSynthesis.onvoiceschanged = populateVoiceList;
+populateVoiceList();
+
+// ئوقۇش فۇنكسىيەسى
+extraSpeakBtn.addEventListener('click', () => {
+    if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+    }
+
+    const text = extraInput.value;
+    if (!text) {
+        alert("تېكىست كىرگۈزۈڭ!");
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const selectedVoiceIndex = extraVoiceSelect.value;
+    utterance.voice = allVoices[selectedVoiceIndex];
+    utterance.rate = parseFloat(extraSpeedSelect.value);
+
+    window.speechSynthesis.speak(utterance);
+});
+
+// توختىتىش
+extraStopBtn.addEventListener('click', () => {
+    window.speechSynthesis.cancel();
+});
+
+// ئاۋازنى چۈشۈرۈش (تور كۆرگۈچنىڭ خاتىرىلەش ئىقتىدارى ئارقىلىق)
+extraDownloadBtn.addEventListener('click', async () => {
+    const text = extraInput.value;
+    if (!text.trim()) {
+        alert("چۈشۈرۈشتىن بۇرۇن بىرەر تېكىست كىرگۈزۈڭ!");
+        return;
+    }
+
+    if (!('MediaRecorder' in window)) {
+        alert('كەچۈرۈڭ، تور كۆرگۈچىڭىز ئاۋاز خاتىرىلەشنى قوللىمايدىكەن.');
+        return;
+    }
+
+    alert('ئاۋازلىق ھۆججەت ھاسىل قىلىش ئۈچۈن، كېيىنكى كۆزنەكتە «بۇ بەتنىڭ ئاۋازىنى ھەمبەھىرلەش» (Share tab audio) نى تاللاڭ.');
+
+    try {
+        // ئېكران/بەتكۈچ ئاۋازىنى خاتىرىلەشنى باشلاش
+        const displayStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+        const audioStream = new MediaStream(displayStream.getAudioTracks());
+        const localMediaRecorder = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
+        let localAudioChunks = [];
+
+        localMediaRecorder.ondataavailable = event => localAudioChunks.push(event.data);
+        
+        localMediaRecorder.onstop = () => {
+            displayStream.getTracks().forEach(track => track.stop());
+            const audioBlob = new Blob(localAudioChunks, { type: 'audio/webm' });
+            const downloadUrl = URL.createObjectURL(audioBlob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = downloadUrl;
+            a.download = 'barliq_awaz_chushurush.webm';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(downloadUrl);
+            a.remove();
+        };
+
+        localMediaRecorder.start();
+
+        // ئاۋازنى ئوقۇتۇشنى باشلاش
+        if (window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+        }
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        const selectedVoiceIndex = extraVoiceSelect.value;
+        utterance.voice = allVoices[selectedVoiceIndex];
+        utterance.rate = parseFloat(extraSpeedSelect.value);
+
+        // ئوقۇپ بولغاندا خاتىرىلەشنى توختىتىش
+        utterance.onend = () => {
+            setTimeout(() => {
+                if (localMediaRecorder && localMediaRecorder.state === "recording") {
+                    localMediaRecorder.stop();
+                }
+            }, 500); // ئاۋازنىڭ قۇيرۇق قىسمى كېسىلىپ قالماسلىقى ئۈچۈن ئازراق كېچىكتۈرۈلدى
+        };
+
+        window.speechSynthesis.speak(utterance);
+
+    } catch (error) {
+        console.error("ئاۋاز خاتىرىلەشتە خاتالىق:", error);
+        alert("ئاۋاز خاتىرىلەش مەغلۇپ بولدى. سىز بەلكىم ھەمبەھىرلەش تەلىپىنى رەت قىلغان بولۇشىڭىز مۇمكىن.");
+    }
+});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </script>
 
 </body>
