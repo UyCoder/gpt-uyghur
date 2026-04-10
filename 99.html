@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/UyCoder/paydilar/master/pics/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تېسكىتنى ئاۋازلىق ئاڭلاش</title>
+
+    <style>
+        @font-face {
+            font-family: 'alkatipTor';
+            src: url('../../Desktop/ALKATIPTOR.TTF');
+        }
+        * { direction: rtl; }
+        body {
+            background-color: #282c34;
+            color: #fff;
+            font-family: 'alkatipTor' !important;
+            padding-bottom: 100px;
+        }
+        #inputText {
+            background-color: #1e2124; color: #fff; border: none;
+            padding: 10px; width: 100%; box-sizing: border-box;
+            height: 100px; resize: vertical; font-family: 'alkatipTor' !important;
+        }
+        button {
+            color: #fff; border: none; padding: 10px; cursor: pointer;
+            font-family: 'alkatipTor' !important; margin: 5px; border-radius: 5px;
+        }
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        #speakBtn { background-color: #009b74; }
+        #speakBtn:not(:disabled):hover { background-color: #007a5c; }
+        #stopBtn { background-color: #d9534f; }
+        #stopBtn:not(:disabled):hover { background-color: #c9302c; }
+        #saveBtn { background-color: #f0ad4e; }
+        #saveBtn:not(:disabled):hover { background-color: #ec971f; }
+        h1 { color: #009b74; font-size: xx-large; text-align: center; }
+        .navbar {
+            overflow: hidden; background-color: #333; position: fixed;
+            top: 0; width: 100%; display: flex; justify-content: center; z-index: 1000;
+        }
+        .navbar a {
+            float: left; display: block; color: white; text-align: center;
+            padding: 14px 16px; text-decoration: none;
+        }
+        .navbar a:hover { background-color: #ddd; color: black; }
+        #status {
+            text-align: center; color: #f0ad4e; font-style: italic;
+            padding: 10px; background-color: #1e2124; border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar" >
+    <a href="IsilTerjiman.html"> تەرجىمان</a>
+    <a href="../../Desktop/HikmetlerHezinesi.html" >ھىكمەت</a>
+    <a href="TextToSpeachUy.html"> ئاڭلاش</a>
+    <a href="../index.html">Gemini</a>
+    <a href="wordcounter.html"> تېكىست </a>
+    <a href="wordreplacer.html"> ئىملا </a>
+    <a href="teshkil.html">تەشكىل</a>
+    <a href="https://www.yulghun.com/tools/"> يۇلغۇن </a>
+    <a href="https://translate.google.com.tr/?sl=auto&tl=ug&text=I%20can%20translate%20uyghur%20language%20to%20english&op=translate" target="_blank"> Google </a>
+</div>
+
+<div style="padding: 0 15px;">
+    <h1 style="margin-top: 60px;">تېكىستنى ئاۋازلىق ئاڭلاش قۇرالى </h1>
+    <p id="status">ئاۋاز ماتورىنى قوزغىتىۋاتىدۇ، سەل ساقلاڭ...</p>
+
+    <textarea id="inputText" rows="10" placeholder="ئاڭلىماقچى بولغان تېكىستنى بۇ يەرگە چاپلاڭ..."></textarea><br>
+
+    <div style="text-align: center; margin-top: 10px;">
+        <button id="speakBtn">ئاۋازلىق ئوقۇ</button>
+        <button id="stopBtn">توختات</button>
+        <button id="saveBtn">خاتىرىلەپ ساقلا</button>
+    </div>
+    <br>
+    <div style="display: flex; justify-content: center; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <div>
+            <label for="language">ئاۋاز تاللاڭ:</label>
+            <select id="language" style="background-color: #1e2124; color: #fff; border: none; padding: 8px; direction: ltr; font-family: 'alkatipTor';">
+                <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG1">1ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG2">2ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG3">3ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG4">4ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG5">5ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG6">6ئۇيغۇرچە (ئەر)</option>
+                <option value="ug-UG">ئۇيغۇرچە - (ئايال)</option>
+                <option value="en-US">ئارىلاشما تىللار</option>
+                <option value="ar-SA">ئەرەبچە</option>
+                <option value="tr-TR">تۈركچە</option>
+                <option value="zh-CN">خىتايچە</option>
+            </select>
+        </div>
+        <div>
+            <label for="rate">سۈرئەتنى تاللاڭ:</label>
+            <select id="rate" name="rate" style="background-color: #1e2124; color: #fff; border: none; padding: 8px;">
+                <option value="1.0">1x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="0.75">0.75x</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<footer style="text-align: center; margin-top: 40px; font-size: small; color: #b6b5b5; padding: 0 15px;">
+    <p>ئەسكەرتىش: «خاتىرىلەپ ساقلا» كۇنۇپكىسىنى باسقاندا، توركۆرگۈچنىڭ «ئېكران ھەمبەھىرلەش» رۇخسىتىنى بېرىشىڭىز كېرەك.</p>
+</footer>
+
+<script>
+    const inputText = document.getElementById('inputText');
+    const language = document.getElementById('language');
+    const rateSpeed = document.getElementById('rate');
+    const speakBtn = document.getElementById('speakBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const statusP = document.getElementById('status');
+
+    let currentUtterance = null;
+    let mediaRecorder;
+    let audioChunks = [];
+    let isRecording = false;
+
+    // --- 1. ئاۋازلارنى يۈكلەش ۋە كۇنۇپكىلارنى ئىشقا قوشۇش ---
+    window.addEventListener('DOMContentLoaded', () => {
+        speakBtn.disabled = true;
+        stopBtn.disabled = true;
+        saveBtn.disabled = true;
+
+        function loadVoices() {
+            const voices = speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                console.log("ئاۋازلار مۇۋەپپەقىيەتلىك يۈكلەندى.");
+                statusP.textContent = "توربەت تەييار، ئىشلىتىشكە باشلىسىڭىز بولىدۇ.";
+                speakBtn.disabled = false;
+                stopBtn.disabled = false;
+                saveBtn.disabled = false;
+                return;
+            }
+        }
+        
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+        // بەزى توركۆرگۈچلەر ئۈچۈن كېچىكىپ يۈكلىنىشى مۇمكىن
+        setTimeout(loadVoices, 500);
+        loadVoices();
+    });
+
+    // --- 2. ئاساسلىق فۇنكسىيەلەر ---
+    
+    function speakText(onEndCallback) {
+        const text = inputText.value;
+        const lang = language.value;
+
+        if (!text.trim().length) {
+            alert('سىز تېخى بىرەر تېكىست كىرگۈزمىدىڭىز!');
+            return;
+        }
+
+        speechSynthesis.cancel();
+
+        let convertedText = text;
+        // ئاۋازغا ئاساسەن تېكىستنى ئايلاندۇرۇش
+        if (lang === 'ug-UG') {
+            convertedText = convertUyghurToULY(text);
+        } else if (lang.startsWith('ug-UG')) {
+            convertedText = convertUyghurToULYTurk(text);
+        }
+        
+        currentUtterance = new SpeechSynthesisUtterance(convertedText);
+        
+        // --- بارلىق ئاۋاز تاللاشلىرىنى ئەسلىگە كەلتۈرۈش ---
+        const voices = speechSynthesis.getVoices();
+        if (lang === 'ug-UG') {
+            currentUtterance.voice = voices.find(v => v.lang === 'uz-UZ' && v.name.includes('Madina'));
+        } else if (lang === 'ug-UG0') {
+            currentUtterance.voice = voices.find(v => v.lang === 'tr-TR');
+        } else if (lang === 'ug-UG1') {
+            currentUtterance.voice = voices.find(v => v.lang === 'uz-UZ' && v.name.includes('Sardor'));
+        } else if (lang === 'ug-UG2') {
+            currentUtterance.voice = voices.find(v => v.lang === 'tr-TR' && v.name.includes('Ahmet'));
+        } else if (lang === 'ug-UG3') {
+            currentUtterance.voice = voices.find(v => v.lang === 'en-US' && v.name.includes('AndrewMultilingual'));
+        } else if (lang === 'ug-UG4') {
+            currentUtterance.voice = voices.find(v => v.lang === 'fr-FR' && v.name.includes('RemyMultilingual'));
+        } else if (lang === 'ug-UG5') {
+            currentUtterance.voice = voices.find(v => v.lang === 'en-US' && v.name.includes('BrianMultilingual'));
+        } else if (lang === 'ug-UG6') {
+            currentUtterance.voice = voices.find(v => v.lang === 'de-DE' && v.name.includes('FlorianMultilingual'));
+        } else if (lang === 'en-US') {
+            currentUtterance.voice = voices.find(v => v.lang === 'en-US');
+        } else if (lang === 'ar-SA') {
+            currentUtterance.voice = voices.find(v => v.lang === 'ar-SA' && v.name.includes('Hamed'));
+        } else {
+             currentUtterance.voice = voices.find(v => v.lang === lang);
+        }
+        
+        currentUtterance.rate = parseFloat(rateSpeed.value);
+        currentUtterance.lang = currentUtterance.voice ? currentUtterance.voice.lang : lang;
+
+        if (onEndCallback) {
+            currentUtterance.onend = onEndCallback;
+        }
+
+        speechSynthesis.speak(currentUtterance);
+    }
+
+    function stopText() {
+        speechSynthesis.cancel();
+        if (isRecording && mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+        }
+    }
+
+    async function recordAndSave() {
+        if (isRecording) return;
+        let stream;
+        try {
+            stream = await navigator.mediaDevices.getDisplayMedia({
+                video: true,
+                audio: true
+            });
+        } catch (err) {
+            if (err.name === "NotAllowedError") {
+                 alert("ئاۋازنى خاتىرىلەش ئۈچۈن «ئېكران ھەمبەھىرلەش» رۇخسىتىنى بېرىشىڭىز كېرەك. رۇخسەت بەرمىسىڭىز بۇ ئىقتىدار ئىشلىمەيدۇ.");
+            }
+            return;
+        }
+        
+        isRecording = true;
+        statusP.textContent = "خاتىرىلەۋاتىدۇ...";
+        audioChunks = [];
+        
+        const audioStream = new MediaStream(stream.getAudioTracks());
+        mediaRecorder = new MediaRecorder(audioStream);
+
+        mediaRecorder.start();
+        
+        speakText(() => {
+            if (mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+            }
+        });
+
+        mediaRecorder.ondataavailable = event => {
+            audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+            stream.getTracks().forEach(track => track.stop());
+            
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+            
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = audioUrl;
+            a.download = 'tekist_awazi.webm';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(audioUrl);
+            a.remove();
+            
+            isRecording = false;
+            statusP.textContent = "ئاۋاز ھۆججىتى ساقلاندى.";
+        };
+    }
+
+    // --- 3. كۇنۇپكىلارغا فۇنكسىيە باغلاش ---
+    speakBtn.addEventListener('click', () => speakText(null));
+    stopBtn.addEventListener('click', stopText);
+    saveBtn.addEventListener('click', recordAndSave);
+
+    // --- 4. تېكىست ئايلاندۇرۇش فۇنكسىيەلىرى ---
+    function convertUyghurToULY(text) {
+        const map = {'ا': 'a', 'ە': 'e', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ج': 'j', 'چ': 'ch', 'خ': 'x', 'د': 'd', 'ر': 'r', 'ز': 'z', 'ژ': 'zh', 'س': 's', 'ش': 'sh', 'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'گ': 'g', 'ڭ': 'ng', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ھ': 'h', 'و': 'o', 'ۇ': 'u', 'ۆ': 'o', 'ۈ': 'u', 'ي': 'y', 'ۋ': 'v', 'ې': 'e', 'ى': 'i', 'ئ': '', '؟': '?'};
+        return text.split('').map(char => map[char] || char).join('');
+    }
+    function convertUyghurToULYTurk(text) {
+        const map = {'ا': 'a', 'ە': 'e', 'ب': 'b', 'پ': 'p', 'ت': 't', 'ج': 'c', 'چ': 'ç', 'خ': 'hh', 'د': 'd', 'ر': 'r', 'ز': 'z', 'ژ': 'j', 'س': 's', 'ش': 'ş', 'غ': 'gh', 'ف': 'f', 'ق': 'k', 'ك': 'k', 'گ': 'g', 'ڭ': 'n', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ھ': 'h', 'و': 'o', 'ۇ': 'u', 'ۆ': 'ö', 'ۈ': 'ü', 'ي': 'y', 'ۋ': 'v', 'ې': 'e', 'ى': 'i', 'ئ': '', '؟': '?'};
+        return text.split('').map(char => map[char] || char).join('');
+    }
+</script>
+
+</body>
+</html>

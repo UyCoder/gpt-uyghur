@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بىلىك تەتقىقات مەركىزى - ئانالىز قۇرالى</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&family=Noto+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"ALKATIP Basma"', '"UKIJ Nasq"', '"Noto Sans Arabic"', 'sans-serif'],
+                        serif: ['"ALKATIP Tor"', '"UKIJ Tuz"', '"Noto Naskh Arabic"', 'serif'],
+                    },
+                    colors: {
+                        bilik: { primary: '#005a8d', accent: '#f59e0b', dark: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'ALKATIP Basma', 'UKIJ Nasq', 'Noto Sans Arabic', sans-serif; }
+        .timeline-line::before { content: ''; position: absolute; top: 0; bottom: 0; right: 23px; width: 3px; background: #e2e8f0; z-index: 0; }
+        @media print { .no-print { display: none !important; } .page-break { page-break-inside: avoid; } }
+        .editor-only { display: block; }
+        /* Mobile TOC Styles */
+        .mobile-toc-overlay { background: rgba(0,0,0,0.5); transition: opacity 0.3s; }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800 flex flex-col min-h-screen">
+
+    <header class="bg-bilik-primary text-white shadow-xl sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/10 p-2 rounded-lg backdrop-blur-sm border border-white/20"><span class="text-2xl">🏛️</span></div>
+                <div><h1 class="text-xl font-bold tracking-wide font-serif">بىلىك تەتقىقات مەركىزى</h1></div>
+            </div>
+            <div class="text-left text-xs opacity-80" id="headerDateTime"></div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-2 md:px-4 py-6 flex gap-6 relative">
+        
+        <!-- Desktop TOC -->
+        <aside class="hidden lg:block w-1/4 sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto bg-white p-4 rounded-xl shadow-sm border border-slate-200 no-print">
+            <h3 class="text-lg font-bold text-bilik-primary mb-4 border-b pb-2">📑 مۇندەرىجە</h3>
+            <ul class="space-y-1 text-sm" id="tocList"></ul>
+        </aside>
+
+        <!-- MOBILE TOC BUTTON & DRAWER (New Feature) -->
+        <div class="lg:hidden no-print">
+            <!-- Button loads here -->
+            <button onclick="toggleMobileTOC()" class="fixed right-4 bottom-24 z-40 bg-white text-bilik-primary border border-bilik-primary p-3 rounded-full shadow-lg hover:bg-slate-50">
+                📑
+            </button>
+            
+            <!-- Drawer -->
+            <div id="mobileTOC" class="fixed inset-0 z-[60] hidden">
+                <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleMobileTOC()"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-3/4 max-w-sm bg-white shadow-2xl p-4 overflow-y-auto transition-transform duration-300 transform translate-x-full" id="mobileTOCContent">
+                    <div class="flex justify-between items-center mb-6 border-b pb-2">
+                        <h3 class="font-bold text-lg text-bilik-primary">ۋەقەلەر مۇندەرىجىسى</h3>
+                        <button onclick="toggleMobileTOC()" class="text-gray-500 text-xl">✕</button>
+                    </div>
+                    <ul class="space-y-3" id="mobileTocList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-3/4 flex flex-col gap-6">
+            
+            <!-- EDITOR SECTION -->
+            <section id="editorSection" class="editor-only bg-white p-6 rounded-xl shadow-md border border-sky-100 no-print" data-html2canvas-ignore="true">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b pb-4 gap-3">
+                    <h2 class="text-lg font-bold text-gray-700">✍️ مەزمۇن تەھرىرلەش</h2>
+                    
+                    <!-- 1. JSON BUTTONS ARE HERE -->
+                    <div class="flex gap-2 flex-wrap justify-center">
+                        <button onclick="importJSON()" class="text-xs bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded flex items-center gap-1">
+                            📥 JSON ئەكىرىش
+                        </button>
+                        <button onclick="exportJSON()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded flex items-center gap-1 shadow-sm">
+                            💾 JSON ساقلاش
+                        </button>
+                        <button onclick="saveFinalHTML()" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded font-bold shadow-lg flex items-center gap-1">
+                            🌐 بەتنى ساقلاش (Publish)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="bg-sky-50 p-4 rounded-lg border border-sky-200 mb-6">
+                    <label class="block text-xs font-bold text-sky-700 mb-1">دوكلات تېمىسى (ئەڭ ئۈستىدىكى چوڭ تېما)</label>
+                    <input type="text" id="reportMainTitleInput" class="w-full border p-2 rounded focus:ring-2 focus:ring-sky-500 text-lg font-bold text-bilik-primary" oninput="updateReportHeader()">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div><label class="block text-xs font-bold text-gray-500 mb-1">ۋەقە ۋاقتى</label><input type="date" id="inputDate" class="w-full border rounded p-2"></div>
+                    <div><label class="block text-xs font-bold text-gray-500 mb-1">ۋەقە تېمىسى</label><input type="text" id="inputTitle" class="w-full border rounded p-2"></div>
+                </div>
+                <div class="mb-4"><label class="block text-xs font-bold text-gray-500 mb-1">مەنبە (Source)</label><input type="url" id="inputSource" class="w-full border rounded p-2 text-left dir-ltr"></div>
+
+                <div id="contentBlocksArea" class="space-y-3 mb-4 p-4 bg-slate-50 rounded border-2 border-dashed border-slate-200"></div>
+                
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <button onclick="addTextBlock('normal')" class="bg-white border hover:bg-slate-50 px-3 py-2 rounded text-xs">📝 تېكىست</button>
+                    <button onclick="addTextBlock('ltr')" class="bg-orange-50 border hover:bg-orange-100 px-3 py-2 rounded text-xs">E English</button>
+                    <button onclick="addImageBlock()" class="bg-green-50 border hover:bg-green-100 px-3 py-2 rounded text-xs">🖼️ رەسىم</button>
+                    <button onclick="addVideoBlock()" class="bg-red-50 border hover:bg-red-100 px-3 py-2 rounded text-xs">▶️ YouTube</button>
+                </div>
+                <button onclick="submitEvent()" class="w-full bg-bilik-primary text-white font-bold py-3 rounded hover:bg-sky-700">تىزىمغا قوشۇش</button>
+                <input type="file" id="jsonFileInput" class="hidden" accept=".json" onchange="loadJSONFile(this)">
+            </section>
+
+            <!-- REPORT VIEW -->
+            <section id="report-content" class="relative pl-0 md:pl-2">
+                <div class="mb-8 text-center border-b-2 border-bilik-primary pb-6 page-break">
+                    <h1 id="reportMainTitleDisplay" class="text-3xl md:text-4xl font-bold text-bilik-primary font-serif mb-2">ۋەقەلەر خاتىرىسى</h1>
+                    <p class="text-sm text-gray-500 flex justify-center items-center gap-2"><span>🕒 يېڭىلانغان ۋاقىت:</span><span id="lastUpdatedTime" class="font-bold text-gray-700 dir-ltr"></span></p>
+                </div>
+                <div class="timeline-line relative space-y-12" id="timelineContainer"></div>
+                <div class="mt-16 pt-8 border-t border-slate-200 text-center">
+                    <p class="text-bilik-primary font-bold">بىلىك تەتقىقات مەركىزى</p>
+                    <p class="text-gray-500 text-sm">Bilik Research Center © <span id="footerYear"></span></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Controls -->
+    <div id="controlsContainer" class="fixed bottom-6 left-6 z-50 flex items-end gap-2" data-html2canvas-ignore="true">
+        <button onclick="toggleControls()" id="toggleBtn" class="bg-slate-800 text-white w-10 h-10 rounded-full shadow-xl flex items-center justify-center text-lg hover:bg-slate-700 transition">⚙️</button>
+        <div id="controlPanelMain" class="hidden bg-slate-900/95 backdrop-blur-sm p-2 rounded-lg shadow-2xl border border-slate-700 flex flex-col gap-2 w-64">
+            <div class="flex gap-1">
+                <select id="voiceSelect" class="bg-slate-700 text-white text-[10px] p-1 rounded w-full dir-ltr focus:outline-none focus:ring-1 focus:ring-sky-500">
+                    <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+                    <option value="ug-UG">ئۇيغۇرچە (ئايال)</option>
+                    <option value="ar-SA">العربية</option>
+                    <option value="en-US">English</option>
+                </select>
+                <select id="rateSelect" class="bg-slate-700 text-white text-[10px] p-1 rounded w-14 text-center focus:outline-none focus:ring-1 focus:ring-sky-500">
+                    <option value="1.0">1.0x</option>
+                    <option value="1.5" selected>1.5x</option>
+                    <option value="2.0">2.0x</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-5 gap-1">
+                <button onclick="prevChunk()" class="bg-slate-600 hover:bg-slate-500 text-white p-1.5 rounded text-[10px] font-bold">⏮</button>
+                <button onclick="startReading()" class="bg-sky-600 hover:bg-sky-500 text-white p-1.5 rounded text-[10px] font-bold">▶</button>
+                <button onclick="nextChunk()" class="bg-indigo-600 hover:bg-indigo-500 text-white p-1.5 rounded text-[10px] font-bold">⏭</button>
+                <button onclick="stopReading()" class="bg-red-600 hover:bg-red-500 text-white p-1.5 rounded text-[10px] font-bold">■</button>
+                <button onclick="savePDF()" class="bg-pink-600 hover:bg-pink-500 text-white p-1.5 rounded text-[10px] font-bold">📄</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let eventsData = [];
+        const UY_TO_ULY_MAP = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'j','چ':'ch','خ':'x','د':'d','ر':'r','ز':'z','ژ':'zh','س':'s','ش':'sh','غ':'gh','ف':'f','ق':'q','ك':'k','گ':'g','ڭ':'ng','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'o','ۈ':'u','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
+        const UY_TO_ULY_MAPT = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'c','چ':'ç','خ':'hh','د':'d','ر':'r','ز':'z','ژ':'j','س':'s','ش':'ş','غ':'gh','f':'f','ق':'k','ك':'k','گ':'g','ڭ':'n','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'ö','ۈ':'ü','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDateTime();
+            document.getElementById('footerYear').textContent = new Date().getFullYear();
+            document.getElementById('inputDate').valueAsDate = new Date();
+            const now = new Date();
+            document.getElementById('lastUpdatedTime').textContent = now.toLocaleString('ug-CN');
+            if(!document.getElementById('editorSection') && window.initialEvents) {
+                eventsData = window.initialEvents;
+                renderTimeline();
+            }
+        });
+
+        function updateDateTime() { document.getElementById('headerDateTime').textContent = new Date().toLocaleDateString('ug-CN', {weekday:'long', year:'numeric', month:'long', day:'numeric'}); }
+        function updateReportHeader() { 
+            document.getElementById('reportMainTitleDisplay').textContent = document.getElementById('reportMainTitleInput').value || "ۋەقەلەر خاتىرىسى";
+            document.getElementById('lastUpdatedTime').textContent = new Date().toLocaleString('ug-CN');
+        }
+
+        // --- Mobile TOC Logic ---
+        function toggleMobileTOC() {
+            const drawer = document.getElementById('mobileTOC');
+            const content = document.getElementById('mobileTOCContent');
+            if(drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => content.classList.remove('translate-x-full'), 10);
+            } else {
+                content.classList.add('translate-x-full');
+                setTimeout(() => drawer.classList.add('hidden'), 300);
+            }
+        }
+
+        function addTextBlock(type) {
+            const w = document.createElement('div'); w.className = "bg-white p-2 border rounded relative mb-2"; w.dataset.type = type;
+            w.innerHTML = `<textarea class="w-full p-1 border-b outline-none text-sm" rows="3" placeholder="مەزمۇن..." dir="${type==='ltr'?'ltr':'rtl'}"></textarea><button onclick="this.parentElement.remove()" class="absolute top-0 left-0 text-red-500 px-2">✕</button>`;
+            document.getElementById('contentBlocksArea').appendChild(w);
+        }
+        function addImageBlock() { 
+            const w = document.createElement('div'); w.className="bg-white p-2 border rounded relative mb-2"; w.dataset.type="image";
+            w.innerHTML = `<input type="file" class="text-xs mb-1"><input type="text" placeholder="ئىزاھات" class="w-full text-xs border-b"><button onclick="this.parentElement.remove()" class="absolute top-0 left-0 text-red-500 px-2">✕</button>`;
+            document.getElementById('contentBlocksArea').appendChild(w);
+        }
+        function addVideoBlock() { 
+            const w = document.createElement('div'); w.className="bg-white p-2 border rounded relative mb-2"; w.dataset.type="video";
+            w.innerHTML = `<input type="url" placeholder="YouTube URL" class="w-full text-xs border-b dir-ltr"><button onclick="this.parentElement.remove()" class="absolute top-0 left-0 text-red-500 px-2">✕</button>`;
+            document.getElementById('contentBlocksArea').appendChild(w);
+        }
+
+        async function submitEvent() {
+            const date = document.getElementById('inputDate').value;
+            const title = document.getElementById('inputTitle').value;
+            const source = document.getElementById('inputSource').value;
+            if(!date || !title) return alert("ۋاقتى ۋە تېمىسى كەم!");
+            let blocks = [];
+            for(let d of document.getElementById('contentBlocksArea').children) {
+                const type = d.dataset.type;
+                let content="", extra="";
+                if(type==='image'){
+                    const f = d.querySelector('input[type=file]');
+                    if(f.files[0]) {
+                        content = await new Promise(r=>{const rd=new FileReader();rd.onload=()=>r(rd.result);rd.readAsDataURL(f.files[0])});
+                        extra = d.querySelector('input[type=text]').value;
+                    }
+                } else if (type==='video') content = d.querySelector('input').value;
+                else content = d.querySelector('textarea').value;
+                if(content) blocks.push({type, content, extra});
+            }
+            eventsData.push({id:Date.now(), date, title, source, blocks});
+            document.getElementById('contentBlocksArea').innerHTML = '';
+            document.getElementById('inputTitle').value = '';
+            renderTimeline();
+        }
+
+        function renderTimeline() {
+            const c = document.getElementById('timelineContainer');
+            const toc = document.getElementById('tocList');
+            const mobToc = document.getElementById('mobileTocList'); // Mobile TOC Target
+            c.innerHTML = ''; toc.innerHTML = ''; mobToc.innerHTML = '';
+            
+            eventsData.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            eventsData.forEach(e => {
+                const div = document.createElement('div');
+                div.className = "relative pr-8 page-break event-item";
+                div.dataset.title = e.title;
+                div.dataset.date = e.date;
+                div.id = `evt-${e.id}`;
+                
+                let bHtml = '';
+                e.blocks.forEach(b => {
+                    if(b.type==='normal') bHtml += `<p class="text-justify mb-2 text-sm leading-relaxed">${b.content}</p>`;
+                    else if(b.type==='ltr') bHtml += `<div class="bg-gray-100 p-2 text-sm dir-ltr text-left mb-2 border-l-4 border-orange-300">${b.content}</div>`;
+                    else if(b.type==='image') bHtml += `<div class="text-center mb-2"><img src="${b.content}" class="max-h-64 mx-auto rounded shadow"><p class="text-xs text-gray-500 mt-1">${b.extra||''}</p></div>`;
+                    else if(b.type==='video') {
+                         let vid = b.content.split('v=')[1] || b.content.split('/').pop();
+                         bHtml += `<div class="aspect-video mb-2"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/${vid}" frameborder="0"></iframe></div>`;
+                    }
+                });
+
+                div.innerHTML = `
+                    <div class="absolute top-2 right-0 w-4 h-4 bg-bilik-accent rounded-full border-2 border-white translate-x-[9px] z-10"></div>
+                    <div class="flex gap-2 mb-1">
+                        <span class="bg-sky-100 text-bilik-primary text-xs font-bold px-2 py-0.5 rounded">${e.date}</span>
+                        ${e.source ? `<a href="${e.source}" class="text-xs text-blue-400 hover:underline no-print">[مەنبە]</a>` : ''}
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 font-serif">${e.title}</h3>
+                    <div class="bg-white p-4 rounded shadow-sm border border-slate-100 read-content">${bHtml}</div>
+                `;
+                c.appendChild(div);
+
+                // Populate TOCs
+                const linkHtml = `<a href="#evt-${e.id}" class="block hover:bg-sky-50 p-2 rounded border-b border-gray-50"><span class="text-xs font-bold text-gray-500 block">${e.date}</span><span class="truncate block">${e.title}</span></a>`;
+                
+                // Desktop
+                const li = document.createElement('li'); li.innerHTML = linkHtml;
+                toc.appendChild(li);
+
+                // Mobile
+                const liMob = document.createElement('li'); 
+                liMob.innerHTML = linkHtml.replace('href="#"', `href="#evt-${e.id}" onclick="toggleMobileTOC()"`); // Close drawer on click
+                mobToc.appendChild(liMob);
+            });
+        }
+
+        // --- JSON IMPORT/EXPORT (RESTORED) ---
+        function exportJSON() {
+            const blob = new Blob([JSON.stringify(eventsData, null, 2)], {type: "application/json"});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `bilik_data_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+        }
+
+        function importJSON() { document.getElementById('jsonFileInput').click(); }
+        function loadJSONFile(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = e => {
+                eventsData = JSON.parse(e.target.result);
+                renderTimeline();
+            };
+            reader.readAsText(file);
+        }
+
+        function saveFinalHTML() {
+            const titleVal = document.getElementById('reportMainTitleInput').value;
+            const updatedTime = document.getElementById('lastUpdatedTime').textContent;
+            const clone = document.documentElement.cloneNode(true);
+            const editor = clone.querySelector('#editorSection');
+            if(editor) editor.remove();
+            const script = document.createElement('script');
+            script.textContent = `window.initialEvents = ${JSON.stringify(eventsData)}; window.initialMainTitle = "${titleVal}"; window.initialUpdateTime = "${updatedTime}"; document.addEventListener('DOMContentLoaded', () => { document.getElementById('reportMainTitleDisplay').innerText = window.initialMainTitle; document.getElementById('lastUpdatedTime').innerText = window.initialUpdateTime; });`;
+            clone.querySelector('body').appendChild(script);
+            const blob = new Blob(["<!DOCTYPE html>\n" + clone.outerHTML], {type: "text/html"});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Page_${new Date().toISOString().slice(0,10)}.html`;
+            a.click();
+        }
+
+        // --- TTS ---
+        function convertForTTS(text, map) { return text.split('').map(c => map[c] || c).join(''); }
+        function dateToSpeech(dateStr) {
+            try { const d = new Date(dateStr); return `${d.getFullYear()} yili, ${d.getMonth()+1} ayning, ${d.getDate()} kuni.`; } catch(e) { return dateStr; }
+        }
+
+        let chunks = []; let chunkIndex = 0; let isReading = false;
+        function toggleControls() {
+            const panel = document.getElementById('controlPanelMain');
+            panel.classList.toggle('hidden');
+            document.getElementById('toggleBtn').innerText = panel.classList.contains('hidden') ? '⚙️' : '▼';
+        }
+
+        function startReading() {
+            stopReading(); isReading = true; chunks = [];
+            const voiceVal = document.getElementById('voiceSelect').value;
+            chunks.push(document.getElementById('reportMainTitleDisplay').innerText);
+            
+            document.querySelectorAll('.event-item').forEach(item => {
+                chunks.push(item.dataset.title || "");
+                chunks.push(dateToSpeech(item.dataset.date));
+                if (voiceVal === 'en-US') {
+                    item.querySelectorAll('[dir="ltr"]').forEach(b => chunks.push(b.innerText));
+                } else if (voiceVal.startsWith('ug')) {
+                    const contentDiv = item.querySelector('.read-content');
+                    if(contentDiv) contentDiv.querySelectorAll('p').forEach(p => chunks.push(p.innerText));
+                } else {
+                    chunks.push(item.querySelector('.read-content').innerText);
+                }
+                chunks.push("... ... ..."); 
+            });
+
+            if(chunks.length === 0) { isReading=false; return alert("ئوقۇيدىغان مەزمۇن يوق"); }
+            chunkIndex = 0; speakNextChunk();
+        }
+
+        function speakNextChunk() {
+            if (!isReading || chunkIndex >= chunks.length) { isReading = false; return; }
+            const voiceVal = document.getElementById('voiceSelect').value;
+            const rateVal = parseFloat(document.getElementById('rateSelect').value);
+            let txt = chunks[chunkIndex];
+            if(voiceVal === 'ug-UG0') txt = convertForTTS(txt, UY_TO_ULY_MAPT);
+            else if (voiceVal === 'ug-UG') txt = convertForTTS(txt, UY_TO_ULY_MAP);
+
+            const u = new SpeechSynthesisUtterance(txt);
+            const vs = window.speechSynthesis.getVoices();
+            let v = null;
+            if(voiceVal === 'ug-UG0') v = vs.find(x => x.lang === 'tr-TR');
+            else if (voiceVal === 'ug-UG') v = vs.find(x => x.lang === 'uz-UZ') || vs.find(x => x.lang.includes('tr'));
+            else v = vs.find(x => x.lang === voiceVal);
+            
+            if(v) u.voice = v;
+            u.rate = rateVal;
+            u.onend = () => { if(isReading) { chunkIndex++; speakNextChunk(); } };
+            u.onerror = () => { if(isReading) { chunkIndex++; speakNextChunk(); } };
+            window.speechSynthesis.speak(u);
+        }
+
+        function nextChunk() { if(isReading && chunks.length) window.speechSynthesis.cancel(); }
+        function prevChunk() { if(isReading && chunks.length) { chunkIndex = Math.max(-1, chunkIndex - 2); window.speechSynthesis.cancel(); } }
+        function stopReading() { isReading = false; window.speechSynthesis.cancel(); }
+        
+        function savePDF() {
+            const d = new Date();
+            const f = (n) => n.toString().padStart(2, '0');
+            const fname = `Bilik_${d.getFullYear()}-${f(d.getMonth()+1)}-${f(d.getDate())}_${f(d.getHours())}.pdf`;
+            const opt = { margin: [10,10,10,10], filename: fname, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
+            html2pdf().set(opt).from(document.getElementById('report-content')).save();
+        }
+    </script>
+</body>
+</html>

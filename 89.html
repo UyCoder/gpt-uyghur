@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بىلىك ئىستراتېگىيەلىك ئانالىز سۇپىسى v14.0 Independence Matrix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'), local('UKIJ_Ekran'); }
+        @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'), local('UKIJ_Tuz'); }
+        body { font-family: "UKIJ Ekran", "Noto Naskh Arabic", sans-serif; background: #0f172a; color: #e2e8f0; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #0284c7; border-radius: 4px; }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex flex-col">
+
+    <!-- Header -->
+    <header class="h-16 border-b border-slate-700 bg-slate-900 flex items-center justify-between px-6 z-50 shadow-2xl">
+        <div class="flex items-center gap-4">
+            <div class="bg-sky-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-2xl">B</div>
+            <div>
+                <h1 class="text-xl font-bold text-white">بىلىك تەتقىقات مەركىزى <span class="text-sky-400 text-xs">v14.0 Independence</span></h1>
+                <p class="text-[10px] text-slate-400 font-mono tracking-widest uppercase">East Turkistan National Interest Engine</p>
+            </div>
+        </div>
+        <div id="clock" class="text-xs text-sky-400 font-mono"></div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+        <!-- Control Panel -->
+        <aside class="w-[500px] border-l border-slate-700 bg-slate-800/50 flex flex-col z-40">
+            
+            <div class="p-4 bg-slate-900/50 border-b border-slate-700">
+                <label class="block text-[10px] font-bold text-sky-400 mb-2 uppercase">1. ئانالىز تۈرىنى تاللاڭ</label>
+                <select id="journalSelect" onchange="loadJournalPrompt()" class="w-full bg-slate-800 border border-slate-600 text-white text-sm rounded-lg p-3 outline-none focus:ring-2 focus:ring-sky-500 transition-all">
+                    <option value="national_interest">🌙 شەرقىي تۈركىستان مىللىي مەنپەئەت تەھلىلى (8 نۇقتا)</option>
+                </select>
+            </div>
+
+            <div class="flex-1 p-4 flex flex-col min-h-0">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-[10px] text-slate-400 font-bold">AI غا بېرىدىغان مەخسۇس بۇيرۇق (كۆچۈرۈڭ):</span>
+                    <button onclick="copyPromptText()" class="bg-sky-600 hover:bg-sky-500 text-white text-[10px] px-3 py-1 rounded-full transition shadow-lg">كۆچۈرۈش 📋</button>
+                </div>
+                <textarea id="promptArea" readonly class="w-full flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-[10px] font-mono text-slate-300 resize-none outline-none leading-relaxed border-dashed" dir="ltr"></textarea>
+            </div>
+
+            <div class="p-4 bg-slate-900/80 border-t border-slate-700">
+                <label class="block text-[10px] font-bold text-emerald-500 mb-2 uppercase">2. نەتىجە JSON نى چاپلاڭ</label>
+                <textarea id="jsonInput" class="w-full h-32 bg-slate-950 border border-slate-700 rounded-xl p-3 text-[10px] font-mono text-emerald-400 outline-none mb-3 focus:border-emerald-500 transition-all" placeholder="{ ... }" dir="ltr"></textarea>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="renderFinalReport()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2"><span>⚡</span> ئانالىزلاش</button>
+                    <button onclick="saveReportHTML()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2"><span>💾</span> ساقلاش</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Preview Area -->
+        <div class="flex-1 bg-slate-950 relative overflow-hidden">
+            <iframe id="reportPreview" class="w-full h-full border-none bg-white"></iframe>
+        </div>
+    </main>
+
+    <script>
+        // --- PROMPT ENGINE (EAST TURKISTAN NATIONAL INTEREST FRAMEWORK) ---
+        const etInterestPrompt = `مەن ساڭا دۇنيادا يۈز بەرگەن بىر ۋەقە ياكى ماقالىنى بېرىمەن. سەن بۇنى «بىلىك تەتقىقات مەركىزى» نامىدا پۈتۈنلەي «شەرقىي تۈركىستاننىڭ مىللىي مەنپەئەتى ۋە دۆلەت قۇرۇش نىشانى» نۇقتىسىدىن 8 چوڭ تۈر بويىچە ئۇنىۋېرسال تەھلىل قىلىپ بېرىسەن. ھەرگىز قىسقارتىۋەتمە، ھەر بىر نۇقتىنى ئۇزۇن، ئەتراپلىق ۋە شەرقىي تۈركىستانغا قانداق پايدا/زىيان ئېلىپ كېلىدىغانلىقىنى رېئال ياز! ھېچقانداق يەرگە قەتئىي شىنجاڭ دەپ يازما، چوقۇم شەرقىي تۈركىستان دەپ ياز.
+!! ئېسىڭدە بولسۇنكى، ھەربىر مەزمۇننى ئۇزۇن ئۇزۇن جۈملىلەر بىلەن تولۇق ياز. قىسقا يىېزىپ قويمىغىن!!
+تەھلىل قىلىش تەرتىپى ۋە مەزمۇنى (بىرمۇ تەلەپ چۈشۈپ قالمىسۇن):
+1. ئاساسىي ئۇچۇرلار: خەۋەر ئەسلى ئىسمى، ئۇيغۇرچىسى، تور ئۇلىنىشى (URL) ۋە ۋەقەنىڭ قىسقىچە بىلىك خۇلاسىسى.
+2. گېئوپولىتىكىلىق ۋە ئىستراتېگىيەلىك تەسىرى: (ئامېرىكا-خىتاي كۈچ سىنىشىشىغا، ئوتتۇرا ئاسىيا ۋە رۇسىيە ئامىلىغا، خىتاينىڭ دۇنيادىكى ئورنىغا تەسىرىنى ياز).
+3. خىتاينىڭ ئىچكى-تاشقى ئاجىزلىقى ۋە زىيىنى: (خىتاينىڭ دىققىتى چېچىلىپ بايلىقى سەرپ بولامدۇ؟ ئىچكى مۇقىمسىزلىق خەۋپىگە سەۋەب بولامدۇ؟ دىپلوماتىك قامالغا ئۇچرامدۇ؟ ياز).
+4. خەلقئارا قانۇن ۋە ئەدلىيە ئۆرنەكلىرى: (ICJ, ICC سوتلىرى بۇ ۋەقەدە بىزگە قانداق ئۆرنەك يارىتىدۇ؟ بىز قوش ئۆلچەمنى كۆرسىتىپ قانداق بېسىم قىلالايمىز؟ ياز).
+5. ئىقتىساد ۋە تەمىنلەش زەنجىرى دىنامىكىسى: (بىر بەلباغ بىر يول توسالغۇغا ئۇچرىدىمۇ؟ مەجبۇرىي ئەمگەك ۋە شىركەتلەرنى چېكىندۈرۈش پۇرسىتى كەلدىمۇ؟ ياز).
+6. دىپلوماتىك پۇرسەت ۋە يېڭى ئىتتىپاقداشلار: (خىتاي بىلەن ئارىسى بۇزۇلغان دۆلەتلەردىن قانداق يېڭى ئىتتىپاقداش تاپىمىز؟ تۈرك ۋە ئىسلام دۇنياسىنى قانداق ئويغىتىمىز؟ ياز).
+7. ناراتىپ (بايان) ۋە مەپكۇرە جېڭى: (بۇ ۋەقە بىلەن بىزنىڭ ۋەزىيەتنى سېلىشتۇرۇپ تارىخىي ئوخشاشلىق ناراتىپى قانداق تۈزىمىز؟ خىتاينىڭ يالغانچىلىقىنى قانداق پاش قىلىمىز؟ ياز).
+8. مۇھاجىرەت ۋە بىخەتەرلىك تەسىرى: (چەتئەلدىكى خىتاي دۆلەت ھالقىغان زىيانكەشلىكىگە قانداق تەسىر قىلىدۇ؟ مۇساپىرلار سىياسىتىگە تەسىرى قانداق؟ ياز).
+9. دۆلەت قۇرۇلۇشى ئۈچۈن ساۋاقلار: (بۇ ۋەقەدىن ھەربىي ۋە تېخنىكا ساۋاقلىرى (مەسىلەن درون، ئۇچۇر ئۇرۇشى) نېمە؟ تاشقى كۈچكە ئىشەنمەي ئۆز كۈچىمىزگە تايىنىشتىن قانداق ساۋاق ئالىمىز؟ ياز).
+
+نەتىجىنى پەقەت مۇشۇ JSON فورماتىدىلا قايتۇر:
+{
+  "report_title": "شەرقىي تۈركىستان مىللىي مەنپەئەت ۋە دۆلەتچىلىك تەھلىلى",
+  "article_original_title": "...",
+  "article_uyghur_title": "...",
+  "article_url": "...",
+  "bilik_summary": "...",
+  "geopolitics": {
+    "us_china": "...", "russia_central_asia": "...", "china_global": "..."
+  },
+  "china_vulnerability": {
+    "distraction": "...", "internal_instability": "...", "diplomatic_isolation": "..."
+  },
+  "international_law": {
+    "precedents": "...", "double_standards": "..."
+  },
+  "economy_supply_chain": {
+    "bri_disruption": "...", "forced_labor": "..."
+  },
+  "diplomacy": {
+    "new_allies": "...", "turk_islam_world": "..."
+  },
+  "narrative_warfare": {
+    "parallels": "...", "exposing_hypocrisy": "..."
+  },
+  "diaspora_security": {
+    "transnational_repression": "...", "refugee_policy": "..."
+  },
+  "state_building_lessons": {
+    "military_tech": "...", "self_reliance": "..."
+  }
+}`;
+
+        const templates = {
+            national_interest: etInterestPrompt
+        };
+
+        function loadJournalPrompt() {
+            const j = document.getElementById('journalSelect').value;
+            document.getElementById('promptArea').value = templates[j] || templates['national_interest'];
+        }
+        loadJournalPrompt();
+
+        function copyPromptText() {
+            const area = document.getElementById('promptArea');
+            area.select();
+            navigator.clipboard.writeText(area.value);
+            alert("پىرومپت كۆچۈرۈلدى! گۇگېل جېمىناي (Gemini) غا چاپلاڭ.");
+        }
+
+        // --- RENDER ENGINE ---
+        let generatedHTML = "";
+
+        function renderFinalReport() {
+            const jsonStr = document.getElementById('jsonInput').value;
+            if(!jsonStr.trim()) return;
+            try {
+                const data = JSON.parse(jsonStr.replace(/```json/g, '').replace(/```/g, '').trim());
+                generatedHTML = buildEastTurkistanHTML(data);
+                
+                const iframe = document.getElementById('reportPreview');
+                iframe.srcdoc = generatedHTML;
+            } catch(e) { alert("JSON خاتالىقى ياكى فورمات توغرا ئەمەس: " + e.message); }
+        }
+
+        function saveReportHTML() {
+            if (!generatedHTML) {
+                alert("ئالدى بىلەن ئانالىزلاپ دوكلات ھاسىل قىلىڭ!");
+                return;
+            }
+            const blob = new Blob([generatedHTML], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Bilik_National_Interest_${new Date().getTime()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function buildEastTurkistanHTML(data) {
+            const formatParagraphs = (text) => {
+                if (!text) return '';
+                return text.split('\\n').filter(p => p.trim()).map(p => `<p class="indent-[2.5em] text-justify leading-[2] mb-4">${p}</p>`).join('');
+            };
+
+            const htmlContent = `
+            <!DOCTYPE html>
+            <html lang="ug" dir="rtl">
+            <head>
+                <meta charset="UTF-8">
+                <script src="https://cdn.tailwindcss.com"><\/script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+                <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+                <style>
+                    @font-face { font-family: 'UKIJ Ekran'; src: local('UKIJ Ekran'); }
+                    @font-face { font-family: 'UKIJ Tuz'; src: local('UKIJ Tuz'); }
+                    body { font-family: 'UKIJ Ekran', serif; background: #f8fafc; padding: 20px; padding-bottom: 120px; }
+                    .title-tuz { font-family: 'UKIJ Tuz', sans-serif; }
+                    .card { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; margin-bottom: 24px; }
+                    
+                    /* Theme colors: Blue and Gold/Amber */
+                    .bg-et-blue { background-color: #0369a1; }
+                    .text-et-blue { color: #0369a1; }
+                    .border-et-blue { border-color: #0369a1; }
+                    
+                    .et-gradient { background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%); color: white; }
+                    
+                    .indent-\\[2\\.5em\\] { text-indent: 2.5em; }
+                    .text-justify { text-align: justify; }
+                    #controlsContainer { font-family: sans-serif; }
+                </style>
+            </head>
+            <body class="max-w-6xl mx-auto text-slate-800">
+                <div id="report-content">
+                    
+                    <!-- Header -->
+                    <div class="card p-10 et-gradient border-none shadow-xl text-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10 flex items-center justify-center text-[300px]">🌙</div>
+                        <div class="relative z-10">
+                            <div class="text-sky-300 font-bold uppercase tracking-[0.2em] text-sm mb-4">بىلىك تەتقىقات مەركىزى ⁃ مىللىي مەنپەئەت ۋە دۆلەتچىلىك رامكىسى</div>
+                            <h1 class="text-4xl font-bold title-tuz mb-4 leading-tight text-white">${data.article_uyghur_title}</h1>
+                            <div class="text-lg text-slate-300 mb-6 font-mono dir-ltr">${data.article_original_title}</div>
+                            ${data.article_url && data.article_url !== '...' ? `
+                            <a href="${data.article_url}" target="_blank" class="inline-block bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg text-sm font-mono transition border border-white/20 shadow-lg">
+                                🔗 ماقالە مەنبەسىنى ئېچىش
+                            </a>` : ''}
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="card p-8 border-r-4 border-sky-600 bg-sky-50/50">
+                        <h3 class="font-bold text-sky-900 text-2xl mb-4 flex items-center gap-2 title-tuz"><span>📌</span> ۋەقەنىڭ قىسقىچە خۇلاسىسى</h3>
+                        <div class="text-base text-slate-700 leading-relaxed text-justify indent-[2.5em]">
+                            ${data.bilik_summary}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- 1. Geopolitics -->
+                        <div class="card p-8 border-t-4 border-blue-800">
+                            <h2 class="text-xl font-bold mb-5 flex items-center gap-3 title-tuz text-slate-800 border-b pb-3">
+                                <span class="text-3xl">🌍</span> 1. گېئوپولىتىكىلىق ۋە ئىستراتېگىيەلىك تەسىرى
+                            </h2>
+                            <div class="space-y-4">
+                                <div><strong class="text-blue-900 block mb-1">🇺🇸 ئامېرىكا-خىتاي كۈچ سىنىشىشى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.geopolitics?.us_china)}</div></div>
+                                <div><strong class="text-blue-900 block mb-1">🇷🇺 ئوتتۇرا ئاسىيا ۋە رۇسىيە ئامىلى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.geopolitics?.russia_central_asia)}</div></div>
+                                <div><strong class="text-blue-900 block mb-1">🌐 خىتاينىڭ دۇنيادىكى ئورنى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.geopolitics?.china_global)}</div></div>
+                            </div>
+                        </div>
+
+                        <!-- 2. China's Vulnerability -->
+                        <div class="card p-8 border-t-4 border-red-700 bg-red-50/30">
+                            <h2 class="text-xl font-bold mb-5 flex items-center gap-3 title-tuz text-slate-800 border-b pb-3">
+                                <span class="text-3xl">🎯</span> 2. خىتاينىڭ ئىچكى-تاشقى ئاجىزلىقى ۋە زىيىنى
+                            </h2>
+                            <div class="space-y-4">
+                                <div><strong class="text-red-900 block mb-1">💸 دىققىتى چېچىلىش ۋە بايلىق سەرپىياتى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.china_vulnerability?.distraction)}</div></div>
+                                <div><strong class="text-red-900 block mb-1">🔥 ئىچكى مۇقىمسىزلىق خەۋپى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.china_vulnerability?.internal_instability)}</div></div>
+                                <div><strong class="text-red-900 block mb-1">🚫 دىپلوماتىك قامال:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.china_vulnerability?.diplomatic_isolation)}</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- 3. International Law -->
+                        <div class="card p-8 border-t-4 border-amber-600">
+                            <h2 class="text-xl font-bold mb-5 flex items-center gap-3 title-tuz text-slate-800 border-b pb-3">
+                                <span class="text-3xl">⚖️</span> 3. خەلقئارا قانۇن ۋە ئەدلىيە ئۆرنەكلىرى
+                            </h2>
+                            <div class="space-y-4">
+                                <div><strong class="text-amber-900 block mb-1">🏛️ ئىرقىي قىرغىنچىلىق ۋە جازا ئۆرنىكى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.international_law?.precedents)}</div></div>
+                                <div><strong class="text-amber-900 block mb-1">🎭 خەلقئارادىكى قوش ئۆلچەم:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.international_law?.double_standards)}</div></div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Economy -->
+                        <div class="card p-8 border-t-4 border-emerald-600">
+                            <h2 class="text-xl font-bold mb-5 flex items-center gap-3 title-tuz text-slate-800 border-b pb-3">
+                                <span class="text-3xl">⛓️</span> 4. ئىقتىساد ۋە تەمىنلەش زەنجىرى
+                            </h2>
+                            <div class="space-y-4">
+                                <div><strong class="text-emerald-900 block mb-1">🛤️ بىر بەلباغ بىر يولنىڭ توسالغۇسى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.economy_supply_chain?.bri_disruption)}</div></div>
+                                <div><strong class="text-emerald-900 block mb-1">🏭 مەجبۇرىي ئەمگەك ۋە جازا پۇرسىتى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.economy_supply_chain?.forced_labor)}</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- 5. Diplomacy -->
+                        <div class="card p-8 border-t-4 border-purple-600">
+                            <h2 class="text-xl font-bold mb-5 flex items-center gap-3 title-tuz text-slate-800 border-b pb-3">
+                                <span class="text-3xl">🤝</span> 5. دىپلوماتىك پۇرسەت ۋە ئىتتىپاقداشلار
+                            </h2>
+                            <div class="space-y-4">
+                                <div><strong class="text-purple-900 block mb-1">🤝 يېڭى ئىتتىپاقداشلىق پۇرسىتى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.diplomacy?.new_allies)}</div></div>
+                                <div><strong class="text-purple-900 block mb-1">🕌 تۈرك ۋە ئىسلام دۇنياسىنى ئويغىتىش:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.diplomacy?.turk_islam_world)}</div></div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Narrative -->
+                        <div class="card p-8 border-t-4 border-pink-600">
+                            <h2 class="text-xl font-bold mb-5 flex items-center gap-3 title-tuz text-slate-800 border-b pb-3">
+                                <span class="text-3xl">📢</span> 6. ناراتىپ (بايان) ۋە مەپكۇرە جېڭى
+                            </h2>
+                            <div class="space-y-4">
+                                <div><strong class="text-pink-900 block mb-1">📖 تارىخىي ۋە سىياسىي ئوخشاشلىق:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.narrative_warfare?.parallels)}</div></div>
+                                <div><strong class="text-pink-900 block mb-1">🤥 خىتاينىڭ يالغانچىلىقىنى پاش قىلىش:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.narrative_warfare?.exposing_hypocrisy)}</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Diaspora -->
+                    <div class="card p-8 border-t-4 border-teal-600 mb-6">
+                        <h2 class="text-xl font-bold mb-5 flex items-center gap-3 title-tuz text-slate-800 border-b pb-3">
+                            <span class="text-3xl">🛡️</span> 7. مۇھاجىرەت ۋە بىخەتەرلىك تەسىرى
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><strong class="text-teal-900 block mb-1">🕵️ دۆلەت ھالقىغان زىيانكەشلىك خەۋپى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.diaspora_security?.transnational_repression)}</div></div>
+                            <div><strong class="text-teal-900 block mb-1">🚶 مۇساپىرلار ۋە كۆچمەنلەر سىياسىتى:</strong> <div class="text-sm text-slate-700">${formatParagraphs(data.diaspora_security?.refugee_policy)}</div></div>
+                        </div>
+                    </div>
+
+                    <!-- 8. State Building (The Climax) -->
+                    <div class="card p-10 bg-slate-900 text-white border-none shadow-2xl mb-10 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 w-32 h-32 bg-sky-600 rounded-bl-full opacity-20"></div>
+                        <h2 class="text-3xl font-bold mb-8 flex items-center gap-3 title-tuz text-sky-400 border-b border-white/20 pb-4">
+                            <span class="text-4xl">🏰</span> 8. دۆلەت قۇرۇلۇشى ئۈچۈن ساۋاقلار
+                        </h2>
+                        <div class="space-y-8 relative z-10">
+                            <div class="bg-white/10 p-6 rounded-2xl border border-white/20">
+                                <h4 class="text-xl font-bold text-amber-300 mb-3 flex items-center gap-2"><span>⚔️</span> ھەربىي ۋە تېخنىكا ساۋاقلىرى:</h4>
+                                <div class="text-sm text-slate-200">${formatParagraphs(data.state_building_lessons?.military_tech)}</div>
+                            </div>
+                            <div class="bg-blue-900/50 p-6 rounded-2xl border border-blue-400/30">
+                                <h4 class="text-xl font-bold text-emerald-300 mb-3 flex items-center gap-2"><span>✊</span> ئۆز كۈچىگە تايىنىش ۋە ئىتتىپاقداشلىق ئىشەنچىسى:</h4>
+                                <div class="text-sm text-slate-200">${formatParagraphs(data.state_building_lessons?.self_reliance)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-12 mb-8">
+                        <p class="text-slate-400 text-sm font-mono tracking-widest uppercase">END OF NATIONAL INTEREST REPORT</p>
+                        <p class="text-slate-500 text-xs mt-2">Generated by Bilik Engine v14.0 Independence</p>
+                    </div>
+
+                </div>
+
+                <!-- 100% ORIGINAL FLOATING CONTROLS FOR TTS & PDF (DO NOT TOUCH) -->
+                <div id="controlsContainer" class="fixed bottom-4 left-4 z-50 flex items-end gap-2" data-html2canvas-ignore="true">
+                    <!-- Toggle Button -->
+                    <button onclick="toggleControls()" id="toggleBtn" class="bg-slate-800 text-white w-8 h-8 rounded-full shadow-xl flex items-center justify-center text-xs hover:bg-slate-700 transition">⚙️</button>
+                    
+                    <!-- Main Panel (Hidden by default) -->
+                    <div id="controlPanelMain" class="hidden bg-slate-900/95 backdrop-blur-sm p-2 rounded-lg shadow-2xl border border-slate-700 flex flex-col gap-2 w-64">
+                        <div class="flex gap-1">
+                            <select id="voiceSelect" class="bg-slate-700 text-white text-[10px] p-1 rounded w-full dir-ltr focus:outline-none focus:ring-1 focus:ring-sky-500">
+                                <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+                                <option value="ug-UG">ئۇيغۇرچە (ئايال)</option>
+                                <option value="ar-SA">العربية (ئەرەبچە)</option>
+                                <option value="en-US">English (ئېنگلىزچە)</option>
+                            </select>
+                            <select id="rateSelect" class="bg-slate-700 text-white text-[10px] p-1 rounded w-14 text-center focus:outline-none focus:ring-1 focus:ring-sky-500">
+                                <option value="1.0">1.0x</option>
+                                <option value="1.5" selected>1.5x</option>
+                                <option value="2.0">2.0x</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-5 gap-1">
+                            <button onclick="prevChunk()" class="bg-slate-600 hover:bg-slate-500 text-white p-1.5 rounded text-[10px] font-bold" title="ئالدىنقى">⏮</button>
+                            <button onclick="startReading()" class="bg-sky-600 hover:bg-sky-500 text-white p-1.5 rounded text-[10px] font-bold" title="ئوقۇش">▶</button>
+                            <button onclick="nextChunk()" class="bg-indigo-600 hover:bg-indigo-500 text-white p-1.5 rounded text-[10px] font-bold" title="كېيىنكى">⏭</button>
+                            <button onclick="stopReading()" class="bg-red-600 hover:bg-red-500 text-white p-1.5 rounded text-[10px] font-bold" title="توختا">■</button>
+                            <button onclick="savePDF()" class="bg-pink-600 hover:bg-pink-500 text-white p-1.5 rounded text-[10px] font-bold" title="PDF">📄</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TTS & PDF JAVASCRIPT LOGIC (ORIGINAL UNCHANGED) -->
+                <script>
+                    const UY_TO_ULY_MAP = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'j','چ':'ch','خ':'x','د':'d','ر':'r','ز':'z','ژ':'zh','س':'s','ش':'sh','غ':'gh','ف':'f','ق':'q','ك':'k','گ':'g','ڭ':'ng','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'o','ۈ':'u','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
+                    const UY_TO_ULY_MAPT = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'c','چ':'ç','خ':'hh','د':'d','ر':'r','ز':'z','ژ':'j','س':'s','ش':'ş','غ':'gh','f':'f','ق':'k','ك':'k','گ':'g','ڭ':'n','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'ö','ۈ':'ü','ي':'y','ۋ':'v','ې':'e','ى':'i','ئ':'','؟':'?'};
+
+                    function convertForTTS(text, map) {
+                        return text.split('').map(c => map[c] || c).join('');
+                    }
+
+                    let chunks = [];
+                    let chunkIndex = 0;
+                    let isReading = false;
+
+                    function toggleControls() {
+                        const panel = document.getElementById('controlPanelMain');
+                        const btn = document.getElementById('toggleBtn');
+                        if (panel.classList.contains('hidden')) {
+                            panel.classList.remove('hidden');
+                            btn.innerHTML = '▼';
+                        } else {
+                            panel.classList.add('hidden');
+                            btn.innerHTML = '⚙️';
+                        }
+                    }
+
+                    function startReading() {
+                        stopReading();
+                        isReading = true;
+                        
+                        const voiceVal = document.getElementById('voiceSelect').value;
+                        const reportEl = document.getElementById('report-content');
+                        let clone = reportEl.cloneNode(true);
+                        let fullText = "";
+
+                        // --- Language Logic ---
+                        if (voiceVal === 'ar-SA') {
+                            const arSummary = clone.querySelector('#summary-ar p');
+                            fullText = arSummary ? arSummary.innerText : "تېكىست تېپىلمىدى";
+                        } else if (voiceVal === 'en-US') {
+                            const enSummary = clone.querySelector('#summary-en p');
+                            fullText = enSummary ? enSummary.innerText : "Text not found";
+                        } else {
+                            // Uyghur Mode: Read Everything EXCEPT Foreign Summaries
+                            const noTts = clone.querySelectorAll('.no-tts');
+                            noTts.forEach(el => el.remove());
+                            fullText = clone.innerText;
+                        }
+
+                        // --- Chunking & Deduplication ---
+                        let rawChunks = fullText.split(/\\n+/);
+                        chunks = [];
+                        let lastChunk = "";
+                        for (let i = 0; i < rawChunks.length; i++) {
+                            let clean = rawChunks[i].trim();
+                            if (clean.length > 0 && clean !== lastChunk) {
+                                chunks.push(clean);
+                                lastChunk = clean;
+                            }
+                        }
+
+                        chunkIndex = 0;
+                        speakNextChunk();
+                    }
+
+                    function speakNextChunk() {
+                        if (!isReading) return;
+                        if (chunkIndex >= chunks.length) {
+                            isReading = false;
+                            return;
+                        }
+
+                        const voiceVal = document.getElementById('voiceSelect').value;
+                        const rateVal = parseFloat(document.getElementById('rateSelect').value);
+                        let chunkText = chunks[chunkIndex];
+                        let finalText = chunkText;
+
+                        // Apply mapping only for Uyghur voices
+                        if(voiceVal === 'ug-UG0') finalText = convertForTTS(chunkText, UY_TO_ULY_MAPT);
+                        else if (voiceVal === 'ug-UG') finalText = convertForTTS(chunkText, UY_TO_ULY_MAP);
+
+                        const utterance = new SpeechSynthesisUtterance(finalText);
+                        const voices = window.speechSynthesis.getVoices();
+                        let chosenVoice = null;
+                        
+                        if(voiceVal === 'ug-UG0') chosenVoice = voices.find(v => v.lang === 'tr-TR');
+                        else if (voiceVal === 'ug-UG') chosenVoice = voices.find(v => v.lang === 'uz-UZ' && v.name.includes('Madina')) || voices.find(v => v.lang.includes('tr'));
+                        else chosenVoice = voices.find(v => v.lang === voiceVal);
+
+                        if(chosenVoice) utterance.voice = chosenVoice;
+                        utterance.rate = rateVal;
+
+                        utterance.onend = function() {
+                            if (isReading) {
+                                chunkIndex++;
+                                speakNextChunk();
+                            }
+                        };
+                        utterance.onerror = function() { if (isReading) { chunkIndex++; speakNextChunk(); } };
+
+                        window.speechSynthesis.speak(utterance);
+                    }
+
+                    function nextChunk() {
+                        if (!isReading || chunks.length === 0) return;
+                        window.speechSynthesis.cancel();
+                    }
+
+                    function prevChunk() {
+                        if (!isReading || chunks.length === 0) return;
+                        if (chunkIndex > 0) {
+                            chunkIndex -= 2; 
+                            if (chunkIndex < -1) chunkIndex = -1;
+                            window.speechSynthesis.cancel();
+                        }
+                    }
+
+                    function stopReading() { 
+                        isReading = false;
+                        window.speechSynthesis.cancel(); 
+                    }
+
+                    function savePDF() {
+                        const el = document.getElementById('report-content');
+                        const d = new Date();
+                        const f = (n) => n.toString().padStart(2, '0');
+                        const fname = \`Bilik_National_Interest_\${d.getFullYear()}-\${f(d.getMonth()+1)}-\${f(d.getDate())}_\${f(d.getHours())}-\${f(d.getMinutes())}-\${f(d.getSeconds())}.pdf\`;
+                        
+                        const opt = { margin: [10,10,10,10], filename: fname, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4' } };
+                        html2pdf().set(opt).from(el).save();
+                    }
+                <\/script>
+            </body>
+            </html>`;
+            return htmlContent;
+        }
+
+        // Clock logic
+        setInterval(() => {
+            const d = new Date();
+            document.getElementById('clock').innerText = d.toLocaleDateString('ug-CN') + ' ' + d.toLocaleTimeString('ug-CN');
+        }, 1000);
+    </script>
+</body>
+</html>

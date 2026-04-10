@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بىلىك كىتاب قۇرالى - تولۇق نۇسخا</title>
+    
+    <!-- كېرەكلىك ئامبارلار -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script> <!-- Markdown Parser -->
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap');
+
+        body { font-family: "UKIJ Tuz", "ALKATIP Tor", "Noto Naskh Arabic", sans-serif; background-color: #f3f4f6; }
+
+        /* كىتاب تېكىستىنىڭ ئۇسلۇبى */
+        .book-content p { text-align: justify; text-indent: 2em; line-height: 1.8; margin-bottom: 1rem; font-size: 1.125rem; color: #374151; }
+        .book-content h1 { font-size: 2.25rem; font-weight: bold; color: #1e3a8a; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
+        .book-content h2 { font-size: 1.75rem; font-weight: bold; color: #1d4ed8; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .book-content h3 { font-size: 1.4rem; font-weight: bold; color: #0369a1; margin-top: 1.2rem; margin-bottom: 0.5rem; }
+        
+        /* رەسىم ۋە سىن */
+        .book-figure { margin: 1.5rem 0; text-align: center; page-break-inside: avoid; }
+        .book-figure img { max-width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin: 0 auto; }
+        .book-caption { font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem; font-style: italic; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 0.5rem; margin: 1.5rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* بەت ئاستى ئىزاھات */
+        .footnote-section { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #9ca3af; font-size: 0.9rem; color: #4b5563; }
+        .footnote-item { margin-bottom: 0.5rem; }
+
+        /* چەتئەل تىلى */
+        .ltr-block { direction: ltr; text-align: left; font-family: sans-serif; background: #f8fafc; padding: 1rem; border-left: 4px solid #3b82f6; border-radius: 0.25rem; margin: 1rem 0; }
+
+        /* تەھرىرلىگۈچ كۇنۇپكىلىرى */
+        .add-btn-group button { transition: 0.2s; }
+        .add-btn-group button:hover { transform: scale(1.05); }
+        
+        /* مۇندەرىجە */
+        .toc-link:hover { color: #2563eb; transform: translateX(-5px); }
+        .toc-link { transition: all 0.2s; display: block; padding: 4px 0; }
+        
+        /* Markdown Modal */
+        #mdModal { backdrop-filter: blur(5px); }
+    </style>
+</head>
+<body class="pb-24">
+
+    <!-- Markdown Modal -->
+    <div id="mdModal" class="fixed inset-0 bg-black/50 hidden z-[60] flex items-center justify-center">
+        <div class="bg-white w-3/4 h-3/4 rounded-xl shadow-2xl flex flex-col p-6">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="text-xl font-bold text-gray-800">Markdown چاپلاش</h3>
+                <button onclick="closeMdModal()" class="text-red-500 font-bold text-2xl">&times;</button>
+            </div>
+            <p class="text-sm text-gray-500 mb-2">تېكىستنى بۇ يەرگە چاپلاڭ (Markdown فورماتىدا). بىز ئاپتوماتىك بۆلەكلەرگە ئايرىپ بېرىمىز.</p>
+            <textarea id="mdInput" class="flex-1 w-full p-4 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none resize-none font-mono text-sm ltr" dir="ltr" placeholder="# Title&#10;## Subtitle&#10;Text content here..."></textarea>
+            <div class="mt-4 flex justify-end gap-3">
+                <button onclick="closeMdModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">بىكار قىلىش</button>
+                <button onclick="processMarkdown()" class="px-6 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">تەستىقلاش</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تەھرىرلىگۈچنىڭ بېشى -->
+    <header class="bg-gray-800 text-white shadow-md sticky top-0 z-40 print:hidden">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🛠️</span>
+                <h1 class="text-lg font-bold">كىتاب قىلىش قۇرالى (تەھرىرلىگۈچ)</h1>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="openMdModal()" class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-xs font-bold flex items-center gap-1">
+                    <span>⬇️ Markdown دىن قوشۇش</span>
+                </button>
+                <div class="text-xs text-gray-400 self-center">بىلىك تەتقىقات مەركىزى</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-6 flex flex-col lg:flex-row gap-6">
+        
+        <!-- سول تەرەپ: تەھرىرلىگۈچ -->
+        <div id="editor-panel" class="lg:w-1/2 w-full bg-white rounded-xl shadow-md p-6 border border-gray-200 print:hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-700 border-b pb-2">📝 مەزمۇن تەھرىرلەش</h2>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-1">كىتاب نامى (باش تېما)</label>
+                <input type="text" id="bookTitle" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-bold text-lg" placeholder="كىتابىڭىزنىڭ نامىنى يېزىڭ...">
+            </div>
+
+            <div id="blocks-container" class="space-y-4"></div>
+
+            <!-- قوشۇش كۇنۇپكىلىرى -->
+            <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-dashed border-gray-300 text-center add-btn-group">
+                <p class="text-gray-500 text-sm mb-3">يېڭى مەزمۇن قوشۇش</p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <button onclick="addBlock('h1')" class="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700">1-تېما</button>
+                    <button onclick="addBlock('h2')" class="bg-indigo-600 text-white px-3 py-1.5 rounded text-sm hover:bg-indigo-700">2-تېما</button>
+                    <button onclick="addBlock('text')" class="bg-gray-600 text-white px-3 py-1.5 rounded text-sm hover:bg-gray-700">تېكىست</button>
+                    <button onclick="addBlock('image')" class="bg-pink-600 text-white px-3 py-1.5 rounded text-sm hover:bg-pink-700">رەسىم</button>
+                    <button onclick="addBlock('youtube')" class="bg-red-600 text-white px-3 py-1.5 rounded text-sm hover:bg-red-700">YouTube</button>
+                    <button onclick="addBlock('footnote')" class="bg-amber-600 text-white px-3 py-1.5 rounded text-sm hover:bg-amber-700">ئىزاھات</button>
+                    <button onclick="addBlock('ltr')" class="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700">ENG/CN</button>
+                </div>
+            </div>
+
+            <!-- ھەرىكەت كۇنۇپكىلىرى -->
+            <div class="flex gap-3 mt-6">
+                <button onclick="generatePreview()" class="flex-1 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold py-3 rounded-lg shadow-lg flex items-center justify-center gap-2">
+                    <span>👁️ نەتىجىنى كۆرۈش</span>
+                </button>
+                <button onclick="exportToHTML()" class="flex-1 bg-gradient-to-r from-blue-700 to-indigo-800 hover:from-blue-800 hover:to-indigo-900 text-white font-bold py-3 rounded-lg shadow-lg flex items-center justify-center gap-2">
+                    <span>💾 HTML ساقلاش</span>
+                </button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2 text-center">HTML ساقلىسىڭىز، ئاۋازلىق ئوقۇش، مۇندەرىجە ۋە بارلىق ئىقتىدارلار مۇستەقىل ئىشلەيدۇ.</p>
+        </div>
+
+        <!-- ئوڭ تەرەپ: كۆرۈنۈش (Preview) -->
+        <div id="preview-panel" class="lg:w-1/2 w-full hidden">
+            <div class="sticky top-4 flex gap-4 items-start">
+                
+                <!-- مۇندەرىجە (ئوڭ تەرەپتە) -->
+                <!-- ئۆزگەرتىش: RTL دا بىرىنچى تۇرغان ئېلېمېنت ئوڭ تەرەپتە چىقىدۇ -->
+                <div class="w-48 hidden xl:block shrink-0 print:hidden order-1">
+                    <div class="bg-white p-4 rounded-lg shadow-lg border border-gray-100 sticky top-4">
+                        <h3 class="font-bold text-gray-800 mb-3 border-b pb-2 text-sm">مۇندەرىجە</h3>
+                        <nav id="toc-list" class="text-sm text-gray-600 space-y-1">
+                            <!-- JS تولدۇرىدۇ -->
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- ئاساسىي كىتاب (سول تەرەپتە) -->
+                <!-- ئۆزگەرتىش: order-2 قىلىندى -->
+                <div class="flex-1 bg-white shadow-2xl min-h-[800px] relative order-2">
+                    <!-- كىتاب بېشى (Header) -->
+                    <div id="previewHeader" class="bg-blue-900 text-white p-8 text-center">
+                        <h1 id="previewTitle" class="text-3xl font-bold mb-2">كىتاب ئىسمى</h1>
+                        <p id="previewDate" class="text-sm text-blue-200 opacity-80"></p>
+                    </div>
+                    
+                    <div id="report-content" class="p-10 book-content bg-white min-h-[500px]">
+                        <!-- مەزمۇنلار -->
+                    </div>
+                    
+                    <div class="mt-8 border-t pt-4 text-center text-xs text-gray-400 pb-8">
+                        <p>بىلىك تەتقىقات مەركىزى قۇرالى</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- لەيلەپ تۇرىدىغان كونترول -->
+    <div id="controlsContainer" class="fixed bottom-6 left-6 z-50 flex items-end gap-2" data-html2canvas-ignore="true">
+        <button onclick="toggleControls()" id="toggleBtn" class="bg-slate-800 text-white w-10 h-10 rounded-full shadow-xl flex items-center justify-center text-lg hover:bg-slate-700 transition ring-2 ring-white">⚙️</button>
+        <div id="controlPanelMain" class="hidden bg-slate-900/95 backdrop-blur-sm p-3 rounded-xl shadow-2xl border border-slate-700 flex flex-col gap-3 w-72">
+            <div class="flex gap-2">
+                <select id="voiceSelect" class="bg-slate-700 text-white text-xs p-2 rounded w-full dir-ltr focus:outline-none">
+                    <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+                    <option value="ug-UG">ئۇيغۇرچە (ئايال)</option>
+                    <option value="tr-TR">Türkçe (تۈركچە ماتور)</option>
+                    <option value="uz-UZ">O'zbek (ئۆزبېكچە ماتور)</option>
+                    <option value="en-US">English</option>
+                </select>
+                <select id="rateSelect" class="bg-slate-700 text-white text-xs p-2 rounded w-16 text-center focus:outline-none">
+                    <option value="0.8">0.8x</option>
+                    <option value="1.0">1.0x</option>
+                    <option value="1.2" selected>1.2x</option>
+                    <option value="1.5">1.5x</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-5 gap-2">
+                <button onclick="prevChunk()" class="bg-slate-600 text-white p-2 rounded text-xs">⏮</button>
+                <button onclick="startReading()" class="bg-sky-600 text-white p-2 rounded text-xs">▶</button>
+                <button onclick="nextChunk()" class="bg-indigo-600 text-white p-2 rounded text-xs">⏭</button>
+                <button onclick="stopReading()" class="bg-red-600 text-white p-2 rounded text-xs">■</button>
+                <button onclick="savePDF()" class="bg-pink-600 text-white p-2 rounded text-xs">📄</button>
+            </div>
+            <div id="readingStatus" class="text-[10px] text-sky-300 text-center truncate">تەييار</div>
+        </div>
+    </div>
+
+    <!-- JavaScript لوگىكىسى -->
+    <script>
+        // --- 1. ياردەمچى فونكسىيەلەر ---
+        
+        function getFormattedDate() {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = d.getMonth() + 1;
+            const day = d.getDate();
+            return `${year}-يىلى ${month}-ئاينىڭ ${day}-كۈنى`;
+        }
+
+        function extractVideoID(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // --- 2. Markdown ئىقتىدارى ---
+        
+        function openMdModal() { document.getElementById('mdModal').classList.remove('hidden'); }
+        function closeMdModal() { document.getElementById('mdModal').classList.add('hidden'); }
+        
+        function processMarkdown() {
+            const mdText = document.getElementById('mdInput').value;
+            if(!mdText.trim()) return;
+
+            // Simple Parsing Logic
+            const lines = mdText.split('\n');
+            let bufferText = "";
+
+            // Clear existing logic if needed or append
+            // Here we append
+            
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                
+                if (trimmed.startsWith('# ')) {
+                    if(bufferText) { addBlockWithValue('text', bufferText); bufferText = ""; }
+                    addBlockWithValue('h1', trimmed.replace('# ', ''));
+                } else if (trimmed.startsWith('## ')) {
+                    if(bufferText) { addBlockWithValue('text', bufferText); bufferText = ""; }
+                    addBlockWithValue('h2', trimmed.replace('## ', ''));
+                } else if (trimmed.match(/^!\[(.*?)\]\((.*?)\)/)) {
+                    if(bufferText) { addBlockWithValue('text', bufferText); bufferText = ""; }
+                    // Image Handling is tricky with file inputs, we skip file upload for MD paste and use standard logic later if needed
+                    // For now, let's just add text placeholder or advanced:
+                    // Since the current tool relies on local file upload, we can't easily set value from URL without changing `addBlock`.
+                    // We will just add a text block with the image link for manual correction.
+                    addBlockWithValue('text', `(رەسىم لىڭكى: ${trimmed})`); 
+                } else if (trimmed.startsWith('http') && (trimmed.includes('youtube') || trimmed.includes('youtu.be'))) {
+                    if(bufferText) { addBlockWithValue('text', bufferText); bufferText = ""; }
+                    addBlockWithValue('youtube', trimmed);
+                } else {
+                    if(trimmed !== "") bufferText += trimmed + "\n";
+                }
+            });
+            
+            if(bufferText) addBlockWithValue('text', bufferText);
+
+            closeMdModal();
+            document.getElementById('mdInput').value = '';
+        }
+
+        function addBlockWithValue(type, value) {
+            const id = 'blk-' + Date.now() + Math.random().toString(36).substr(2, 5);
+            const d = document.createElement('div');
+            d.innerHTML = getBlockHTML(type, id);
+            blocksContainer.appendChild(d.firstElementChild);
+            
+            // Set Value
+            const block = document.getElementById(id);
+            if(type === 'text' || type === 'footnote' || type === 'ltr') {
+                block.querySelector('textarea').value = value;
+            } else if (type === 'h1' || type === 'h2' || type === 'youtube') {
+                block.querySelector('input').value = value;
+            }
+        }
+
+        // --- 3. تەھرىرلىگۈچ (Builder) ---
+        
+        const blocksContainer = document.getElementById('blocks-container');
+
+        window.addEventListener('load', () => {
+            // Default blocks
+            addBlock('h1');
+            addBlock('text');
+        });
+
+        function getBlockHTML(type, id) {
+            let inputHtml = '';
+            let label = '';
+            
+            switch(type) {
+                case 'h1': label = '1-چوڭ تېما'; inputHtml = `<input type="text" class="w-full p-2 border-b-2 border-blue-500 font-bold text-lg text-blue-900 block-input" placeholder="1-چوڭ تېما...">`; break;
+                case 'h2': label = '2-چوڭ تېما'; inputHtml = `<input type="text" class="w-full p-2 border-b border-indigo-400 font-bold text-base text-indigo-800 block-input" placeholder="2-چوڭ تېما...">`; break;
+                case 'text': label = 'تېكىست'; inputHtml = `<textarea class="w-full p-2 border rounded border-gray-200 h-24 text-sm block-input resize-y" placeholder="مەزمۇن..."></textarea>`; break;
+                case 'footnote': label = 'ئىزاھات'; inputHtml = `<textarea class="w-full p-2 border rounded border-amber-200 bg-amber-50 h-16 text-xs block-input resize-y" placeholder="بەت ئاستى ئىزاھاتى..."></textarea>`; break;
+                case 'ltr': label = 'ENG/CN'; inputHtml = `<textarea class="w-full p-2 border rounded border-green-200 bg-green-50 h-24 text-sm block-input dir-ltr text-left" placeholder="Foreign language..."></textarea>`; break;
+                case 'youtube': label = 'YouTube'; inputHtml = `<input type="text" class="w-full p-2 border border-red-200 bg-red-50 text-red-600 text-sm block-input dir-ltr" placeholder="YouTube لىڭكىنى چاپلاڭ (مەسىلەن: https://youtu.be/...)">`; break;
+                case 'image': label = 'رەسىم'; inputHtml = `<div class="flex flex-col gap-2"><input type="file" accept="image/*" class="text-xs" onchange="previewImg(this, '${id}')"><input type="text" class="w-full p-1 border-b text-xs block-img-caption" placeholder="رەسىم ئىزاھاتى"><div id="img-prev-${id}" class="hidden mt-2"><img src="" class="h-20 rounded"></div></div>`; break;
+            }
+
+            return `
+                <div id="${id}" data-type="${type}" class="group relative bg-white p-3 rounded border border-gray-200 hover:shadow-md mb-2">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold text-gray-400 bg-gray-100 px-1 rounded">${label}</span>
+                        <button onclick="document.getElementById('${id}').remove()" class="text-red-400 hover:text-red-600 text-xs">🗑️</button>
+                    </div>
+                    ${inputHtml}
+                    <div class="flex gap-1 mt-2 justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="insertAfter('${id}', 'text')" class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">+T</button>
+                        <button onclick="insertAfter('${id}', 'image')" class="bg-pink-50 text-pink-600 px-2 py-1 rounded text-xs">+IMG</button>
+                        <button onclick="insertAfter('${id}', 'youtube')" class="bg-red-50 text-red-600 px-2 py-1 rounded text-xs">+YT</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function addBlock(type) {
+            const id = 'blk-' + Date.now() + Math.random().toString(36).substr(2, 5);
+            const d = document.createElement('div');
+            d.innerHTML = getBlockHTML(type, id);
+            blocksContainer.appendChild(d.firstElementChild);
+        }
+
+        function insertAfter(targetId, type) {
+            const target = document.getElementById(targetId);
+            const id = 'blk-' + Date.now() + Math.random().toString(36).substr(2, 5);
+            const d = document.createElement('div');
+            d.innerHTML = getBlockHTML(type, id);
+            target.after(d.firstElementChild);
+        }
+
+        function previewImg(input, id) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const d = document.getElementById(`img-prev-${id}`);
+                    d.classList.remove('hidden');
+                    d.querySelector('img').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // --- 4. نەتىجىنى ھاسىل قىلىش (Preview) ---
+
+        function generatePreview() {
+            const contentDiv = document.getElementById('report-content');
+            const tocDiv = document.getElementById('toc-list');
+            const titleInput = document.getElementById('bookTitle').value || "تېمىسىز كىتاب";
+            const dateStr = getFormattedDate();
+
+            // تازىلاش
+            contentDiv.innerHTML = '';
+            tocDiv.innerHTML = '';
+            
+            // Preview Header
+            document.getElementById('previewTitle').innerText = titleInput;
+            document.getElementById('previewDate').innerText = dateStr;
+
+            const blocks = blocksContainer.querySelectorAll('[id^="blk-"]');
+            let footnoteContainer = null;
+
+            blocks.forEach(block => {
+                const type = block.getAttribute('data-type');
+                let el = null;
+
+                if (['h1', 'h2'].includes(type)) {
+                    const val = block.querySelector('input').value;
+                    if(val) {
+                        el = document.createElement(type);
+                        el.textContent = val;
+                        el.id = 'sect-' + Math.random().toString(36).substr(2, 6);
+                        
+                        const a = document.createElement('a');
+                        a.href = '#' + el.id;
+                        a.textContent = val;
+                        a.className = `toc-link ${type === 'h1' ? 'font-bold mt-2' : 'pl-4 text-xs'}`;
+                        tocDiv.appendChild(a);
+                    }
+                } else if (type === 'text' || type === 'ltr') {
+                    const val = block.querySelector('textarea').value;
+                    if(val) {
+                        el = document.createElement('div');
+                        if(type === 'ltr') el.className = 'ltr-block';
+                        val.split('\n').forEach(line => {
+                            if(line.trim()) {
+                                const p = document.createElement('p');
+                                p.textContent = line;
+                                el.appendChild(p);
+                            }
+                        });
+                    }
+                } else if (type === 'youtube') {
+                    const val = block.querySelector('input').value;
+                    const videoId = extractVideoID(val);
+                    if(videoId) {
+                        el = document.createElement('div');
+                        el.className = 'video-container';
+                        el.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+                    }
+                } else if (type === 'footnote') {
+                    const val = block.querySelector('textarea').value;
+                    if(val) {
+                        if(!footnoteContainer) {
+                            footnoteContainer = document.createElement('div');
+                            footnoteContainer.className = 'footnote-section';
+                            contentDiv.appendChild(footnoteContainer);
+                        }
+                        const p = document.createElement('div');
+                        p.className = 'footnote-item';
+                        p.textContent = val;
+                        footnoteContainer.appendChild(p);
+                        return; 
+                    }
+                } else if (type === 'image') {
+                    const img = block.querySelector('img');
+                    const cap = block.querySelector('.block-img-caption').value;
+                    if(img && img.src) {
+                        el = document.createElement('div');
+                        el.className = 'book-figure';
+                        el.innerHTML = `<img src="${img.src}"><div class="book-caption">${cap}</div>`;
+                    }
+                }
+
+                if(el) contentDiv.appendChild(el);
+            });
+
+            if(footnoteContainer) contentDiv.appendChild(footnoteContainer);
+
+            document.getElementById('preview-panel').classList.remove('hidden');
+            if(window.innerWidth < 1024) document.getElementById('preview-panel').scrollIntoView({behavior: 'smooth'});
+        }
+
+        // --- 5. HTML ساقلاش (Core Feature) ---
+        
+        function exportToHTML() {
+            generatePreview();
+            
+            const title = document.getElementById('previewTitle').innerText;
+            const dateStr = document.getElementById('previewDate').innerText;
+            const contentHTML = document.getElementById('report-content').innerHTML;
+            const tocHTML = document.getElementById('toc-list').innerHTML;
+            
+            const fullHTML = `
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap');
+        body { font-family: "UKIJ Tuz", "ALKATIP Tor", "Noto Naskh Arabic", sans-serif; background-color: #f3f4f6; }
+        .book-content p { text-align: justify; text-indent: 2em; line-height: 1.8; margin-bottom: 1rem; font-size: 1.125rem; color: #374151; }
+        .book-content h1 { font-size: 2.25rem; font-weight: bold; color: #1e3a8a; margin-top: 2rem; border-bottom: 2px solid #e5e7eb; }
+        .book-content h2 { font-size: 1.75rem; font-weight: bold; color: #1d4ed8; margin-top: 1.5rem; }
+        .book-figure { margin: 1.5rem 0; text-align: center; }
+        .book-figure img { max-width: 100%; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .book-caption { font-size: 0.875rem; color: #6b7280; font-style: italic; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 0.5rem; margin: 1.5rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .footnote-section { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #9ca3af; font-size: 0.9rem; color: #4b5563; }
+        .ltr-block { direction: ltr; text-align: left; background: #f8fafc; padding: 1rem; border-left: 4px solid #3b82f6; }
+        .toc-link:hover { color: #2563eb; transform: translateX(-5px); }
+        .toc-link { transition: all 0.2s; display: block; padding: 4px 0; }
+        .sticky-toc { position: sticky; top: 1rem; max-height: 90vh; overflow-y: auto; }
+    </style>
+</head>
+<body class="pb-24">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg print:hidden" id="main-header">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h1 class="text-4xl font-bold mb-2 tracking-wide" id="doc-title">${title}</h1>
+            <p class="text-blue-200 text-sm opacity-90" id="doc-date">${dateStr}</p>
+            <div class="mt-2 text-[10px] text-blue-300">بىلىك تەتقىقات مەركىزى قۇرالى</div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8 items-start">
+        
+        <!-- Sidebar TOC (Right in RTL because it is first) -->
+        <div class="w-64 hidden xl:block shrink-0 print:hidden order-1">
+            <div class="bg-white p-5 rounded-lg shadow-lg border border-gray-100 sticky-toc">
+                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">مۇندەرىجە</h3>
+                <nav class="text-sm text-gray-600 space-y-1">
+                    ${tocHTML}
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content (Left) -->
+        <div class="flex-1 bg-white shadow-2xl rounded-lg overflow-hidden min-h-[800px] w-full order-2">
+            <div id="report-content" class="p-10 book-content">
+                ${contentHTML}
+            </div>
+            <div class="bg-gray-50 border-t p-4 text-center text-xs text-gray-400">
+                &copy; بىلىك تەتقىقات مەركىزى
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Controls -->
+    <div id="controlsContainer" class="fixed bottom-6 left-6 z-50 flex items-end gap-2" data-html2canvas-ignore="true">
+        <button onclick="toggleControls()" class="bg-slate-800 text-white w-10 h-10 rounded-full shadow-xl flex items-center justify-center text-lg hover:bg-slate-700 transition ring-2 ring-white">⚙️</button>
+        <div id="controlPanelMain" class="hidden bg-slate-900/95 backdrop-blur-sm p-3 rounded-xl shadow-2xl border border-slate-700 flex flex-col gap-3 w-72">
+             <div class="flex gap-2">
+                <select id="voiceSelect" class="bg-slate-700 text-white text-xs p-2 rounded w-full dir-ltr focus:outline-none">
+                    <option value="ug-UG0">ئۇيغۇرچە (ئەر)</option>
+                    <option value="ug-UG">ئۇيغۇرچە (ئايال)</option>
+                    <option value="tr-TR">Türkçe</option>
+                    <option value="uz-UZ">O'zbek</option>
+                </select>
+                <select id="rateSelect" class="bg-slate-700 text-white text-xs p-2 rounded w-16 text-center focus:outline-none">
+                    <option value="1.0">1.0x</option>
+                    <option value="1.2" selected>1.2x</option>
+                    <option value="1.5">1.5x</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-5 gap-2">
+                <button onclick="prevChunk()" class="bg-slate-600 text-white p-2 rounded text-xs">⏮</button>
+                <button onclick="startReading()" class="bg-sky-600 text-white p-2 rounded text-xs">▶</button>
+                <button onclick="nextChunk()" class="bg-indigo-600 text-white p-2 rounded text-xs">⏭</button>
+                <button onclick="stopReading()" class="bg-red-600 text-white p-2 rounded text-xs">■</button>
+                <button onclick="savePDF()" class="bg-pink-600 text-white p-2 rounded text-xs">📄</button>
+            </div>
+             <div id="readingStatus" class="text-[10px] text-sky-300 text-center truncate">تەييار</div>
+        </div>
+    </div>
+
+    <script>
+        const UY_TO_ULY_MAP = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'j','چ':'ch','خ':'h','د':'d','ر':'r','ز':'z','ژ':'j','س':'s','ش':'sh','غ':'gh','ف':'f','ق':'k','ك':'k','گ':'g','ڭ':'ng','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'ö','ۈ':'ü','ۋ':'v','ې':'e','ى':'i','ي':'y'};
+        let synth = window.speechSynthesis, readingChunks = [], currentChunkIndex = 0, isReading = false, utterance = null;
+        
+        function transliterate(t) { return t.split('').map(c => UY_TO_ULY_MAP[c] || c).join(''); }
+        function toggleControls() { document.getElementById('controlPanelMain').classList.toggle('hidden'); }
+        
+        // ئۆزگەرتىش: ماقالە تېمىسى ۋە ۋاقىتنىمۇ قوشۇش
+        function getReadableContent() {
+            let chunks = [];
+            // تېما ۋە ۋاقىتنى ئېلىش
+            const title = document.getElementById('doc-title');
+            const date = document.getElementById('doc-date');
+            if(title) chunks.push(title.innerText);
+            if(date) chunks.push(date.innerText);
+
+            // قالغان مەزمۇنلار
+            let el = document.querySelectorAll('#report-content h1, #report-content h2, #report-content p, .book-caption, .footnote-item');
+            el.forEach(e => { if(e.innerText.trim()) chunks.push(e.innerText.trim()); });
+            return chunks;
+        }
+        
+        function startReading() {
+            if(isReading) return;
+            readingChunks = getReadableContent();
+            if(!readingChunks.length) return alert('مەزمۇن يوق');
+            // باشتىن باشلاش
+            currentChunkIndex = 0;
+            isReading = true; document.getElementById('readingStatus').innerText = "ئوقۇۋاتىدۇ...";
+            readNext();
+        }
+        
+        function readNext() {
+            if(!isReading || currentChunkIndex >= readingChunks.length) { isReading=false; document.getElementById('readingStatus').innerText="تەييار"; return; }
+            let txt = readingChunks[currentChunkIndex];
+            const v = document.getElementById('voiceSelect').value;
+            const r = document.getElementById('rateSelect').value;
+            if(v==='tr-TR'||v==='uz-UZ') txt = transliterate(txt);
+            
+            utterance = new SpeechSynthesisUtterance(txt);
+            utterance.rate = r;
+            let voices = synth.getVoices();
+            let sv = voices.find(x => x.lang === v) || voices.find(x => x.lang.includes(v.split('-')[0]));
+            if(sv) utterance.voice = sv;
+            
+            utterance.onend = () => { currentChunkIndex++; readNext(); };
+            utterance.onerror = () => { isReading=false; };
+            synth.speak(utterance);
+        }
+        
+        function stopReading() { isReading=false; synth.cancel(); document.getElementById('readingStatus').innerText="توختىدى"; }
+        function nextChunk() { synth.cancel(); currentChunkIndex++; if(isReading) readNext(); }
+        function prevChunk() { synth.cancel(); currentChunkIndex--; if(currentChunkIndex<0) currentChunkIndex=0; if(isReading) readNext(); }
+        
+        function savePDF() {
+            const el = document.getElementById('report-content');
+            const opt = { margin:[10,10,10,10], filename:'kitap.pdf', image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:'mm',format:'a4'} };
+            html2pdf().set(opt).from(el).save();
+        }
+    <\/script>
+</body>
+</html>`;
+
+            const blob = new Blob([fullHTML], {type: 'text/html'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `kitap_${Date.now()}.html`;
+            a.click();
+        }
+
+        // --- 6. ئاۋازلىق ئوقۇش (Editor ئىچىدىكى) ---
+        
+        const UY_TO_ULY_MAP = {'ا':'a','ە':'e','ب':'b','پ':'p','ت':'t','ج':'j','چ':'ch','خ':'h','د':'d','ر':'r','ز':'z','ژ':'j','س':'s','ش':'sh','غ':'gh','ف':'f','ق':'k','ك':'k','گ':'g','ڭ':'ng','ل':'l','م':'m','ن':'n','ھ':'h','و':'o','ۇ':'u','ۆ':'ö','ۈ':'ü','ۋ':'v','ې':'e','ى':'i','ي':'y','،':',','؟':'?','؛':';','！':'!'};
+        let synth = window.speechSynthesis;
+        let readingChunks = [];
+        let currentChunkIndex = 0;
+        let isReading = false;
+        let utterance = null;
+
+        function transliterate(text) { return text.split('').map(char => UY_TO_ULY_MAP[char] || char).join(''); }
+        function toggleControls() { document.getElementById('controlPanelMain').classList.toggle('hidden'); }
+
+        function getReadableContent() {
+            let chunks = [];
+            // Editor دا تېمىنى ئېلىش
+            const title = document.getElementById('previewTitle');
+            const date = document.getElementById('previewDate');
+            if(title) chunks.push(title.innerText);
+            if(date) chunks.push(date.innerText);
+
+            const container = document.getElementById('report-content');
+            if(!container || container.innerHTML.trim() === "") return chunks;
+            
+            let elements = container.querySelectorAll('h1, h2, h3, p, .book-caption, .footnote-item');
+            elements.forEach(el => { if(el.innerText.trim() !== "") chunks.push(el.innerText.trim()); });
+            return chunks;
+        }
+
+        function startReading() {
+            if (isReading) return;
+            readingChunks = getReadableContent();
+            if (readingChunks.length === 0) { alert("ئوقۇيدىغان مەزمۇن يوق."); return; }
+            currentChunkIndex = 0; // ئۆزگەرتىش: باشتىن باشلاش
+            isReading = true;
+            document.getElementById('readingStatus').innerText = "ئوقۇۋاتىدۇ...";
+            readNextChunk();
+        }
+
+        function readNextChunk() {
+            if (!isReading || currentChunkIndex >= readingChunks.length) {
+                isReading = false;
+                document.getElementById('readingStatus').innerText = "تەييار";
+                return;
+            }
+            let text = readingChunks[currentChunkIndex];
+            const voiceLang = document.getElementById('voiceSelect').value;
+            const rate = parseFloat(document.getElementById('rateSelect').value);
+
+            if (voiceLang === 'tr-TR' || voiceLang === 'uz-UZ') text = transliterate(text);
+
+            utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = rate;
+            const voices = synth.getVoices();
+            let selectedVoice = voices.find(v => v.lang === voiceLang);
+            if (!selectedVoice && (voiceLang === 'tr-TR' || voiceLang === 'uz-UZ')) {
+                 selectedVoice = voices.find(v => v.lang.includes('tr') || v.lang.includes('uz'));
+            }
+            if (selectedVoice) utterance.voice = selectedVoice;
+
+            utterance.onend = function() { currentChunkIndex++; readNextChunk(); };
+            utterance.onerror = function(e) { isReading = false; };
+            synth.speak(utterance);
+        }
+
+        function stopReading() { isReading = false; synth.cancel(); document.getElementById('readingStatus').innerText = "توختىدى"; }
+        function nextChunk() { synth.cancel(); currentChunkIndex++; if(isReading) readNextChunk(); }
+        function prevChunk() { synth.cancel(); currentChunkIndex--; if(currentChunkIndex < 0) currentChunkIndex = 0; if(isReading) readNextChunk(); }
+        
+        function savePDF() {
+            const element = document.getElementById('report-content');
+            if(!element.innerText.trim()) { alert("مەزمۇن يوق!"); return; }
+            const opt = { margin: [10, 10, 10, 10], filename: `bilik_book.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4' } };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
